@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:loggy/loggy.dart';
-import 'ui/home.dart';
+import 'package:get/get.dart';
+import '../presentation/pages/home_screen.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+void main() {
+  runApp(const MyApp());
+}
 
-  Loggy.initLoggy(
-    logPrinter: const PrettyPrinter(
-      showColors: true,
-    ),
-  );
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
-  runApp(const Home());
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      title: 'Conference Management App',
+      theme: ThemeData(
+        primarySwatch: Colors.purple,
+      ),
+      home: const HomeScreen(),
+    );
+  }
 }

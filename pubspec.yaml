@@ -9,13 +9,24 @@ version: 1.0.0+1
 environment:
   sdk: ^3.6.1
   
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+
 dependencies:
   flutter:
     
     sdk: flutter
+  google_fonts: ^6.2.1
   get: ^4.7.2
   http: ^1.3.0
   loggy: ^2.0.3
+
+
   internet_connection_checker_plus: ^2.7.1
 
   # The following adds the Cupertino Icons font to your application.
@@ -39,6 +50,11 @@ dev_dependencies:
 
 
 flutter:
+
+  #fonts:
+  #  - family: LeagueSpartan
+  #    fonts:
+  #      - asset: fonts/LeagueSpartan-VariableFont_wght.ttf
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

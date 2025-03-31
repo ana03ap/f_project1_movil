@@ -1,6 +1,8 @@
-import 'package:f_web_service_random_user_template/presentation/pages/startpage.dart';
+import 'package:f_project_1/presentation/pages/feedback_screen.dart';
+import 'package:f_project_1/presentation/pages/startpage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../presentation/pages/home_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
@@ -13,12 +15,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Conference Management App',
-      debugShowCheckedModeBanner: false,
+      title: 'TuBoleta',
       theme: ThemeData(
         textTheme: GoogleFonts.leagueSpartanTextTheme(),
       ),
-      home: const Startpage(),
+      home:  const FeedbackScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

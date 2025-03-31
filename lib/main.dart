@@ -1,6 +1,8 @@
+import 'package:f_project_1/presentation/pages/feedback_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../presentation/pages/home_screen.dart';
+import '../presentation/pages/details_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,11 +14,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Conference Management App',
+      title: 'TuBoleta',
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
-      home: const HomeScreen(),
+      home:  const FeedbackScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

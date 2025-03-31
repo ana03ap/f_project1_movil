@@ -2,13 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../widgets/container_icon_with_text.dart';
 import '../widgets/event_card.dart';
+import '../widgets/bottom_nav_bar.dart';
 
-class Startpage extends StatelessWidget {
+class Startpage extends StatefulWidget {
   const Startpage({Key? key}) : super(key: key);
 
   @override
+  State<Startpage> createState() => _StartpageState();
+}
+
+class _StartpageState extends State<Startpage> {
+  int _currentIndex = 0;
+
+  void _onTap(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // 🔥 Recibimos la variable `name` usando Get.arguments
+    // 🔥 Mantengo la lógica para recibir el nombre desde HomeScreen
     final String name = Get.arguments ?? 'Guest';
 
     return Scaffold(
@@ -95,6 +109,10 @@ class Startpage extends StatelessWidget {
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavBar(
+        currentIndex: _currentIndex,
+        onTap: _onTap,
       ),
     );
   }

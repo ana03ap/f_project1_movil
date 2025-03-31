@@ -1,5 +1,7 @@
+import 'package:f_project_1/presentation/pages/details_screen.dart';
 import 'package:f_project_1/presentation/pages/feedback_screen.dart';
 import 'package:f_project_1/presentation/pages/startpage.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../presentation/pages/home_screen.dart';
@@ -19,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         textTheme: GoogleFonts.leagueSpartanTextTheme(),
       ),
-      home:   HomeScreen(),
+      home:   const Startpage(),
       debugShowCheckedModeBanner: false,
     );
   }

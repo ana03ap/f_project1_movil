@@ -8,19 +8,14 @@ class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
 
   final TextEditingController nameController = TextEditingController();
-  final RxString name = ''.obs;  // 🔥 Variable reactiva
+  final RxString name = ''.obs;
 
   void navigateToStartPage() {
     if (nameController.text.isNotEmpty) {
-      name.value = nameController.text;  // Actualiza la variable reactiva
-      Get.snackbar(
-        'Hello', 
-        'Welcome ${name.value}!',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      name.value = nameController.text;
 
-      // 🔥 Navegación a StartPage usando GetX
-      Get.to(() => const Placeholder());
+      // 🔥 Navegar usando GetX y pasando el nombre como argumento
+      Get.to(() => const Startpage(), arguments: name.value);
     } else {
       Get.snackbar(
         'Error',
@@ -52,7 +47,7 @@ class HomeScreen extends StatelessWidget {
                 border: OutlineInputBorder(),
                 labelText: 'Input Name',
               ),
-              onChanged: (value) => name.value = value, // 🔥 Hace que la variable sea reactiva
+              onChanged: (value) => name.value = value,
             ),
             const SizedBox(height: 20),
             ElevatedButton(

@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../widgets/container_icon_with_text.dart';
+import '../widgets/event_card.dart';
 
 class Startpage extends StatelessWidget {
   const Startpage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // 🔥 Recibimos la variable `name` usando Get.arguments
+    final String name = Get.arguments ?? 'Guest';
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
-            const Center(
+            Center(
               child: Column(
                 children: [
-                  Text("NombreApp",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
-                  Text("Hi, name!",
-                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  const Text("NombreApp",
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                  Text("Hi, $name!",
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
                 ],
               ),
             ),
@@ -26,9 +31,7 @@ class Startpage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Find your news adventures",
-                    style:
-                        //podria ser algo comun
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
                 Icon(Icons.search),
               ],
             ),
@@ -38,21 +41,16 @@ class Startpage extends StatelessWidget {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: const [
-                  ContainerIconwithText(
-                      icon: Icons.heart_broken_sharp, label: "Romance"),
-                  ContainerIconwithText(
-                      icon: Icons.policy_outlined, label: "Politics"),
-                  ContainerIconwithText(icon: Icons.brush, label: "Art"),
-                  ContainerIconwithText(
-                      icon: Icons.sports_soccer_sharp, label: "Sport"),
-                  ContainerIconwithText(
-                      icon: Icons.monetization_on_outlined, label: "Finances"),
-                  ContainerIconwithText(icon: Icons.science, label: "Science"),
-                  ContainerIconwithText(icon: Icons.history, label: "History"),
+                  ContainerIconWithText(icon: Icons.heart_broken_sharp, label: "Romance"),
+                  ContainerIconWithText(icon: Icons.policy_outlined, label: "Politics"),
+                  ContainerIconWithText(icon: Icons.brush, label: "Art"),
+                  ContainerIconWithText(icon: Icons.sports_soccer_sharp, label: "Sport"),
+                  ContainerIconWithText(icon: Icons.monetization_on_outlined, label: "Finances"),
+                  ContainerIconWithText(icon: Icons.science, label: "Science"),
+                  ContainerIconWithText(icon: Icons.history, label: "History"),
                 ],
               ),
             ),
-            // Hacer la imagen en canva
             Container(
               width: 400,
               height: 150,
@@ -97,144 +95,6 @@ class Startpage extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class ContainerIconwithText extends StatelessWidget {
-  const ContainerIconwithText({
-    super.key,
-    required this.icon,
-    required this.label,
-  });
-
-  final IconData icon;
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 60,
-            height: 70,
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 240, 240, 240),
-              borderRadius: BorderRadius.all(Radius.circular(7)),
-            ),
-            child: Center(
-              child: Icon(
-                icon,
-                color: Colors.deepPurple,
-                size: 30,
-              ),
-            ),
-          ),
-          const SizedBox(height: 5),
-          Text(
-            label,
-            style: const TextStyle(fontSize: 15, color: Colors.grey),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class EventCard extends StatelessWidget {
-  final String title;
-  final String locationName;
-  final String locationPlace;
-  final Color imageColor;
-
-  const EventCard({
-    super.key,
-    required this.title,
-    required this.locationName,
-    required this.locationPlace,
-    required this.imageColor,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(4),
-      width: 370,
-      height: 130,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.grey,
-            blurRadius: 3,
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Container(
-            alignment: Alignment.topRight,
-            child: const Padding(
-              padding: EdgeInsets.only(right: 10.0, top: 5),
-              child: Icon(
-                Icons.arrow_circle_right_outlined,
-                color: Colors.deepPurple,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10, top: 7),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(title,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16)),
-                    const SizedBox(height: 4),
-                    Padding(
-                      padding: const EdgeInsets.all(6),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            locationName,
-                            style: const TextStyle(
-                                color: Color.fromARGB(255, 60, 31, 110)),
-                          ),
-                          Text(
-                            locationPlace,
-                            style: const TextStyle(
-                                color: Color.fromARGB(255, 60, 31, 110)),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                  // aqui va imagen de cada evento, realizarla!
-                  width: 120,
-                  height: 75,
-                  margin: const EdgeInsets.only(right: 10),
-                  decoration: BoxDecoration(
-                    color: imageColor,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

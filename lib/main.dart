@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         textTheme: GoogleFonts.leagueSpartanTextTheme(),
       ),
-      home:  const FeedbackScreen(),
+      home:   HomeScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

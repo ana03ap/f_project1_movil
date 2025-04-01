@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_styles.dart';
 import '../../core/constants/app_assets.dart';
@@ -22,6 +23,16 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // 🔥 Recibimos los parámetros que se pasaron desde StartPage
+    final Map<String, dynamic> eventDetails = Get.arguments ?? {
+      "title": "Evento Desconocido",
+      "location": "Ubicación Desconocida",
+      "participants": 0,
+      "details": "No hay detalles disponibles.",
+      "availableSpots": 0,
+      "date": "Fecha Desconocida",
+    };
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('TuBoleta'),
@@ -64,10 +75,10 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     height: 180,
                     width: double.infinity,
                     alignment: Alignment.center,
-                    child: const Text(
-                      '04 ABRIL 2025\nViernes, 10:00 AM',
+                    child: Text(
+                      eventDetails["date"],
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -78,31 +89,27 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
               ),
             ),
             const SizedBox(height: 16),
-            const Text('Voices of the Future', style: AppStyles.title),
+            Text(eventDetails["title"], style: AppStyles.title),
             const SizedBox(height: 8),
-            const Row(
+            Row(
               children: [
-                Icon(Icons.location_on, color: AppColors.primary),
-                SizedBox(width: 5),
-                Text('Movistar Arena / Bogotá, Colombia', style: AppStyles.normal),
+                const Icon(Icons.location_on, color: AppColors.primary),
+                const SizedBox(width: 5),
+                Text(eventDetails["location"], style: AppStyles.normal),
               ],
             ),
             const SizedBox(height: 8),
-            const Row(
+            Row(
               children: [
-                Icon(Icons.people, color: AppColors.primary),
-                SizedBox(width: 5),
-                Text('Maximum number of participants: 20', style: AppStyles.normal),
+                const Icon(Icons.people, color: AppColors.primary),
+                const SizedBox(width: 5),
+                Text('Maximum number of participants: ${eventDetails["participants"]}', style: AppStyles.normal),
               ],
             ),
             const SizedBox(height: 16),
             const Text('Details', style: AppStyles.subtitle),
             const SizedBox(height: 8),
-            const Text(
-              "It's a political event focused on empowering young leaders and future changemakers. "
-              "Join key debates and dynamic discussions on today's most pressing issues.",
-              style: AppStyles.normal,
-            ),
+            Text(eventDetails["details"], style: AppStyles.normal),
             const SizedBox(height: 16),
             Container(
               padding: const EdgeInsets.all(12),
@@ -110,7 +117,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                 border: Border.all(color: AppColors.buttonBorder),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: const Text('Available spots: 10', style: AppStyles.bold),
+              child: Text('Available spots: ${eventDetails["availableSpots"]}', style: AppStyles.bold),
             ),
             const SizedBox(height: 16),
             Row(

@@ -20,6 +20,18 @@ class _StartpageState extends State<Startpage> {
     });
   }
 
+  void navigateToEventDetails(String title, String location, String details,
+      int participants, int availableSpots, String date) {
+    Get.toNamed('/details_screen', arguments: {
+      "title": title,
+      "location": location,
+      "participants": participants,
+      "details": details,
+      "availableSpots": availableSpots,
+      "date": date,
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // 🔥 Mantengo la lógica para recibir el nombre desde HomeScreen
@@ -34,7 +46,8 @@ class _StartpageState extends State<Startpage> {
               child: Column(
                 children: [
                   const Text("NombreApp",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
                   Text("Hi, $name!",
                       style: const TextStyle(fontWeight: FontWeight.bold)),
                 ],
@@ -45,7 +58,8 @@ class _StartpageState extends State<Startpage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Find your news adventures",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
                 Icon(Icons.search),
               ],
             ),
@@ -55,11 +69,15 @@ class _StartpageState extends State<Startpage> {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: const [
-                  ContainerIconWithText(icon: Icons.heart_broken_sharp, label: "Romance"),
-                  ContainerIconWithText(icon: Icons.policy_outlined, label: "Politics"),
+                  ContainerIconWithText(
+                      icon: Icons.heart_broken_sharp, label: "Romance"),
+                  ContainerIconWithText(
+                      icon: Icons.policy_outlined, label: "Politics"),
                   ContainerIconWithText(icon: Icons.brush, label: "Art"),
-                  ContainerIconWithText(icon: Icons.sports_soccer_sharp, label: "Sport"),
-                  ContainerIconWithText(icon: Icons.monetization_on_outlined, label: "Finances"),
+                  ContainerIconWithText(
+                      icon: Icons.sports_soccer_sharp, label: "Sport"),
+                  ContainerIconWithText(
+                      icon: Icons.monetization_on_outlined, label: "Finances"),
                   ContainerIconWithText(icon: Icons.science, label: "Science"),
                   ContainerIconWithText(icon: Icons.history, label: "History"),
                 ],
@@ -85,24 +103,48 @@ class _StartpageState extends State<Startpage> {
             const SizedBox(height: 10),
             Expanded(
               child: ListView(
-                children: const [
+                children: [
                   EventCard(
-                    title: "Voices of the future",
-                    locationName: "Movistar Arena",
+                    title: "Voices of the Future",
+                    locationName: "Movistar Arena / Bogotá, Colombia",
                     locationPlace: "Bogotá, Colombia",
                     imageColor: Colors.amber,
+                    onTap: () => navigateToEventDetails(
+                      "Voices of the Future",
+                      "Movistar Arena / Bogotá, Colombia",
+                      "Evento centrado en empoderar a los jóvenes líderes y creadores de cambio futuro. Únete a debates clave y discusiones dinámicas sobre los problemas más urgentes de hoy.",
+                      20,
+                      10,
+                      "04 ABRIL 2025\nViernes, 10:00 AM",
+                    ),
                   ),
                   EventCard(
                     title: "Tech Beats 2025",
-                    locationName: "El Campín",
+                    locationName: "El Campín / Bogotá, Colombia",
                     locationPlace: "Bogotá, Colombia",
                     imageColor: Colors.lightBlue,
+                    onTap: () => navigateToEventDetails(
+                      "Tech Beats 2025",
+                      "El Campín / Bogotá, Colombia",
+                      "Una conferencia tecnológica con las últimas innovaciones en IA, ciberseguridad y desarrollo web.",
+                      50,
+                      25,
+                      "10 MAYO 2025\nSábado, 09:00 AM",
+                    ),
                   ),
                   EventCard(
                     title: "AI in Art",
-                    locationName: "Museo de Arte Moderno",
+                    locationName: "Museo de Arte Moderno / Medellín, Colombia",
                     locationPlace: "Medellín, Colombia",
                     imageColor: Colors.pinkAccent,
+                    onTap: () => navigateToEventDetails(
+                      "AI in Art",
+                      "Museo de Arte Moderno / Medellín, Colombia",
+                      "Explorando la intersección de la inteligencia artificial y las artes visuales. Exhibiciones de arte generativo y más.",
+                      30,
+                      15,
+                      "15 JUNIO 2025\nDomingo, 11:00 AM",
+                    ),
                   ),
                 ],
               ),

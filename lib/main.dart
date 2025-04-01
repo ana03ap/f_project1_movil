@@ -1,10 +1,10 @@
 import 'package:f_project_1/presentation/pages/details_screen.dart';
 import 'package:f_project_1/presentation/pages/feedback_screen.dart';
 import 'package:f_project_1/presentation/pages/startpage.dart';
+import 'package:f_project_1/presentation/pages/home_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../presentation/pages/home_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
@@ -21,8 +21,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         textTheme: GoogleFonts.leagueSpartanTextTheme(),
       ),
-      home:   const Startpage(),
       debugShowCheckedModeBanner: false,
+      initialRoute: '/',  // empieza por el homescreen tonc
+      getPages: [
+        GetPage(name: '/', page: () =>  HomeScreen()),
+        GetPage(name: '/startpage', page: () => const Startpage()),
+        GetPage(name: '/details_screen', page: () => const EventDetailsScreen()),
+        GetPage(name: '/feedback', page: () => const FeedbackScreen()),
+      ],
     );
   }
 }

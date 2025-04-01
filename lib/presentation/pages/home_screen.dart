@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_styles.dart';
-import '../pages/startpage.dart';
+
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -15,7 +15,7 @@ class HomeScreen extends StatelessWidget {
       name.value = nameController.text;
 
       // 🔥 Navegar usando GetX y pasando el nombre como argumento
-      Get.to(() => const Startpage(), arguments: name.value);
+      Get.toNamed('/startpage', arguments: name.value);
     } else {
       Get.snackbar(
         'Error',

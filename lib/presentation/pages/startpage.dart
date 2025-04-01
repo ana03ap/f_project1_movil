@@ -5,9 +5,8 @@ import '../widgets/container_icon_with_text.dart';
 import '../widgets/event_card.dart';
 import '../widgets/bottom_nav_bar.dart';
 
-
 class Startpage extends StatelessWidget {
-  final BottomNavController bottomNavController = Get.find();  // ✅ Controlador ya existente
+  final BottomNavController bottomNavController = Get.find();
 
   Startpage({Key? key}) : super(key: key);
 
@@ -25,7 +24,6 @@ class Startpage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 🔥 Recibimos la variable `name` usando Get.arguments
     final String name = Get.arguments ?? 'Guest';
 
     return Scaffold(
@@ -97,13 +95,13 @@ class Startpage extends StatelessWidget {
                 children: [
                   EventCard(
                     title: "Voices of the Future",
-                    locationName: "Movistar Arena / Bogotá, Colombia",
+                    locationName: "Movistar Arena",
                     locationPlace: "Bogotá, Colombia",
                     imageColor: Colors.amber,
                     onTap: () => navigateToEventDetails(
                       "Voices of the Future",
                       "Movistar Arena / Bogotá, Colombia",
-                      "Evento centrado en empoderar a los jóvenes líderes y creadores de cambio futuro. Únete a debates clave y discusiones dinámicas sobre los problemas más urgentes de hoy.",
+                      "The Voices of the Future event is a transformative gathering dedicated to inspiring, educating, and equipping young leaders, visionaries, and innovators who are shaping the future of our world. This unique experience provides a platform for meaningful dialogue, collaboration, and action, bringing together bright minds from diverse backgrounds to address the most pressing challenges of our time",
                       20,
                       10,
                       "04 ABRIL 2025\nViernes, 10:00 AM",
@@ -111,7 +109,7 @@ class Startpage extends StatelessWidget {
                   ),
                   EventCard(
                     title: "Tech Beats 2025",
-                    locationName: "El Campín / Bogotá, Colombia",
+                    locationName: "El Campín",
                     locationPlace: "Bogotá, Colombia",
                     imageColor: Colors.lightBlue,
                     onTap: () => navigateToEventDetails(
@@ -125,7 +123,7 @@ class Startpage extends StatelessWidget {
                   ),
                   EventCard(
                     title: "AI in Art",
-                    locationName: "Museo de Arte Moderno / Medellín, Colombia",
+                    locationName: "Museo de Arte Moderno",
                     locationPlace: "Medellín, Colombia",
                     imageColor: Colors.pinkAccent,
                     onTap: () => navigateToEventDetails(
@@ -143,7 +141,7 @@ class Startpage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavBar(),  // ✅ Usando tu controlador centralizado
+      bottomNavigationBar: BottomNavBar(),
     );
   }
 }

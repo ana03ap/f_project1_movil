@@ -1,24 +1,15 @@
+import 'package:f_project_1/presentation/controllers/bottom_nav_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../widgets/container_icon_with_text.dart';
 import '../widgets/event_card.dart';
 import '../widgets/bottom_nav_bar.dart';
 
-class Startpage extends StatefulWidget {
-  const Startpage({Key? key}) : super(key: key);
 
-  @override
-  State<Startpage> createState() => _StartpageState();
-}
+class Startpage extends StatelessWidget {
+  final BottomNavController bottomNavController = Get.find();  // ✅ Controlador ya existente
 
-class _StartpageState extends State<Startpage> {
-  int _currentIndex = 0;
-
-  void _onTap(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-  }
+  Startpage({Key? key}) : super(key: key);
 
   void navigateToEventDetails(String title, String location, String details,
       int participants, int availableSpots, String date) {
@@ -34,7 +25,7 @@ class _StartpageState extends State<Startpage> {
 
   @override
   Widget build(BuildContext context) {
-    // 🔥 Mantengo la lógica para recibir el nombre desde HomeScreen
+    // 🔥 Recibimos la variable `name` usando Get.arguments
     final String name = Get.arguments ?? 'Guest';
 
     return Scaffold(
@@ -152,10 +143,7 @@ class _StartpageState extends State<Startpage> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavBar(
-        currentIndex: _currentIndex,
-        onTap: _onTap,
-      ),
+      bottomNavigationBar: BottomNavBar(),  // ✅ Usando tu controlador centralizado
     );
   }
 }

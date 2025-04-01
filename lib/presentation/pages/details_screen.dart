@@ -4,22 +4,12 @@ import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_styles.dart';
 import '../../core/constants/app_assets.dart';
 import '../widgets/bottom_nav_bar.dart';
+import '../controllers/bottom_nav_controller.dart';
 
-class EventDetailsScreen extends StatefulWidget {
-  const EventDetailsScreen({Key? key}) : super(key: key);
+class EventDetailsScreen extends StatelessWidget {
+  final BottomNavController bottomNavController = Get.find();
 
-  @override
-  State<EventDetailsScreen> createState() => _EventDetailsScreenState();
-}
-
-class _EventDetailsScreenState extends State<EventDetailsScreen> {
-  int _currentIndex = 0;
-
-  void _onTap(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-  }
+  EventDetailsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -139,10 +129,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavBar(
-        currentIndex: _currentIndex,
-        onTap: _onTap,
-      ),
+      bottomNavigationBar: BottomNavBar(),
     );
   }
 }

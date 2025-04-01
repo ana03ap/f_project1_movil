@@ -1,20 +1,18 @@
+import 'package:f_project_1/presentation/controllers/bottom_nav_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 
 class BottomNavBar extends StatelessWidget {
-  final int currentIndex;
-  final Function(int) onTap;
+  final BottomNavController bottomNavController = Get.put(BottomNavController());
 
-  const BottomNavBar({
-    Key? key,
-    required this.currentIndex,
-    required this.onTap,
-  }) : super(key: key);
+  BottomNavBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      currentIndex: currentIndex,
-      onTap: onTap,
+    return Obx(() => BottomNavigationBar(
+      currentIndex: bottomNavController.currentIndex.value,
+      onTap: (index) => bottomNavController.onTap(index),
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.event),
@@ -22,16 +20,16 @@ class BottomNavBar extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.list),
-          label: 'My events',
+          label: 'My Events',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
           label: 'Profile',
         ),
       ],
-      selectedItemColor: Colors.purple,   // 🔥 Color morado para ítems seleccionados
-      unselectedItemColor: Colors.grey,   // 🔥 Color gris para ítems no seleccionados
+      selectedItemColor: Colors.purple,
+      unselectedItemColor: Colors.grey,
       showUnselectedLabels: true,
-    );
+    ));
   }
 }

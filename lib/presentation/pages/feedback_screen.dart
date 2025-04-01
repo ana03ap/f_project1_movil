@@ -1,33 +1,17 @@
+import 'package:f_project_1/presentation/controllers/bottom_nav_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_styles.dart';
 import '../widgets/bottom_nav_bar.dart';
 
-class FeedbackScreen extends StatefulWidget {
-  const FeedbackScreen({Key? key}) : super(key: key);
 
-  @override
-  State<FeedbackScreen> createState() => _FeedbackScreenState();
-}
-
-class _FeedbackScreenState extends State<FeedbackScreen> {
+class FeedbackScreen extends StatelessWidget {
   final TextEditingController feedbackController = TextEditingController();
-  final RxInt selectedRating = 0.obs;  // Variable reactiva para manejar las estrellas seleccionadas
-  int _currentIndex = 0;
+  final RxInt selectedRating = 0.obs;
+  final BottomNavController bottomNavController = Get.find();  // 👈 Usamos el controlador existente
 
-  void _onTap(int index) {
-    setState(() {
-      _currentIndex = index;
-      if (index == 0) {
-        Get.toNamed('/events');
-      } else if (index == 1) {
-        Get.toNamed('/my_events');
-      } else if (index == 2) {
-        Get.toNamed('/profile');
-      }
-    });
-  }
+  FeedbackScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -114,10 +98,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavBar(  
-        currentIndex: _currentIndex,
-        onTap: _onTap,
-      ),
+      bottomNavigationBar: BottomNavBar(),
     );
   }
 }

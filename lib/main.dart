@@ -32,8 +32,8 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/startpage', page: () =>  Startpage()),
         GetPage(name: '/details_screen', page: () =>  EventDetailsScreen()),
         GetPage(name: '/feedback', page: () =>  FeedbackScreen()),
-        GetPage(name: '/profile', page: () => const MyEvents()),
-        GetPage(name: '/my_events', page: () => const MyProfile()),
+        GetPage(name: '/profile', page: () => const MyProfile()),
+        GetPage(name: '/my_events', page: () => const MyEvents()),
       
       ],
     );

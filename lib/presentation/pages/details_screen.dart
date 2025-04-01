@@ -13,7 +13,6 @@ class EventDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 🔥 Recibimos los parámetros que se pasaron desde StartPage
     final Map<String, dynamic> eventDetails = Get.arguments ?? {
       "title": "Evento Desconocido",
       "location": "Ubicación Desconocida",

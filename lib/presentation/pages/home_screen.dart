@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_styles.dart';
 
-
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
 
@@ -14,7 +13,6 @@ class HomeScreen extends StatelessWidget {
     if (nameController.text.isNotEmpty) {
       name.value = nameController.text;
 
-      // 🔥 Navegar usando GetX y pasando el nombre como argumento
       Get.toNamed('/startpage', arguments: name.value);
     } else {
       Get.snackbar(
@@ -53,11 +51,22 @@ class HomeScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: navigateToStartPage,
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                backgroundColor: const Color.fromARGB(
+                    255, 167, 91, 248), 
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                elevation: 4, 
+                shadowColor:
+                    Colors.black.withOpacity(0.2), 
               ),
-              child: const Text('Start', style: AppStyles.button),
-            ),
+              child: const Text(
+                'Start',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
+              ),
+            )
           ],
         ),
       ),

@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
-  Get.put(BottomNavController());  // Registra el controlador globalmente
+  Get.put(BottomNavController()); // Registra el controlador globalmente
   runApp(const MyApp());
 }
 
@@ -26,15 +26,14 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.leagueSpartanTextTheme(),
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/',  // empieza por el homescreen tonc
+      initialRoute: '/startpage',  // empieza por el homescreen tonc
       getPages: [
-        GetPage(name: '/', page: () =>  HomeScreen()),
-        GetPage(name: '/startpage', page: () =>  Startpage()),
-        GetPage(name: '/details_screen', page: () =>  EventDetailsScreen()),
-        GetPage(name: '/feedback', page: () =>  FeedbackScreen()),
+        GetPage(name: '/', page: () => HomeScreen()),
+        GetPage(name: '/startpage', page: () => Startpage()),
+        GetPage(name: '/details_screen', page: () => EventDetailsScreen()),
+        GetPage(name: '/feedback', page: () => FeedbackScreen()),
         GetPage(name: '/profile', page: () => const MyProfile()),
-        GetPage(name: '/my_events', page: () => const MyEvents()),
-      
+        GetPage(name: '/my_events', page: () =>  MyEvents()),
       ],
     );
   }

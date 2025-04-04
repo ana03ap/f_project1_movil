@@ -5,11 +5,10 @@ import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_styles.dart';
 import '../widgets/bottom_nav_bar.dart';
 
-
 class FeedbackScreen extends StatelessWidget {
   final TextEditingController feedbackController = TextEditingController();
   final RxInt selectedRating = 0.obs;
-  final BottomNavController bottomNavController = Get.find();  // 👈 Usamos el controlador existente
+  final BottomNavController bottomNavController = Get.find();
 
   FeedbackScreen({Key? key}) : super(key: key);
 
@@ -39,11 +38,20 @@ class FeedbackScreen extends StatelessWidget {
               maxLines: 5,
               decoration: InputDecoration(
                 hintText: 'Write a feedback...',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                fillColor: Colors.grey.shade200,
+                border: InputBorder.none,
                 filled: true,
+                fillColor: const Color.fromRGBO(240, 240, 240, 1),
+                contentPadding: const EdgeInsets.all(16),
+                hintStyle: TextStyle(color: Colors.grey[600]),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(
+                      color: Color.fromARGB(255, 123, 56, 186), width: 2),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: Colors.grey[300]!, width: 1),
+                ),
               ),
             ),
             const SizedBox(height: 20),
@@ -52,26 +60,28 @@ class FeedbackScreen extends StatelessWidget {
               style: AppStyles.subtitle,
             ),
             const SizedBox(height: 10),
-            
-            // 🔥 RATING STARS
             Obx(() => Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(5, (index) => IconButton(
-                onPressed: () {
-                  selectedRating.value = index + 1;
-                },
-                icon: Icon(
-                  Icons.star,
-                  color: index < selectedRating.value ? Colors.purple : Colors.grey,
-                  size: 32,
-                ),
-              )),
-            )),
-            
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                      5,
+                      (index) => IconButton(
+                            onPressed: () {
+                              selectedRating.value = index + 1;
+                            },
+                            icon: Icon(
+                              Icons.star,
+                              color: index < selectedRating.value
+                                  ? Colors.purple
+                                  : Colors.grey,
+                              size: 32,
+                            ),
+                          )),
+                )),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                if (feedbackController.text.isNotEmpty && selectedRating.value > 0) {
+                if (feedbackController.text.isNotEmpty &&
+                    selectedRating.value > 0) {
                   Get.snackbar(
                     'Feedback Sent!',
                     'Thank you for your feedback!',
@@ -91,7 +101,8 @@ class FeedbackScreen extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
               ),
               child: const Text('Submit', style: AppStyles.button),
             ),

@@ -1,12 +1,5 @@
 import 'package:f_project_1/core/constants/app_routes.dart';
 import 'package:f_project_1/presentation/controllers/bottom_nav_controller.dart';
-import 'package:f_project_1/presentation/pages/details_screen.dart';
-import 'package:f_project_1/presentation/pages/feedback_screen.dart';
-import 'package:f_project_1/presentation/pages/my_events.dart';
-import 'package:f_project_1/presentation/pages/profile.dart';
-import 'package:f_project_1/presentation/pages/startpage.dart';
-import 'package:f_project_1/presentation/pages/home_screen.dart';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -27,8 +20,8 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.leagueSpartanTextTheme(),
       ),
       debugShowCheckedModeBanner: false,
-       initialRoute: AppRoutes.home,  // ✅ Inicia en la ruta definida en AppRoutes
-      getPages: AppRoutes.routes,   // empieza por el homescreen tonc
+       initialRoute: AppRoutes.home,  // inicia en home
+      getPages: AppRoutes.routes,   // se trae las rutas de core/constants
       
     );
   }

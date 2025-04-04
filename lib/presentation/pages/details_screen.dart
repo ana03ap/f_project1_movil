@@ -1,3 +1,4 @@
+import 'package:f_project_1/presentation/controllers/event_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/constants/app_colors.dart';
@@ -8,20 +9,24 @@ import '../controllers/bottom_nav_controller.dart';
 
 class EventDetailsScreen extends StatelessWidget {
   final BottomNavController bottomNavController = Get.find();
-
+  final EventController eventController =
+      Get.put(EventController()); // aqui lo registro localmente
   EventDetailsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic> eventDetails = Get.arguments ?? {
-      "title": "Evento Desconocido",
-      "location": "Ubicación Desconocida",
-      "participants": 0,
-      "details": "No hay detalles disponibles.",
-      "availableSpots": 0,
-      "date": "Fecha Desconocida",
-    };
+    final Map<String, dynamic> eventDetails = Get.arguments ??
+        {
+          "title": "Evento Desconocido",
+          "location": "Ubicación Desconocida",
+          "participants": 0,
+          "details": "No hay detalles disponibles.",
+          "availableSpots": 0,
+          "date": "Fecha Desconocida",
+        };
 
+    eventController.initialize(eventDetails[
+        "availableSpots"]); // inicialzo con el parametro que me pasaron
     return Scaffold(
       appBar: AppBar(
         title: const Text('TuBoleta'),
@@ -92,7 +97,9 @@ class EventDetailsScreen extends StatelessWidget {
               children: [
                 const Icon(Icons.people, color: AppColors.primary),
                 const SizedBox(width: 5),
-                Text('Maximum number of participants: ${eventDetails["participants"]}', style: AppStyles.normal),
+                Text(
+                    'Maximum number of participants: ${eventDetails["participants"]}',
+                    style: AppStyles.normal),
               ],
             ),
             const SizedBox(height: 16),
@@ -100,31 +107,63 @@ class EventDetailsScreen extends StatelessWidget {
             const SizedBox(height: 8),
             Text(eventDetails["details"], style: AppStyles.normal),
             const SizedBox(height: 16),
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                border: Border.all(color: AppColors.buttonBorder),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text('Available spots: ${eventDetails["availableSpots"]}', style: AppStyles.bold),
-            ),
+            Obx(() => Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppColors.buttonBorder),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    'Available spots: ${eventController.availableSpots.value}',
+                    style: AppStyles.bold,
+                  ),
+                )),
             const SizedBox(height: 16),
-            Row(
-              children: [
-                Container(
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: AppColors.primary,
+
+            //Si no hay spots disponibles, muestra un snackbar y no renderiza el botón
+            Obx(() {
+              if (eventController.availableSpots.value == 0) {
+                Future.delayed(Duration.zero, () {
+                  Get.snackbar(
+                    'No spots available',
+                    'This event is fully booked!',
+                    backgroundColor: Colors.red,
+                    colorText: Colors.white,
+                    snackPosition: SnackPosition.BOTTOM,
+                  );
+                });
+
+                return const SizedBox
+                    .shrink(); // Retorna un widget vacío (no muestra el botón)
+              }
+
+              return Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: eventController.isJoined.value
+                          ? Colors.red
+                          : AppColors.primary,
+                    ),
+                    child: IconButton(
+                      icon: Icon(
+                        eventController.isJoined.value
+                            ? Icons.remove
+                            : Icons.add,
+                        color: Colors.white,
+                      ),
+                      onPressed: eventController.toggleJoin,
+                    ),
                   ),
-                  child: IconButton(
-                    icon: const Icon(Icons.add, color: Colors.white),
-                    onPressed: () {},
+                  const SizedBox(width: 12),
+                  Text(
+                    eventController.isJoined.value ? 'Unjoin' : 'Join!',
+                    style: AppStyles.subtitle,
                   ),
-                ),
-                const SizedBox(width: 12),
-                const Text('Join!', style: AppStyles.subtitle),
-              ],
-            ),
+                ],
+              );
+            }),
           ],
         ),
       ),

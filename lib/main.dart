@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.leagueSpartanTextTheme(),
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/startpage',  // empieza por el homescreen tonc
+      initialRoute: '/',  // empieza por el homescreen tonc
       getPages: [
         GetPage(name: '/', page: () =>  HomeScreen()),
         GetPage(name: '/startpage', page: () =>  Startpage()),

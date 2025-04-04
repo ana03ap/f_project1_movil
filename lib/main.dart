@@ -1,3 +1,4 @@
+import 'package:f_project_1/core/constants/app_routes.dart';
 import 'package:f_project_1/presentation/controllers/bottom_nav_controller.dart';
 import 'package:f_project_1/presentation/pages/details_screen.dart';
 import 'package:f_project_1/presentation/pages/feedback_screen.dart';
@@ -26,15 +27,9 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.leagueSpartanTextTheme(),
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/startpage',  // empieza por el homescreen tonc
-      getPages: [
-        GetPage(name: '/', page: () => HomeScreen()),
-        GetPage(name: '/startpage', page: () => Startpage()),
-        GetPage(name: '/details_screen', page: () => EventDetailsScreen()),
-        GetPage(name: '/feedback', page: () => FeedbackScreen()),
-        GetPage(name: '/profile', page: () => const MyProfile()),
-        GetPage(name: '/my_events', page: () =>  MyEvents()),
-      ],
+       initialRoute: AppRoutes.home,  // ✅ Inicia en la ruta definida en AppRoutes
+      getPages: AppRoutes.routes,   // empieza por el homescreen tonc
+      
     );
   }
 }

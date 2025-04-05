@@ -32,6 +32,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  flutter_native_splash: ^2.4.4
 
 dev_dependencies:
   flutter_test:
@@ -55,6 +56,7 @@ flutter:
   #  - family: LeagueSpartan
   #    fonts:
   #      - asset: fonts/LeagueSpartan-VariableFont_wght.ttf
+
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -90,3 +92,11 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+
+# flutter_native_splash:
+#   color: "#e8350f"
+#   image: 'lib/assets/events_details.jpeg'
+#   android: true
+#   ios: true
+#   web: true

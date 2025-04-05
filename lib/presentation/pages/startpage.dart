@@ -1,4 +1,5 @@
 import 'package:f_project_1/presentation/controllers/bottom_nav_controller.dart';
+import 'package:f_project_1/presentation/controllers/event_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../widgets/container_icon_with_text.dart';
@@ -7,21 +8,24 @@ import '../widgets/bottom_nav_bar.dart';
 
 class Startpage extends StatelessWidget {
   final BottomNavController bottomNavController = Get.find();
-
+  final EventController eventController = Get.find<EventController>(); // Obtener el controlador globalmente
   Startpage({Key? key}) : super(key: key);
 
   void navigateToEventDetails(String title, String location, String details,
       int participants, int availableSpots, String date) {
-    Get.toNamed('/details_screen', arguments: {
+
+    // Cambiar a usar el controlador en lugar de pasar arguments
+    eventController.selectedEvent.value = {
       "title": title,
       "location": location,
       "participants": participants,
       "details": details,
       "availableSpots": availableSpots,
       "date": date,
-    });
-  }
+    };
 
+    Get.toNamed('/details_screen');
+  }
   @override
   Widget build(BuildContext context) {
     final String name = Get.arguments ?? 'Guest';

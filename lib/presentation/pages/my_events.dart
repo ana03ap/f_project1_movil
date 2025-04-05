@@ -1,3 +1,4 @@
+import 'package:f_project_1/presentation/controllers/event_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/constants/app_colors.dart';
@@ -9,19 +10,24 @@ import '../widgets/pastevent_card.dart';
 
 class MyEvents extends StatelessWidget {
   final TopNavController topNavController = Get.put(TopNavController());
-
+  final EventController eventController =
+      Get.find<EventController>(); // Obtener el controlador globalmente
   MyEvents({Key? key}) : super(key: key);
 
   void navigateToEventDetails(String title, String location, String details,
       int participants, int availableSpots, String date) {
-    Get.toNamed('/details_screen', arguments: {
+
+    // Cambiar a usar el controlador en lugar de pasar arguments
+    eventController.selectedEvent.value = {
       "title": title,
       "location": location,
       "participants": participants,
       "details": details,
       "availableSpots": availableSpots,
       "date": date,
-    });
+    };
+
+    Get.toNamed('/details_screen');
   }
 
   void navigateToFeedback() {
@@ -94,19 +100,19 @@ class MyEvents extends StatelessWidget {
                       children: [
                         PastEventCard(
                           title: "Voices of the Future",
-                          onTap: () => navigateToFeedback(), 
+                          onTap: () => navigateToFeedback(),
                         ),
-                         PastEventCard(
+                        PastEventCard(
                           title: "Voices of the Future",
-                          onTap: () => navigateToFeedback(), 
+                          onTap: () => navigateToFeedback(),
                         ),
-                         PastEventCard(
+                        PastEventCard(
                           title: "Voices of the Future",
-                          onTap: () => navigateToFeedback(), 
+                          onTap: () => navigateToFeedback(),
                         ),
-                         PastEventCard(
+                        PastEventCard(
                           title: "Voices of the Future",
-                          onTap: () => navigateToFeedback(), 
+                          onTap: () => navigateToFeedback(),
                         ),
                       ],
                     );

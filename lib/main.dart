@@ -1,11 +1,13 @@
 import 'package:f_project_1/core/constants/app_routes.dart';
 import 'package:f_project_1/presentation/controllers/bottom_nav_controller.dart';
+import 'package:f_project_1/presentation/controllers/event_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   Get.put(BottomNavController()); // registra el controlador globalmente
+   Get.put(EventController()); // Registro global del controlador
   runApp(const MyApp());
 }
 

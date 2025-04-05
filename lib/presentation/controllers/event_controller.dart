@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 class EventController extends GetxController {
   var isJoined = false.obs;
   var availableSpots = 0.obs;
+  var selectedEvent = Rxn<Map<String, dynamic>>(); // Permite que sea null inicialmente y acepta un Map
+
 
   void initialize(int spots) {
     availableSpots.value = spots;
@@ -29,4 +31,10 @@ class EventController extends GetxController {
       );
     }
   }
+
+
+   void selectEvent(Map<String, dynamic> event) {
+    selectedEvent.value = event; // Se asigna el evento seleccionado
+  }
+  
 }

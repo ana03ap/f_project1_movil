@@ -57,7 +57,7 @@ class HomeScreen extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                 elevation: 4, 
                 shadowColor:
-                    Colors.black.withOpacity(0.2), 
+                    Colors.black, 
               ),
               child: const Text(
                 'Start',

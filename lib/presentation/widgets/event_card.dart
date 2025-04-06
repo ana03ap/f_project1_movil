@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 
 class EventCard extends StatelessWidget {
   final String title;
-  final String locationName;
-  final String locationPlace;
+  final String location;
   final String path;
   final VoidCallback onTap;
 
   const EventCard({
     Key? key,
     required this.title,
-    required this.locationName,
-    required this.locationPlace,
+    required this.location,
     required this.path,
     required this.onTap,
   }) : super(key: key);
@@ -62,13 +60,7 @@ class EventCard extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                locationName,
-                                style: const TextStyle(
-                                  color: Color.fromARGB(255, 60, 31, 110),
-                                ),
-                              ),
-                              Text(
-                                locationPlace,
+                                location,
                                 style: const TextStyle(
                                   color: Color.fromARGB(255, 60, 31, 110),
                                 ),

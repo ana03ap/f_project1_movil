@@ -1,6 +1,7 @@
 import 'package:f_project_1/presentation/controllers/bottom_nav_controller.dart';
 import 'package:f_project_1/presentation/controllers/event_controller.dart';
 import 'package:f_project_1/presentation/controllers/home_controller.dart';
+import 'package:f_project_1/data/events_data.dart'; 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../widgets/container_icon_with_text.dart';
@@ -11,17 +12,17 @@ class Startpage extends StatelessWidget {
   final BottomNavController bottomNavController = Get.find();
   final EventController eventController = Get.find<EventController>();
   final HomeController homeController = Get.find<HomeController>();
+
   Startpage({Key? key}) : super(key: key);
 
-  void navigateToEventDetails(String title, String location, String details,
-      int participants, int availableSpots, String date) {
+  void navigateToEventDetails(Event event) {
     eventController.selectEvent({
-      "title": title,
-      "location": location,
-      "participants": participants,
-      "details": details,
-      "availableSpots": availableSpots,
-      "date": date,
+      "title": event.title,
+      "location": event.location,
+      "participants": event.participants,
+      "details": event.details,
+      "availableSpots": event.availableSpots,
+      "date": event.date,
     });
 
     Get.toNamed('/details_screen');
@@ -29,8 +30,6 @@ class Startpage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
-
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -40,9 +39,8 @@ class Startpage extends StatelessWidget {
               child: Column(
                 children: [
                   const Text("PuntoG",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
-                  Obx(() => Text("Hi, ${homeController.name.value}!", // 🔥 Aquí se muestra el nombre siempre
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                  Obx(() => Text("Hi, ${homeController.name.value}!", 
                       style: const TextStyle(fontWeight: FontWeight.bold))),
                 ],
               ),
@@ -67,20 +65,12 @@ class Startpage extends StatelessWidget {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: const [
-                  ContainerIconWithText(
-                      icon: Icons.health_and_safety_outlined,
-                      label: "Sexual Health"),
-                  ContainerIconWithText(
-                      icon: Icons.transgender_outlined, label: "Identity"),
-                  ContainerIconWithText(
-                      icon: Icons.phone_iphone, label: "Cybertouch"),
-                  ContainerIconWithText(
-                      icon: Icons.block_rounded, label: "Unbound"),
-                  ContainerIconWithText(
-                      icon: Icons.menu_book, label: "Culture"),
-                  ContainerIconWithText(
-                      icon: Icons.local_fire_department_rounded,
-                      label: "Sexual Ed."),
+                  ContainerIconWithText(icon: Icons.health_and_safety_outlined, label: "Sexual Health"),
+                  ContainerIconWithText(icon: Icons.transgender_outlined, label: "Identity"),
+                  ContainerIconWithText(icon: Icons.phone_iphone, label: "Cybertouch"),
+                  ContainerIconWithText(icon: Icons.block_rounded, label: "Unbound"),
+                  ContainerIconWithText(icon: Icons.menu_book, label: "Culture"),
+                  ContainerIconWithText(icon: Icons.local_fire_department_rounded, label: "Sexual Ed."),
                   ContainerIconWithText(icon: Icons.wc, label: "Body Literacy"),
                 ],
               ),
@@ -97,51 +87,17 @@ class Startpage extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Expanded(
-              child: ListView(
-                children: [
-                  EventCard(
-                    title: "Voices of the Future",
-                    locationName: "Movistar Arena",
-                    locationPlace: "Bogotá, Colombia",
-                    path: "",
-                    onTap: () => navigateToEventDetails(
-                      "Voices of the Future",
-                      "Movistar Arena / Bogotá, Colombia",
-                      "The Voices of the Future event is a transformative gathering dedicated to inspiring, educating, and equipping young leaders, visionaries, and innovators who are shaping the future of our world. This unique experience provides a platform for meaningful dialogue, collaboration, and action, bringing together bright minds from diverse backgrounds to address the most pressing challenges of our time",
-                      20,
-                      10,
-                      "04 APRIL 2025\nFriday, 10:00 AM",
-                    ),
-                  ),
-                  EventCard(
-                    title: "Tech Beats 2025",
-                    locationName: "El Campín",
-                    locationPlace: "Bogotá, Colombia",
-                    path: "",
-                    onTap: () => navigateToEventDetails(
-                      "Tech Beats 2025",
-                      "El Campín / Bogotá, Colombia",
-                      "A tech conference showcasing the latest innovations in AI, cybersecurity, and web development.",
-                      50,
-                      25,
-                      "10 MAY 2025\nSaturday, 09:00 AM",
-                    ),
-                  ),
-                  EventCard(
-                    title: "AI in Art",
-                    locationName: "Museo de Arte Moderno",
-                    locationPlace: "Medellín, Colombia",
-                    path: "",
-                    onTap: () => navigateToEventDetails(
-                      "AI in Art",
-                      "Museo de Arte Moderno / Medellín, Colombia",
-                      "Exploring the intersection of artificial intelligence and visual arts. Exhibitions of generative art and more.",
-                      30,
-                      15,
-                      "15 JUNE 2025\nSunday, 11:00 AM",
-                    ),
-                  ),
-                ],
+              child: ListView.builder(
+                itemCount: eventsList.length,
+                itemBuilder: (context, index) {
+                  final event = eventsList[index];
+                  return EventCard(
+                    title: event.title,
+                    location: event.location,
+                    path: "", // Puedes agregar una imagen si deseas
+                    onTap: () => navigateToEventDetails(event),
+                  );
+                },
               ),
             ),
           ],

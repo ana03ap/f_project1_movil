@@ -9,6 +9,7 @@ import '../widgets/event_card.dart';
 import '../widgets/pastevent_card.dart';
 import '../../core/constants/app_assets.dart';
 
+//ESTO POR AHORA ESTÁ ESTATICO, NO SE MA IMPLEMENTADO QUE CUANDO LE DE JOIN SE GUARDE PORQUE NO HAY BACKEND
 class MyEvents extends StatelessWidget {
   final TopNavController topNavController = Get.put(TopNavController());
   final EventController eventController = Get.find<EventController>();
@@ -53,8 +54,7 @@ class MyEvents extends StatelessWidget {
                       children: [
                         EventCard(
                           title: "Reproductive Justice",
-                          locationName: "Hall B1",
-                          locationPlace: "Convention Center",
+                          location: "Hall B1",
                           path: AppAssets.sexRights,
                           onTap: () => navigateToEventDetails(
                             "Reproductive Justice: Rights and Realities",
@@ -67,8 +67,7 @@ class MyEvents extends StatelessWidget {
                         ),
                         EventCard(
                           title: "Understanding Contraceptive Options",
-                          locationName: "Room 2A",
-                          locationPlace: "Health Pavilion",
+                          location: "Room 2A",
                           path: 'lib/assets/sexualrights.png',
                           onTap: () => navigateToEventDetails(
                             "Understanding Contraceptive Options",
@@ -81,8 +80,7 @@ class MyEvents extends StatelessWidget {
                         ),
                         EventCard(
                           title: "Emergency Contraception",
-                          locationName: "Advocacy Center",
-                          locationPlace: "Downtown Campus",
+                          location: "Advocacy Center",
                           path: 'AppAssets.sexRights',
                           onTap: () => navigateToEventDetails(
                             "Emergency Contraception: Myths and Facts",
@@ -95,8 +93,7 @@ class MyEvents extends StatelessWidget {
                         ),
                         EventCard(
                           title: "Menstrual Health Matters",
-                          locationName: "Room C3",
-                          locationPlace: "Equity Hub",
+                          location: "Room C3",
                           path: 'AppAssets.sexRights',
                           onTap: () => navigateToEventDetails(
                             "Menstrual Equity and Public Policy",
@@ -109,8 +106,7 @@ class MyEvents extends StatelessWidget {
                         ),
                         EventCard(
                           title: "Access to Safe Abortions",
-                          locationName: "Main Auditorium",
-                          locationPlace: "Convention Center",
+                          location: "Main Auditorium",
                           path: 'AppAssets.sexRights',
                           onTap: () => navigateToEventDetails(
                             "Access to Safe Abortions: Legal and Medical Perspectives",

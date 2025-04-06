@@ -1,3 +1,4 @@
+import 'package:f_project_1/data/events_data.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
@@ -8,8 +9,10 @@ class EventController extends GetxController {
       Map<String,
           dynamic>>(); 
 
+   var selectedFilter = ''.obs; // 🔥 Tipo seleccionado actualmente (filtro)
+  var filteredEvents = <Event>[].obs; // 🔥 Lista filtrada de eventos
+
   void initialize(int spots) {
-    print("Inicializando con spots: $spots");
     availableSpots.value = spots;
     isJoined.value = false;
   }
@@ -35,17 +38,25 @@ class EventController extends GetxController {
   }
 
   void selectEvent(Map<String, dynamic> event) {
-    print("🟡 Evento recibido: $event"); // Debug Mejorado
-    selectedEvent.value = event; // Asignar el evento seleccionado
+   
+    selectedEvent.value = event; 
 
     if (event.containsKey('availableSpots')) {
       int spots = event['availableSpots'];
-      initialize(spots); // Llamar a initialize con el valor obtenido
+      initialize(spots); 
     } else {
       availableSpots.value = 0;
     }
+  }
 
-    print(
-        "🔵 Available Spots seteados a: ${availableSpots.value}"); // Debug Mejorado
+
+    void filterEvents(String type) {
+    selectedFilter.value = type;
+
+    if (type.isEmpty) {
+      filteredEvents.value = eventsList; // Mostrar todos si no hay filtro
+    } else {
+      filteredEvents.value = eventsList.where((event) => event.type == type).toList();
+    }
   }
 }

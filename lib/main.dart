@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.leagueSpartanTextTheme(),
       ),
       debugShowCheckedModeBanner: false,
-       initialRoute: AppRoutes.splash,  // inicia en home
+       initialRoute: AppRoutes.splash,  // inicia en splash
       getPages: AppRoutes.routes,   // se trae las rutas de core/constants
       
     );

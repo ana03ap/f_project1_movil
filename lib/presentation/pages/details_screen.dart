@@ -9,7 +9,7 @@ import '../controllers/bottom_nav_controller.dart';
 
 class EventDetailsScreen extends StatelessWidget {
   final BottomNavController bottomNavController = Get.find();
-  final EventController eventController = Get.find<EventController>(); 
+  final EventController eventController = Get.find<EventController>();
   EventDetailsScreen({Key? key}) : super(key: key);
 
   @override
@@ -24,9 +24,9 @@ class EventDetailsScreen extends StatelessWidget {
       ),
       body: Obx(() {
         final eventDetails = eventController.selectedEvent.value;
-        
+
         if (eventDetails == null) {
-          return const Center(child: CircularProgressIndicator()); 
+          return const Center(child: CircularProgressIndicator());
         }
 
         return SingleChildScrollView(
@@ -113,30 +113,20 @@ class EventDetailsScreen extends StatelessWidget {
                     ),
                   )),
               const SizedBox(height: 16),
-
               Obx(() {
-                if (eventController.availableSpots.value == 0) {
-                  Future.delayed(Duration.zero, () {
-                    Get.snackbar(
-                      'No spots available',
-                      'This event is fully booked!',
-                      backgroundColor: Colors.red,
-                      colorText: Colors.white,
-                      snackPosition: SnackPosition.BOTTOM,
-                    );
-                  });
-
-                  return const SizedBox.shrink();
-                }
+                bool noSpotsAvailable =
+                    eventController.availableSpots.value == 0;
 
                 return Row(
                   children: [
                     Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: eventController.isJoined.value
-                            ? Colors.red
-                            : AppColors.primary,
+                        color: noSpotsAvailable
+                            ? Colors.grey
+                            : (eventController.isJoined.value
+                                ? Colors.red
+                                : AppColors.primary),
                       ),
                       child: IconButton(
                         icon: Icon(
@@ -145,7 +135,9 @@ class EventDetailsScreen extends StatelessWidget {
                               : Icons.add,
                           color: Colors.white,
                         ),
-                        onPressed: eventController.toggleJoin,
+                        onPressed: noSpotsAvailable
+                            ? null
+                            : eventController.toggleJoin,
                       ),
                     ),
                     const SizedBox(width: 12),

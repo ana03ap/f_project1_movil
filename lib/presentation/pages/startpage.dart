@@ -14,7 +14,7 @@ class Startpage extends StatelessWidget {
   final HomeController homeController = Get.find<HomeController>();
 
   final List<Map<String, dynamic>> categories = [
-    {"label": "All", "type": "", "icon": Icons.dashboard_customize},//All
+    {"label": "All", "type": "", "icon": Icons.dashboard_customize},
     {"label": "Sexual Health", "type": "sexHealth", "icon": Icons.health_and_safety_outlined},
     {"label": "Identity", "type": "Identity", "icon": Icons.transgender_outlined},
     {"label": "Cybertouch", "type": "Cybertouch", "icon": Icons.phone_iphone},
@@ -35,8 +35,21 @@ class Startpage extends StatelessWidget {
       "availableSpots": event.availableSpots,
       "date": event.date,
     });
-
     Get.toNamed('/details_screen');
+  }
+
+  String _getTitleText() {
+    if (eventController.selectedFilter.value.isEmpty) {
+      return "All Events";
+    }
+    
+    // Busca la categoría seleccionada para obtener el label correcto
+    final category = categories.firstWhere(
+      (cat) => cat['type'] == eventController.selectedFilter.value,
+      orElse: () => {"label": eventController.selectedFilter.value},
+    );
+    
+    return "${category['label']} Events";
   }
 
   @override
@@ -79,9 +92,7 @@ class Startpage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   var category = categories[index];
                   return GestureDetector(
-                    onTap: () {
-                      eventController.filterEvents(category['type']);
-                    },
+                    onTap: () => eventController.filterEvents(category['type']),
                     child: ContainerIconWithText(
                       icon: category['icon'],
                       label: category['label'],
@@ -90,14 +101,14 @@ class Startpage extends StatelessWidget {
                 },
               ),
             ),
-            const Align(
+            Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: EdgeInsets.only(left: 10, top: 10),
-                child: Text(
-                  "Events",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
+                padding: const EdgeInsets.only(left: 10, top: 10),
+                child: Obx(() => Text(
+                  _getTitleText(),
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                )),
               ),
             ),
             const SizedBox(height: 10),

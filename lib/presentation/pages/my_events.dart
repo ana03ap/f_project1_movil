@@ -7,17 +7,15 @@ import '../widgets/top_nav_bar.dart';
 import '../widgets/bottom_nav_bar.dart';
 import '../widgets/event_card.dart';
 import '../widgets/pastevent_card.dart';
+import '../../core/constants/app_assets.dart';
 
 class MyEvents extends StatelessWidget {
   final TopNavController topNavController = Get.put(TopNavController());
-  final EventController eventController =
-      Get.find<EventController>(); // Obtener el controlador globalmente
+  final EventController eventController = Get.find<EventController>();
   MyEvents({Key? key}) : super(key: key);
 
   void navigateToEventDetails(String title, String location, String details,
       int participants, int availableSpots, String date) {
-
-    // Cambiar a usar el controlador en lugar de pasar arguments
     eventController.selectedEvent.value = {
       "title": title,
       "location": location,
@@ -38,7 +36,7 @@ class MyEvents extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('TuBoleta'),
+        title: const Text('PuntoG'),
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
@@ -51,47 +49,76 @@ class MyEvents extends StatelessWidget {
             child: Obx(() {
               return topNavController.currentIndex.value == 0
                   ? ListView(
+                      // DATOS ESTATICOS DE MUESTRA, DON TOUCH IT
                       children: [
                         EventCard(
-                          title: "Voices of the Future",
-                          locationName: "Movistar Arena",
-                          locationPlace: "Bogotá, Colombia",
-                          imageColor: Colors.amber,
+                          title: "Reproductive Justice",
+                          locationName: "Hall B1",
+                          locationPlace: "Convention Center",
+                          path: AppAssets.sexRights,
                           onTap: () => navigateToEventDetails(
-                            "Voices of the Future",
-                            "Movistar Arena / Bogotá, Colombia",
-                            "The Voices of the Future event is a transformative gathering dedicated to inspiring, educating, and equipping young leaders, visionaries, and innovators who are shaping the future of our world. This unique experience provides a platform for meaningful dialogue, collaboration, and action, bringing together bright minds from diverse backgrounds to address the most pressing challenges of our time",
-                            20,
-                            10,
-                            "04 ABRIL 2025\nViernes, 10:00 AM",
+                            "Reproductive Justice: Rights and Realities",
+                            "Hall B1 / Convention Center",
+                            "Exploring how reproductive justice intersects with social, economic, and racial equity...",
+                            60,
+                            22,
+                            "19 APRIL 2025\nSaturday, 10:00 AM",
                           ),
                         ),
                         EventCard(
-                          title: "Voices of the Future",
-                          locationName: "Movistar Arena",
-                          locationPlace: "Bogotá, Colombia",
-                          imageColor: Colors.amber,
+                          title: "Understanding Contraceptive Options",
+                          locationName: "Room 2A",
+                          locationPlace: "Health Pavilion",
+                          path: 'lib/assets/sexualrights.png',
                           onTap: () => navigateToEventDetails(
-                            "Voices of the Future",
-                            "Movistar Arena / Bogotá, Colombia",
-                            "The Voices of the Future event is a transformative gathering dedicated to inspiring, educating, and equipping young leaders, visionaries, and innovators who are shaping the future of our world. This unique experience provides a platform for meaningful dialogue, collaboration, and action, bringing together bright minds from diverse backgrounds to address the most pressing challenges of our time",
-                            20,
-                            10,
-                            "04 ABRIL 2025\nViernes, 10:00 AM",
+                            "Understanding Contraceptive Options",
+                            "Room 2A / Health Pavilion",
+                            "Exploring modern contraceptive methods, how they work, and who benefits the most...",
+                            50,
+                            17,
+                            "19 APRIL 2025\nSaturday, 12:00 PM",
                           ),
                         ),
                         EventCard(
-                          title: "Voices of the Future",
-                          locationName: "Movistar Arena",
-                          locationPlace: "Bogotá, Colombia",
-                          imageColor: Colors.amber,
+                          title: "Emergency Contraception",
+                          locationName: "Advocacy Center",
+                          locationPlace: "Downtown Campus",
+                          path: 'AppAssets.sexRights',
                           onTap: () => navigateToEventDetails(
-                            "Voices of the Future",
-                            "Movistar Arena / Bogotá, Colombia",
-                            "The Voices of the Future event is a transformative gathering dedicated to inspiring, educating, and equipping young leaders, visionaries, and innovators who are shaping the future of our world. This unique experience provides a platform for meaningful dialogue, collaboration, and action, bringing together bright minds from diverse backgrounds to address the most pressing challenges of our time",
-                            20,
-                            10,
-                            "04 ABRIL 2025\nViernes, 10:00 AM",
+                            "Emergency Contraception: Myths and Facts",
+                            "Advocacy Center / Downtown Campus",
+                            "Debunking misconceptions about emergency contraception and discussing accessibility...",
+                            45,
+                            19,
+                            "19 APRIL 2025\nSaturday, 2:00 PM",
+                          ),
+                        ),
+                        EventCard(
+                          title: "Menstrual Health Matters",
+                          locationName: "Room C3",
+                          locationPlace: "Equity Hub",
+                          path: 'AppAssets.sexRights',
+                          onTap: () => navigateToEventDetails(
+                            "Menstrual Equity and Public Policy",
+                            "Room C3 / Equity Hub",
+                            "Analyzing how menstrual poverty affects global communities and what public policies exist...",
+                            40,
+                            12,
+                            "20 APRIL 2025\nSunday, 9:00 AM",
+                          ),
+                        ),
+                        EventCard(
+                          title: "Access to Safe Abortions",
+                          locationName: "Main Auditorium",
+                          locationPlace: "Convention Center",
+                          path: 'AppAssets.sexRights',
+                          onTap: () => navigateToEventDetails(
+                            "Access to Safe Abortions: Legal and Medical Perspectives",
+                            "Main Auditorium / Convention Center",
+                            "Exploring access to safe abortions from legal and medical perspectives...",
+                            100,
+                            38,
+                            "20 APRIL 2025\nSunday, 11:00 AM",
                           ),
                         ),
                       ],
@@ -99,19 +126,27 @@ class MyEvents extends StatelessWidget {
                   : ListView(
                       children: [
                         PastEventCard(
-                          title: "Voices of the Future",
+                          title: "Reproductive Justice",
+                          path: 'AppAssets.sexRights',
+                          score: "4.5",
                           onTap: () => navigateToFeedback(),
                         ),
                         PastEventCard(
-                          title: "Voices of the Future",
+                          title: "Understanding Contraceptive Options Today",
+                          path: 'AppAssets.sexRights',
+                          score: "3.0",
                           onTap: () => navigateToFeedback(),
                         ),
                         PastEventCard(
-                          title: "Voices of the Future",
+                          title: "Access to Safe Abortions",
+                          path: 'AppAssets.sexRights',
+                          score: "4.5",
                           onTap: () => navigateToFeedback(),
                         ),
                         PastEventCard(
-                          title: "Voices of the Future",
+                          title: "Menstrual Equity and Public Policy",
+                          path: 'AppAssets.sexRights',
+                          score: "4.0",
                           onTap: () => navigateToFeedback(),
                         ),
                       ],

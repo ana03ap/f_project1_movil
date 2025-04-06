@@ -6,10 +6,10 @@ class EventController extends GetxController {
   var availableSpots = 0.obs;
   var selectedEvent = Rxn<
       Map<String,
-          dynamic>>(); // Permitir que sea null inicialmente y acepta un Map
+          dynamic>>(); 
 
   void initialize(int spots) {
-    print("🟢 Inicializando con spots: $spots"); // Debug Mejorado
+    print("Inicializando con spots: $spots");
     availableSpots.value = spots;
     isJoined.value = false;
   }

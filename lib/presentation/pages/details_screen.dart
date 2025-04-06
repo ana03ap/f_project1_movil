@@ -9,14 +9,14 @@ import '../controllers/bottom_nav_controller.dart';
 
 class EventDetailsScreen extends StatelessWidget {
   final BottomNavController bottomNavController = Get.find();
-  final EventController eventController = Get.find<EventController>(); // Accede al controlador existente
+  final EventController eventController = Get.find<EventController>(); 
   EventDetailsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('TuBoleta'),
+        title: const Text('PuntoG'),
         centerTitle: true,
         backgroundColor: AppColors.background,
         foregroundColor: AppColors.textPrimary,
@@ -26,7 +26,7 @@ class EventDetailsScreen extends StatelessWidget {
         final eventDetails = eventController.selectedEvent.value;
         
         if (eventDetails == null) {
-          return const Center(child: CircularProgressIndicator()); // 🔥 Esperar que se carguen los datos
+          return const Center(child: CircularProgressIndicator()); 
         }
 
         return SingleChildScrollView(

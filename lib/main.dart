@@ -22,8 +22,9 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.leagueSpartanTextTheme(),
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.splash, // inicia en home
-      getPages: AppRoutes.routes, // se trae las rutas de core/constants
+       initialRoute: AppRoutes.splash,  // inicia en splash
+      getPages: AppRoutes.routes,   // se trae las rutas de core/constants
+      
     );
   }
 }

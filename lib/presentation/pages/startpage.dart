@@ -13,19 +13,19 @@ class Startpage extends StatelessWidget {
 
   void navigateToEventDetails(String title, String location, String details,
       int participants, int availableSpots, String date) {
-
-    // Cambiar a usar el controlador en lugar de pasar arguments
-    eventController.selectedEvent.value = {
+    // 🔥 Ahora llamamos a selectEvent() en lugar de asignar selectedEvent directamente.
+    eventController.selectEvent({
       "title": title,
       "location": location,
       "participants": participants,
       "details": details,
       "availableSpots": availableSpots,
       "date": date,
-    };
+    });
 
     Get.toNamed('/details_screen');
   }
+
   @override
   Widget build(BuildContext context) {
     final String name = Get.arguments ?? 'Guest';
@@ -39,8 +39,7 @@ class Startpage extends StatelessWidget {
               child: Column(
                 children: [
                   const Text("NombreApp",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
                   Text("Hi, $name!",
                       style: const TextStyle(fontWeight: FontWeight.bold)),
                 ],
@@ -51,8 +50,7 @@ class Startpage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Find your news adventures",
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
                 Icon(Icons.search),
               ],
             ),
@@ -62,15 +60,11 @@ class Startpage extends StatelessWidget {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: const [
-                  ContainerIconWithText(
-                      icon: Icons.heart_broken_sharp, label: "Romance"),
-                  ContainerIconWithText(
-                      icon: Icons.policy_outlined, label: "Politics"),
+                  ContainerIconWithText(icon: Icons.heart_broken_sharp, label: "Romance"),
+                  ContainerIconWithText(icon: Icons.policy_outlined, label: "Politics"),
                   ContainerIconWithText(icon: Icons.brush, label: "Art"),
-                  ContainerIconWithText(
-                      icon: Icons.sports_soccer_sharp, label: "Sport"),
-                  ContainerIconWithText(
-                      icon: Icons.monetization_on_outlined, label: "Finances"),
+                  ContainerIconWithText(icon: Icons.sports_soccer_sharp, label: "Sport"),
+                  ContainerIconWithText(icon: Icons.monetization_on_outlined, label: "Finances"),
                   ContainerIconWithText(icon: Icons.science, label: "Science"),
                   ContainerIconWithText(icon: Icons.history, label: "History"),
                 ],
@@ -85,14 +79,15 @@ class Startpage extends StatelessWidget {
               ),
             ),
             const Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: EdgeInsets.only(left: 4, top: 10),
-                  child: Text(
-                    "Events",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                )),
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: EdgeInsets.only(left: 4, top: 10),
+                child: Text(
+                  "Events",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
             const SizedBox(height: 10),
             Expanded(
               child: ListView(
@@ -108,7 +103,7 @@ class Startpage extends StatelessWidget {
                       "The Voices of the Future event is a transformative gathering dedicated to inspiring, educating, and equipping young leaders, visionaries, and innovators who are shaping the future of our world. This unique experience provides a platform for meaningful dialogue, collaboration, and action, bringing together bright minds from diverse backgrounds to address the most pressing challenges of our time",
                       20,
                       10,
-                      "04 ABRIL 2025\nViernes, 10:00 AM",
+                      "04 APRIL 2025\nFriday, 10:00 AM",
                     ),
                   ),
                   EventCard(
@@ -119,10 +114,10 @@ class Startpage extends StatelessWidget {
                     onTap: () => navigateToEventDetails(
                       "Tech Beats 2025",
                       "El Campín / Bogotá, Colombia",
-                      "Una conferencia tecnológica con las últimas innovaciones en IA, ciberseguridad y desarrollo web.",
+                      "A tech conference showcasing the latest innovations in AI, cybersecurity, and web development.",
                       50,
                       25,
-                      "10 MAYO 2025\nSábado, 09:00 AM",
+                      "10 MAY 2025\nSaturday, 09:00 AM",
                     ),
                   ),
                   EventCard(
@@ -133,10 +128,10 @@ class Startpage extends StatelessWidget {
                     onTap: () => navigateToEventDetails(
                       "AI in Art",
                       "Museo de Arte Moderno / Medellín, Colombia",
-                      "Explorando la intersección de la inteligencia artificial y las artes visuales. Exhibiciones de arte generativo y más.",
+                      "Exploring the intersection of artificial intelligence and visual arts. Exhibitions of generative art and more.",
                       30,
                       15,
-                      "15 JUNIO 2025\nDomingo, 11:00 AM",
+                      "15 JUNE 2025\nSunday, 11:00 AM",
                     ),
                   ),
                 ],

@@ -22,18 +22,16 @@ class EventDetailsScreen extends StatelessWidget {
         foregroundColor: AppColors.textPrimary,
         elevation: 0,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Obx(() {  // 🔄 Cambiado: Usar Obx para observar el evento seleccionado
-          final eventDetails = eventController.selectedEvent.value;  // 🔄 Cambiado
+      body: Obx(() {
+        final eventDetails = eventController.selectedEvent.value;
+        
+        if (eventDetails == null) {
+          return const Center(child: CircularProgressIndicator()); // 🔥 Esperar que se carguen los datos
+        }
 
-          if (eventDetails == null) {  // 🔄 Cambiado
-            return Center(child: CircularProgressIndicator()); // Mientras carga
-          }
-
-          eventController.initialize(eventDetails["availableSpots"]); // 🔄 Cambiado: Inicializar spots disponibles con el evento actual
-
-          return Column(
+        return SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
@@ -66,7 +64,7 @@ class EventDetailsScreen extends StatelessWidget {
                       width: double.infinity,
                       alignment: Alignment.center,
                       child: Text(
-                        eventDetails["date"],  // 🔄 Cambiado
+                        eventDetails["date"],
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           color: Colors.white,
@@ -79,13 +77,13 @@ class EventDetailsScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              Text(eventDetails["title"], style: AppStyles.title),  // 🔄 Cambiado
+              Text(eventDetails["title"], style: AppStyles.title),
               const SizedBox(height: 8),
               Row(
                 children: [
                   const Icon(Icons.location_on, color: AppColors.primary),
                   const SizedBox(width: 5),
-                  Text(eventDetails["location"], style: AppStyles.normal),  // 🔄 Cambiado
+                  Text(eventDetails["location"], style: AppStyles.normal),
                 ],
               ),
               const SizedBox(height: 8),
@@ -94,14 +92,14 @@ class EventDetailsScreen extends StatelessWidget {
                   const Icon(Icons.people, color: AppColors.primary),
                   const SizedBox(width: 5),
                   Text(
-                      'Maximum number of participants: ${eventDetails["participants"]}',  // 🔄 Cambiado
+                      'Maximum number of participants: ${eventDetails["participants"]}',
                       style: AppStyles.normal),
                 ],
               ),
               const SizedBox(height: 16),
               const Text('Details', style: AppStyles.subtitle),
               const SizedBox(height: 8),
-              Text(eventDetails["details"], style: AppStyles.normal),  // 🔄 Cambiado
+              Text(eventDetails["details"], style: AppStyles.normal),
               const SizedBox(height: 16),
               Obx(() => Container(
                     padding: const EdgeInsets.all(12),
@@ -116,7 +114,6 @@ class EventDetailsScreen extends StatelessWidget {
                   )),
               const SizedBox(height: 16),
 
-              //Si no hay spots disponibles, muestra un snackbar y no renderiza el botón
               Obx(() {
                 if (eventController.availableSpots.value == 0) {
                   Future.delayed(Duration.zero, () {
@@ -129,8 +126,7 @@ class EventDetailsScreen extends StatelessWidget {
                     );
                   });
 
-                  return const SizedBox
-                      .shrink(); // Retorna un widget vacío (no muestra el botón)
+                  return const SizedBox.shrink();
                 }
 
                 return Row(
@@ -161,9 +157,9 @@ class EventDetailsScreen extends StatelessWidget {
                 );
               }),
             ],
-          );
-        }),
-      ),
+          ),
+        );
+      }),
       bottomNavigationBar: BottomNavBar(),
     );
   }

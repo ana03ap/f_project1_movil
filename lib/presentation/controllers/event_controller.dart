@@ -5,12 +5,16 @@ import 'package:flutter/material.dart';
 class EventController extends GetxController {
   var isJoined = false.obs;
   var availableSpots = 0.obs;
-  var selectedEvent = Rxn<
-      Map<String,
-          dynamic>>(); 
+  var selectedEvent = Rxn<Map<String, dynamic>>();
 
-   var selectedFilter = ''.obs; // 🔥 Tipo seleccionado actualmente (filtro)
-  var filteredEvents = <Event>[].obs; // 🔥 Lista filtrada de eventos
+  var selectedFilter = ''.obs; 
+  var filteredEvents = <Event>[].obs; 
+
+  @override
+  void onInit() {
+    super.onInit();
+    resetFilter(); 
+  }
 
   void initialize(int spots) {
     availableSpots.value = spots;
@@ -38,25 +42,28 @@ class EventController extends GetxController {
   }
 
   void selectEvent(Map<String, dynamic> event) {
-   
-    selectedEvent.value = event; 
+    selectedEvent.value = event;
 
     if (event.containsKey('availableSpots')) {
       int spots = event['availableSpots'];
-      initialize(spots); 
+      initialize(spots);
     } else {
       availableSpots.value = 0;
     }
   }
 
-
-    void filterEvents(String type) {
+  void filterEvents(String type) {
     selectedFilter.value = type;
 
     if (type.isEmpty) {
-      filteredEvents.value = eventsList; // Mostrar todos si no hay filtro
+      filteredEvents.value = eventsList; 
     } else {
       filteredEvents.value = eventsList.where((event) => event.type == type).toList();
     }
+  }
+
+  void resetFilter() {
+    selectedFilter.value = ''; 
+    filteredEvents.value = eventsList; 
   }
 }

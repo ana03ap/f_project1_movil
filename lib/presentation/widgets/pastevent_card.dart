@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 
 class PastEventCard extends StatelessWidget {
   final String title;
+  final String score;
   final VoidCallback onTap;
 
   const PastEventCard({
     Key? key,
     required this.title,
+    required this.score,
     required this.onTap,
   }) : super(key: key);
 
@@ -14,7 +16,7 @@ class PastEventCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child:  Container(
+      child: Container(
         margin: const EdgeInsets.all(20),
         width: 370,
         height: 130,
@@ -39,9 +41,34 @@ class PastEventCard extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(title,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16)),
+                      Row(
+                        children: [
+                          Text(title,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16)),
+                          Container(
+                            margin: const EdgeInsets.only(
+                              left: 8,
+                            ),
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                  size: 16,
+                                ),
+                                const SizedBox(
+                                  width: 4,
+                                ),
+                                Text(
+                                  score,
+                                  style: const TextStyle(fontSize: 14),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                       const Padding(
                         padding: EdgeInsets.only(left: 6),
                         child: Column(

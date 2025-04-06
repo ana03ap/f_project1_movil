@@ -16,7 +16,6 @@ class MyEvents extends StatelessWidget {
 
   void navigateToEventDetails(String title, String location, String details,
       int participants, int availableSpots, String date) {
-
     // Cambiar a usar el controlador en lugar de pasar arguments
     eventController.selectedEvent.value = {
       "title": title,
@@ -38,7 +37,7 @@ class MyEvents extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('TuBoleta'),
+        title: const Text('PuntoG'),
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
@@ -100,18 +99,22 @@ class MyEvents extends StatelessWidget {
                       children: [
                         PastEventCard(
                           title: "Voices of the Future",
+                          score: "4.5",
                           onTap: () => navigateToFeedback(),
                         ),
                         PastEventCard(
                           title: "Voices of the Future",
+                          score: "3.0",
                           onTap: () => navigateToFeedback(),
                         ),
                         PastEventCard(
                           title: "Voices of the Future",
+                          score: "4.5",
                           onTap: () => navigateToFeedback(),
                         ),
                         PastEventCard(
                           title: "Voices of the Future",
+                          score: "4.0",
                           onTap: () => navigateToFeedback(),
                         ),
                       ],

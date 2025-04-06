@@ -51,13 +51,11 @@ class HomeScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: navigateToStartPage,
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(
-                    255, 167, 91, 248), 
+                backgroundColor: const Color.fromARGB(255, 167, 91, 248),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                elevation: 4, 
-                shadowColor:
-                    Colors.black, 
+                elevation: 4,
+                shadowColor: Colors.black,
               ),
               child: const Text(
                 'Start',

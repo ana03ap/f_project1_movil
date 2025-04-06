@@ -8,12 +8,12 @@ import '../widgets/bottom_nav_bar.dart';
 
 class Startpage extends StatelessWidget {
   final BottomNavController bottomNavController = Get.find();
-  final EventController eventController = Get.find<EventController>(); // Obtener el controlador globalmente
+  final EventController eventController =
+      Get.find<EventController>(); // Obtener el controlador globalmente
   Startpage({Key? key}) : super(key: key);
 
   void navigateToEventDetails(String title, String location, String details,
       int participants, int availableSpots, String date) {
-
     // Cambiar a usar el controlador en lugar de pasar arguments
     eventController.selectedEvent.value = {
       "title": title,
@@ -26,6 +26,7 @@ class Startpage extends StatelessWidget {
 
     Get.toNamed('/details_screen');
   }
+
   @override
   Widget build(BuildContext context) {
     final String name = Get.arguments ?? 'Guest';
@@ -38,7 +39,7 @@ class Startpage extends StatelessWidget {
             Center(
               child: Column(
                 children: [
-                  const Text("NombreApp",
+                  const Text("PuntoG",
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
                   Text("Hi, $name!",

@@ -1,3 +1,4 @@
+import 'package:f_project_1/presentation/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/constants/app_colors.dart';
@@ -5,15 +6,15 @@ import '../../core/constants/app_styles.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
-
+  final HomeController homeController = Get.find<HomeController>();
   final TextEditingController nameController = TextEditingController();
-  final RxString name = ''.obs;
+  
 
   void navigateToStartPage() {
     if (nameController.text.isNotEmpty) {
-      name.value = nameController.text;
+       homeController.setName(nameController.text);
 
-      Get.toNamed('/startpage', arguments: name.value);
+      Get.toNamed('/startpage');
     } else {
       Get.snackbar(
         'Error',
@@ -45,7 +46,7 @@ class HomeScreen extends StatelessWidget {
                 border: OutlineInputBorder(),
                 labelText: 'Input Name',
               ),
-              onChanged: (value) => name.value = value,
+              onChanged: (value) => homeController.setName(value),
             ),
             const SizedBox(height: 20),
             ElevatedButton(

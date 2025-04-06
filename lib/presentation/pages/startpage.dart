@@ -1,5 +1,6 @@
 import 'package:f_project_1/presentation/controllers/bottom_nav_controller.dart';
 import 'package:f_project_1/presentation/controllers/event_controller.dart';
+import 'package:f_project_1/presentation/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../widgets/container_icon_with_text.dart';
@@ -9,8 +10,7 @@ import '../widgets/bottom_nav_bar.dart';
 class Startpage extends StatelessWidget {
   final BottomNavController bottomNavController = Get.find();
   final EventController eventController = Get.find<EventController>();
-  final TextEditingController nameController = TextEditingController();
-  final RxString name = ''.obs;
+  final HomeController homeController = Get.find<HomeController>();
   Startpage({Key? key}) : super(key: key);
 
   void navigateToEventDetails(String title, String location, String details,
@@ -29,7 +29,7 @@ class Startpage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String name = Get.arguments ?? 'Guest';
+    
 
     return Scaffold(
       body: Padding(
@@ -42,8 +42,8 @@ class Startpage extends StatelessWidget {
                   const Text("PuntoG",
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
-                  Text("Hi, $name!",
-                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                  Obx(() => Text("Hi, ${homeController.name.value}!", // 🔥 Aquí se muestra el nombre siempre
+                      style: const TextStyle(fontWeight: FontWeight.bold))),
                 ],
               ),
             ),

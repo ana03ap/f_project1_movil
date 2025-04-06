@@ -9,7 +9,7 @@ import '../controllers/bottom_nav_controller.dart';
 
 class EventDetailsScreen extends StatelessWidget {
   final BottomNavController bottomNavController = Get.find();
-  final EventController eventController = Get.find<EventController>(); // Accede al controlador existente
+  final EventController eventController = Get.find<EventController>(); 
   EventDetailsScreen({Key? key}) : super(key: key);
 
   @override
@@ -26,7 +26,7 @@ class EventDetailsScreen extends StatelessWidget {
         final eventDetails = eventController.selectedEvent.value;
         
         if (eventDetails == null) {
-          return const Center(child: CircularProgressIndicator()); // 🔥 Esperar que se carguen los datos
+          return const Center(child: CircularProgressIndicator()); 
         }
 
         return SingleChildScrollView(

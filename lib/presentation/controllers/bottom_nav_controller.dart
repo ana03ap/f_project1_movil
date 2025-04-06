@@ -5,13 +5,15 @@ class BottomNavController extends GetxController {
 
   void onTap(int index) {
     currentIndex.value = index;
+
+    final String name = Get.arguments ?? 'Guest';
+
     if (index == 0) {
-      Get.toNamed('/startpage');
+      Get.toNamed('/startpage', arguments: name);
     } else if (index == 1) {
       Get.toNamed('/my_events');
     } else if (index == 2) {
-      Get.toNamed('/profile');
-      
+      Get.toNamed('/profile', arguments: name);
     }
   }
 }

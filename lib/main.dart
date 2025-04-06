@@ -6,8 +6,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
-  Get.put(BottomNavController()); // registra el controlador globalmente
-  Get.put(EventController()); // Registro global del controlador
+  Get.put(BottomNavController()); 
+  Get.put(EventController()); 
   runApp(const MyApp());
 }
 
@@ -22,8 +22,8 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.leagueSpartanTextTheme(),
       ),
       debugShowCheckedModeBanner: false,
-       initialRoute: AppRoutes.splash,  // inicia en splash
-      getPages: AppRoutes.routes,   // se trae las rutas de core/constants
+       initialRoute: AppRoutes.splash,  
+      getPages: AppRoutes.routes, 
       
     );
   }

@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class PastEventCard extends StatelessWidget {
   final String title;
   final String score;
+  final String path;
   final VoidCallback onTap;
 
   const PastEventCard({
     Key? key,
     required this.title,
+    required this.path,
     required this.score,
     required this.onTap,
   }) : super(key: key);
@@ -31,89 +33,101 @@ class PastEventCard extends StatelessWidget {
             ),
           ],
         ),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 10, right: 10, top: 7),
-              child: Row(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 20, top: 15, right: 20),
+          child: Column(
+            children: [
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(title,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16)),
-                          Container(
-                            margin: const EdgeInsets.only(
-                              left: 8,
-                            ),
-                            child: Row(
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 4),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  title,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Row(
                               children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 6, top: 3),
+                                  child: Text(
+                                    "Event ended",
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 60, 31, 110),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 7),
                                 const Icon(
                                   Icons.star,
                                   color: Colors.amber,
                                   size: 16,
                                 ),
-                                const SizedBox(
-                                  width: 4,
-                                ),
-                                Text(
-                                  score,
-                                  style: const TextStyle(fontSize: 14),
+                                const SizedBox(width: 4),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 4),
+                                  child: Text(
+                                    score,
+                                    style: const TextStyle(fontSize: 14),
+                                  ),
                                 ),
                               ],
                             ),
-                          ),
-                        ],
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 6),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Event ended",
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 60, 31, 110),
-                              ),
-                            ),
                           ],
-                        ),
-                      ),
-                    ],
+                        )
+                      ],
+                    ),
                   ),
+                  const SizedBox(width: 10),
                   Container(
-                    // aquí va imagen de cada evento
                     width: 120,
-                    height: 75,
-                    margin: const EdgeInsets.only(top: 10, right: 10),
+                    height: 70,
                     decoration: BoxDecoration(
-                      color: Colors.black,
                       borderRadius: BorderRadius.circular(12),
+                      image: DecorationImage(
+                        image: AssetImage(path),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ],
               ),
-            ),
-            const Spacer(),
-            const Padding(
-              padding: EdgeInsets.only(left: 10, bottom: 5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Icon(Icons.add_comment, color: Colors.purple),
-                  SizedBox(width: 5),
-                  Text(
-                    "Give a feedback!",
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                ],
+              const Padding(
+                padding: EdgeInsets.only(left: 4),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Icon(Icons.add_comment, color: Colors.purple),
+                    SizedBox(width: 5),
+                    Text(
+                      "Give a feedback!",
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

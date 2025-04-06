@@ -9,16 +9,18 @@ class MyProfile extends StatelessWidget {
     Get.toNamed('/home');
   }
 
+  final String name = Get.arguments ?? 'Guest';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white, // o el color que prefieras
+        backgroundColor: Colors.white,
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
               width: MediaQuery.of(context).size.width,
-              height: 300,
+              height: 600,
               decoration: const BoxDecoration(
                 color: Colors.purple,
                 borderRadius: BorderRadius.only(
@@ -54,9 +56,9 @@ class MyProfile extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  const Text(
-                    "Nombre",
-                    style: TextStyle(
+                  Text(
+                    name,
+                    style: const TextStyle(
                       fontSize: 24,
                       color: Colors.white,
                     ),
@@ -67,7 +69,10 @@ class MyProfile extends StatelessWidget {
             const SizedBox(height: 20),
             ListTile(
               leading: const Icon(Icons.logout),
-              title: const Text('Change name'),
+              title: const Text(
+                'Change name',
+                style: TextStyle(fontSize: 20),
+              ),
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () => navigateTohomeScreen(),
             ),

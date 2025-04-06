@@ -40,9 +40,10 @@ class FeedbackScreen extends StatelessWidget {
                 hintText: 'Write a feedback...',
                 border: InputBorder.none,
                 filled: true,
-                fillColor: const Color.fromRGBO(240, 240, 240, 1),
+                fillColor: const Color.fromARGB(255, 247, 247, 247),
                 contentPadding: const EdgeInsets.all(16),
-                hintStyle: TextStyle(color: Colors.grey[600]),
+                hintStyle:
+                  const TextStyle(color: const Color.fromARGB(255, 149, 149, 149)),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: const BorderSide(
@@ -50,7 +51,9 @@ class FeedbackScreen extends StatelessWidget {
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: Colors.grey[300]!, width: 1),
+                  borderSide: const BorderSide(
+                      color:  Color.fromARGB(255, 250, 250, 250),
+                      width: 1),
                 ),
               ),
             ),

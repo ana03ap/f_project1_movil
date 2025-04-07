@@ -9,14 +9,24 @@ import '../widgets/event_card.dart';
 import '../widgets/pastevent_card.dart';
 import '../../core/constants/app_assets.dart';
 
-//ESTO POR AHORA ESTÁ ESTATICO, NO SE MA IMPLEMENTADO QUE CUANDO LE DE JOIN SE GUARDE PORQUE NO HAY BACKEND
+//ESTO POR AHORA ESTÁ ESTATICO, NO SE HA IMPLEMENTADO QUE AL DAR JOIN SE GUARDE PORQUE NO HAY BACKEND
 class MyEvents extends StatelessWidget {
   final TopNavController topNavController = Get.put(TopNavController());
   final EventController eventController = Get.find<EventController>();
+
   MyEvents({Key? key}) : super(key: key);
 
-  void navigateToEventDetails(String title, String location, String details,
-      int participants, int availableSpots, String date) {
+  void navigateToEventDetails(
+      String title,
+      String location,
+      String details,
+      int participants,
+      int availableSpots,
+      String date,
+      String path) {
+    // Imprime el path para depuración
+    print("Navegando a detalles con path: $path");
+
     eventController.selectedEvent.value = {
       "title": title,
       "location": location,
@@ -24,6 +34,7 @@ class MyEvents extends StatelessWidget {
       "details": details,
       "availableSpots": availableSpots,
       "date": date,
+      "path": path,
     };
 
     Get.toNamed('/details_screen');
@@ -50,7 +61,7 @@ class MyEvents extends StatelessWidget {
             child: Obx(() {
               return topNavController.currentIndex.value == 0
                   ? ListView(
-                      // DATOS ESTATICOS DE MUESTRA, DON TOUCH IT
+                      // Datos estáticos de muestra
                       children: [
                         EventCard(
                           title: "Reproductive Justice",
@@ -64,6 +75,7 @@ class MyEvents extends StatelessWidget {
                             60,
                             22,
                             "19 APRIL 2025\nSaturday, 10:00 AM",
+                            AppAssets.sexRights,
                           ),
                         ),
                         EventCard(
@@ -78,6 +90,7 @@ class MyEvents extends StatelessWidget {
                             50,
                             17,
                             "19 APRIL 2025\nSaturday, 12:00 PM",
+                            AppAssets.sexRights,
                           ),
                         ),
                         EventCard(
@@ -92,6 +105,7 @@ class MyEvents extends StatelessWidget {
                             45,
                             19,
                             "19 APRIL 2025\nSaturday, 2:00 PM",
+                            AppAssets.sexRights,
                           ),
                         ),
                         EventCard(
@@ -106,6 +120,7 @@ class MyEvents extends StatelessWidget {
                             40,
                             12,
                             "20 APRIL 2025\nSunday, 9:00 AM",
+                            AppAssets.sexRights,
                           ),
                         ),
                         EventCard(
@@ -120,6 +135,7 @@ class MyEvents extends StatelessWidget {
                             100,
                             38,
                             "20 APRIL 2025\nSunday, 11:00 AM",
+                            AppAssets.sexRights,
                           ),
                         ),
                       ],
@@ -164,3 +180,4 @@ class MyEvents extends StatelessWidget {
     );
   }
 }
+

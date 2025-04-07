@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_styles.dart';
-import '../../core/constants/app_assets.dart';
 import '../widgets/bottom_nav_bar.dart';
 import '../controllers/bottom_nav_controller.dart';
 
@@ -28,6 +27,8 @@ class EventDetailsScreen extends StatelessWidget {
         if (eventDetails == null) {
           return const Center(child: CircularProgressIndicator());
         }
+
+        print(eventDetails['path']);
 
         return SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),

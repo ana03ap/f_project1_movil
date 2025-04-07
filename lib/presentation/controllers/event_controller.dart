@@ -14,6 +14,7 @@ class EventController extends GetxController {
   void onInit() {
     super.onInit();
     resetFilter(); 
+     print("Detalles del evento: $selectedEvent");
   }
 
   void initialize(int spots) {
@@ -30,15 +31,15 @@ class EventController extends GetxController {
       availableSpots.value += 1;
     }
 
-    if (availableSpots.value == 0 && !isJoined.value) {
-      Get.snackbar(
-        'No More Spots',
-        'No spots available for this event.',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
-    }
+    // if (availableSpots.value == 0 && !isJoined.value) {
+    //   Get.snackbar(
+    //     'No More Spots',
+    //     'No spots available for this event.',
+    //     snackPosition: SnackPosition.BOTTOM,
+    //     backgroundColor: Colors.red,
+    //     colorText: Colors.white,
+    //   );
+    // }
   }
 
   void selectEvent(Map<String, dynamic> event) {

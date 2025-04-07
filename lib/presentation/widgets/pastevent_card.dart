@@ -4,6 +4,7 @@ class PastEventCard extends StatelessWidget {
   final String title;
   final String score;
   final String path;
+  final String date;
   final VoidCallback onTap;
 
   const PastEventCard({
@@ -11,6 +12,7 @@ class PastEventCard extends StatelessWidget {
     required this.title,
     required this.path,
     required this.score,
+    required this.date,
     required this.onTap,
   }) : super(key: key);
 
@@ -68,7 +70,7 @@ class PastEventCard extends StatelessWidget {
                             Row(
                               children: [
                                 const Padding(
-                                  padding: EdgeInsets.only(left: 6, top: 3),
+                                  padding: EdgeInsets.only(left: 6, top: 1),
                                   child: Text(
                                     "Event ended",
                                     style: TextStyle(
@@ -98,17 +100,37 @@ class PastEventCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  Container(
-                    width: 120,
-                    height: 70,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      image: DecorationImage(
-                        image: AssetImage(path),
-                        fit: BoxFit.cover,
-                      ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Stack(
+                      children: [
+                        Image.asset(
+                          path,
+                          width: 120,
+                          height: 70,
+                          fit: BoxFit.cover,
+                        ),
+                        Container(
+                          width: 120,
+                          height: 70,
+                          color: Colors.black.withOpacity(0.4),
+                        ),
+                        Container(
+                          width: 120,
+                          height: 70,
+                          alignment: Alignment.center,
+                          child: Text(
+                            date,
+                            style: const TextStyle(
+                              fontSize: 10,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
+                  )
                 ],
               ),
               const Padding(

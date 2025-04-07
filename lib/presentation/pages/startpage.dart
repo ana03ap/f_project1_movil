@@ -1,4 +1,3 @@
-import 'package:f_project_1/data/events_data.dart';
 import 'package:f_project_1/presentation/controllers/bottom_nav_controller.dart';
 import 'package:f_project_1/presentation/controllers/event_controller.dart';
 import 'package:f_project_1/presentation/controllers/home_controller.dart';
@@ -7,6 +6,8 @@ import 'package:get/get.dart';
 import '../widgets/container_icon_with_text.dart';
 import '../widgets/event_card.dart';
 import '../widgets/bottom_nav_bar.dart';
+import 'package:f_project_1/data/events_data.dart';
+
 
 class Startpage extends StatelessWidget {
   final BottomNavController bottomNavController = Get.find();
@@ -33,6 +34,7 @@ class Startpage extends StatelessWidget {
       "participants": event.participants,
       "details": event.details,
       "availableSpots": event.availableSpots,
+      "path": event.path,
       "date": event.date,
     });
     Get.toNamed('/details_screen');
@@ -119,8 +121,9 @@ class Startpage extends StatelessWidget {
                   final event = eventController.filteredEvents[index];
                   return EventCard(
                     title: event.title,
+                    date: event.date,
                     location: event.location,
-                    path: "", 
+                    path: event.path,
                     onTap: () => navigateToEventDetails(event),
                   );
                 },

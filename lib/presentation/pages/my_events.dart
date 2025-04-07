@@ -56,6 +56,7 @@ class MyEvents extends StatelessWidget {
                           title: "Reproductive Justice",
                           location: "Hall B1",
                           path: AppAssets.sexRights,
+                          date: "April 20, 2025, 9:00 AM",
                           onTap: () => navigateToEventDetails(
                             "Reproductive Justice: Rights and Realities",
                             "Hall B1 / Convention Center",
@@ -68,7 +69,8 @@ class MyEvents extends StatelessWidget {
                         EventCard(
                           title: "Understanding Contraceptive Options",
                           location: "Room 2A",
-                          path: 'lib/assets/sexualrights.png',
+                          path: AppAssets.sexRights,
+                          date: "April 20, 2025, 9:00 AM",
                           onTap: () => navigateToEventDetails(
                             "Understanding Contraceptive Options",
                             "Room 2A / Health Pavilion",
@@ -81,7 +83,8 @@ class MyEvents extends StatelessWidget {
                         EventCard(
                           title: "Emergency Contraception",
                           location: "Advocacy Center",
-                          path: 'AppAssets.sexRights',
+                          path: AppAssets.sexRights,
+                          date: "April 20, 2025, 9:00 AM",
                           onTap: () => navigateToEventDetails(
                             "Emergency Contraception: Myths and Facts",
                             "Advocacy Center / Downtown Campus",
@@ -94,7 +97,8 @@ class MyEvents extends StatelessWidget {
                         EventCard(
                           title: "Menstrual Health Matters",
                           location: "Room C3",
-                          path: 'AppAssets.sexRights',
+                          path: AppAssets.sexRights,
+                          date: "April 20, 2025, 9:00 AM",
                           onTap: () => navigateToEventDetails(
                             "Menstrual Equity and Public Policy",
                             "Room C3 / Equity Hub",
@@ -107,7 +111,8 @@ class MyEvents extends StatelessWidget {
                         EventCard(
                           title: "Access to Safe Abortions",
                           location: "Main Auditorium",
-                          path: 'AppAssets.sexRights',
+                          path: AppAssets.sexRights,
+                          date: "April 20, 2025, 9:00 AM",
                           onTap: () => navigateToEventDetails(
                             "Access to Safe Abortions: Legal and Medical Perspectives",
                             "Main Auditorium / Convention Center",
@@ -123,25 +128,29 @@ class MyEvents extends StatelessWidget {
                       children: [
                         PastEventCard(
                           title: "Reproductive Justice",
-                          path: 'AppAssets.sexRights',
+                          path: AppAssets.sexRights,
+                          date: "April 20, 2025, 9:00 AM",
                           score: "4.5",
                           onTap: () => navigateToFeedback(),
                         ),
                         PastEventCard(
                           title: "Understanding Contraceptive Options Today",
-                          path: 'AppAssets.sexRights',
+                          path: AppAssets.sexRights,
+                          date: "April 20, 2025, 9:00 AM",
                           score: "3.0",
                           onTap: () => navigateToFeedback(),
                         ),
                         PastEventCard(
                           title: "Access to Safe Abortions",
-                          path: 'AppAssets.sexRights',
+                          path: AppAssets.sexRights,
+                          date: "April 20, 2025, 9:00 AM",
                           score: "4.5",
                           onTap: () => navigateToFeedback(),
                         ),
                         PastEventCard(
                           title: "Menstrual Equity and Public Policy",
-                          path: 'AppAssets.sexRights',
+                          path: AppAssets.sexRights,
+                          date: "April 20, 2025, 9:00 AM",
                           score: "4.0",
                           onTap: () => navigateToFeedback(),
                         ),

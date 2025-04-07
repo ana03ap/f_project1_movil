@@ -39,7 +39,7 @@ class EventDetailsScreen extends StatelessWidget {
                 child: Stack(
                   children: [
                     Image.asset(
-                      AppAssets.eventImage,
+                      eventDetails["path"],
                       fit: BoxFit.cover,
                       height: 180,
                       width: double.infinity,

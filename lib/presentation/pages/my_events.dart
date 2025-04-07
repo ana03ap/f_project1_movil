@@ -1,3 +1,4 @@
+import 'package:f_project_1/data/events_data.dart';
 import 'package:f_project_1/presentation/controllers/event_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,27 +17,8 @@ class MyEvents extends StatelessWidget {
 
   MyEvents({Key? key}) : super(key: key);
 
-  void navigateToEventDetails(
-      String title,
-      String location,
-      String details,
-      int participants,
-      int availableSpots,
-      String date,
-      String path) {
-    // Imprime el path para depuración
-    print("Navegando a detalles con path: $path");
-
-    eventController.selectedEvent.value = {
-      "title": title,
-      "location": location,
-      "participants": participants,
-      "details": details,
-      "availableSpots": availableSpots,
-      "date": date,
-      "path": path,
-    };
-
+  void navigateToEventDetails(Event event) {
+    eventController.selectEvent(event);
     Get.toNamed('/details_screen');
   }
 
@@ -60,86 +42,36 @@ class MyEvents extends StatelessWidget {
           Expanded(
             child: Obx(() {
               return topNavController.currentIndex.value == 0
-                  ? ListView(
-                      // Datos estáticos de muestra
-                      children: [
-                        EventCard(
-                          title: "Reproductive Justice",
-                          location: "Hall B1",
-                          path: AppAssets.sexRights,
-                          date: "April 20, 2025, 9:00 AM",
-                          onTap: () => navigateToEventDetails(
-                            "Reproductive Justice: Rights and Realities",
-                            "Hall B1 / Convention Center",
-                            "Exploring how reproductive justice intersects with social, economic, and racial equity...",
-                            60,
-                            22,
-                            "19 APRIL 2025\nSaturday, 10:00 AM",
-                            AppAssets.sexRights,
-                          ),
+                  ? Obx(() {
+            final joinedEvents = eventController.joinedEvents
+                .where((event) => event.isJoined.value)
+                .toList();
+                
+            return joinedEvents.isEmpty
+                ? const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(20.0),
+                      child: Text(
+                        "No te has unido a ningún evento",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey,
                         ),
-                        EventCard(
-                          title: "Understanding Contraceptive Options",
-                          location: "Room 2A",
-                          path: AppAssets.sexRights,
-                          date: "April 20, 2025, 9:00 AM",
-                          onTap: () => navigateToEventDetails(
-                            "Understanding Contraceptive Options",
-                            "Room 2A / Health Pavilion",
-                            "Exploring modern contraceptive methods, how they work, and who benefits the most...",
-                            50,
-                            17,
-                            "19 APRIL 2025\nSaturday, 12:00 PM",
-                            AppAssets.sexRights,
-                          ),
-                        ),
-                        EventCard(
-                          title: "Emergency Contraception",
-                          location: "Advocacy Center",
-                          path: AppAssets.sexRights,
-                          date: "April 20, 2025, 9:00 AM",
-                          onTap: () => navigateToEventDetails(
-                            "Emergency Contraception: Myths and Facts",
-                            "Advocacy Center / Downtown Campus",
-                            "Debunking misconceptions about emergency contraception and discussing accessibility...",
-                            45,
-                            19,
-                            "19 APRIL 2025\nSaturday, 2:00 PM",
-                            AppAssets.sexRights,
-                          ),
-                        ),
-                        EventCard(
-                          title: "Menstrual Health Matters",
-                          location: "Room C3",
-                          path: AppAssets.sexRights,
-                          date: "April 20, 2025, 9:00 AM",
-                          onTap: () => navigateToEventDetails(
-                            "Menstrual Equity and Public Policy",
-                            "Room C3 / Equity Hub",
-                            "Analyzing how menstrual poverty affects global communities and what public policies exist...",
-                            40,
-                            12,
-                            "20 APRIL 2025\nSunday, 9:00 AM",
-                            AppAssets.sexRights,
-                          ),
-                        ),
-                        EventCard(
-                          title: "Access to Safe Abortions",
-                          location: "Main Auditorium",
-                          path: AppAssets.sexRights,
-                          date: "April 20, 2025, 9:00 AM",
-                          onTap: () => navigateToEventDetails(
-                            "Access to Safe Abortions: Legal and Medical Perspectives",
-                            "Main Auditorium / Convention Center",
-                            "Exploring access to safe abortions from legal and medical perspectives...",
-                            100,
-                            38,
-                            "20 APRIL 2025\nSunday, 11:00 AM",
-                            AppAssets.sexRights,
-                          ),
-                        ),
-                      ],
-                    )
+                      ),
+                    ),
+                  )
+                : ListView(
+                    children: joinedEvents
+                        .map((event) => EventCard(
+                              title: event.title,
+                              location: event.location,
+                              path: event.path,
+                              date: event.date,
+                              onTap: () => navigateToEventDetails(event),
+                            ))
+                        .toList(),
+                  );
+          })
                   : ListView(
                       children: [
                         PastEventCard(
@@ -180,4 +112,3 @@ class MyEvents extends StatelessWidget {
     );
   }
 }
-

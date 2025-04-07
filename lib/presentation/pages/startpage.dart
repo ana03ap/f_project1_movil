@@ -8,7 +8,6 @@ import '../widgets/event_card.dart';
 import '../widgets/bottom_nav_bar.dart';
 import 'package:f_project_1/data/events_data.dart';
 
-
 class Startpage extends StatelessWidget {
   final BottomNavController bottomNavController = Get.find();
   final EventController eventController = Get.find<EventController>();
@@ -28,15 +27,7 @@ class Startpage extends StatelessWidget {
   Startpage({Key? key}) : super(key: key);
 
   void navigateToEventDetails(Event event) {
-    eventController.selectEvent({
-      "title": event.title,
-      "location": event.location,
-      "participants": event.participants,
-      "details": event.details,
-      "availableSpots": event.availableSpots,
-      "path": event.path,
-      "date": event.date,
-    });
+    eventController.selectEvent(event);
     Get.toNamed('/details_screen');
   }
 
@@ -45,10 +36,9 @@ class Startpage extends StatelessWidget {
       return "All Events";
     }
     
-    // Busca la categoría seleccionada para obtener el label correcto
     final category = categories.firstWhere(
       (cat) => cat['type'] == eventController.selectedFilter.value,
-      orElse: () => {"label": eventController.selectedFilter.value},
+      orElse: () => {"label": eventController.selectedFilter.value, "icon": Icons.event},
     );
     
     return "${category['label']} Events";
@@ -64,7 +54,7 @@ class Startpage extends StatelessWidget {
             Center(
               child: Column(
                 children: [
-                  const Text("PuntoG",
+                  const Text("PuntoG", 
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
                   Obx(() => Text("Hi, ${homeController.name.value}!", 
                       style: const TextStyle(fontWeight: FontWeight.bold))),
@@ -85,6 +75,7 @@ class Startpage extends StatelessWidget {
                 Icon(Icons.search),
               ],
             ),
+            // LISTA DE CATEGORÍAS CORREGIDA
             Container(
               margin: const EdgeInsets.only(top: 10),
               height: 120,
@@ -92,14 +83,32 @@ class Startpage extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 itemCount: categories.length,
                 itemBuilder: (context, index) {
-                  var category = categories[index];
-                  return GestureDetector(
-                    onTap: () => eventController.filterEvents(category['type']),
-                    child: ContainerIconWithText(
-                      icon: category['icon'],
-                      label: category['label'],
-                    ),
-                  );
+                  final category = categories[index];
+                  return Obx(() {
+                    final isSelected = eventController.selectedFilter.value == category['type'];
+                    return GestureDetector(
+                      onTap: () => eventController.filterEvents(category['type']),
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: isSelected ? Colors.purple.withOpacity(0.2) : Colors.grey.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(category['icon'], color: isSelected ? Colors.purple : Colors.grey),
+                            const SizedBox(height: 8),
+                            Text(category['label'], style: TextStyle(
+                              color: isSelected ? Colors.purple : Colors.grey,
+                              fontSize: 12,
+                            )),
+                          ],
+                        ),
+                      ),
+                    );
+                  });
                 },
               ),
             ),
@@ -114,20 +123,28 @@ class Startpage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
+            // LISTA DE EVENTOS
             Expanded(
-              child: Obx(() => ListView.builder(
-                itemCount: eventController.filteredEvents.length,
-                itemBuilder: (context, index) {
-                  final event = eventController.filteredEvents[index];
-                  return EventCard(
-                    title: event.title,
-                    date: event.date,
-                    location: event.location,
-                    path: event.path,
-                    onTap: () => navigateToEventDetails(event),
+              child: Obx(() {
+                if (eventController.filteredEvents.isEmpty) {
+                  return const Center(
+                    child: Text("No events found"),
                   );
-                },
-              )),
+                }
+                return ListView.builder(
+                  itemCount: eventController.filteredEvents.length,
+                  itemBuilder: (context, index) {
+                    final event = eventController.filteredEvents[index];
+                    return EventCard(
+                      title: event.title,
+                      date: event.date,
+                      location: event.location,
+                      path: event.path,
+                      onTap: () => navigateToEventDetails(event),
+                    );
+                  },
+                );
+              }),
             ),
           ],
         ),

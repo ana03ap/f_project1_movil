@@ -28,7 +28,6 @@ class EventDetailsScreen extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
 
-        print(eventDetails['path']);
 
         return SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
@@ -40,7 +39,7 @@ class EventDetailsScreen extends StatelessWidget {
                 child: Stack(
                   children: [
                     Image.asset(
-                      eventDetails["path"],
+                      eventDetails.path,
                       fit: BoxFit.cover,
                       height: 180,
                       width: double.infinity,
@@ -65,7 +64,7 @@ class EventDetailsScreen extends StatelessWidget {
                       width: double.infinity,
                       alignment: Alignment.center,
                       child: Text(
-                        eventDetails["date"],
+                        eventDetails.date,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           color: Colors.white,
@@ -78,13 +77,13 @@ class EventDetailsScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              Text(eventDetails["title"], style: AppStyles.title),
+              Text(eventDetails.title, style: AppStyles.title),
               const SizedBox(height: 8),
               Row(
                 children: [
                   const Icon(Icons.location_on, color: AppColors.primary),
                   const SizedBox(width: 5),
-                  Text(eventDetails["location"], style: AppStyles.normal),
+                  Text(eventDetails.location, style: AppStyles.normal),
                 ],
               ),
               const SizedBox(height: 8),
@@ -93,14 +92,14 @@ class EventDetailsScreen extends StatelessWidget {
                   const Icon(Icons.people, color: AppColors.primary),
                   const SizedBox(width: 5),
                   Text(
-                      'Maximum number of participants: ${eventDetails["participants"]}',
+                      'Maximum number of participants: ${eventDetails.participants}',
                       style: AppStyles.normal),
                 ],
               ),
               const SizedBox(height: 16),
               const Text('Details', style: AppStyles.subtitle),
               const SizedBox(height: 8),
-              Text(eventDetails["details"], style: AppStyles.normal),
+              Text(eventDetails.details, style: AppStyles.normal),
               const SizedBox(height: 16),
               Obx(() => Container(
                     padding: const EdgeInsets.all(12),
@@ -109,14 +108,14 @@ class EventDetailsScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
-                      'Available spots: ${eventController.availableSpots.value}',
+                      'Available spots: ${eventDetails.availableSpots.value}',// ya puedo hacer esto pq la variable ya es reactiva 
                       style: AppStyles.bold,
                     ),
                   )),
               const SizedBox(height: 16),
               Obx(() {
                 bool noSpotsAvailable =
-                    eventController.availableSpots.value == 0;
+                    eventDetails.availableSpots.value == 0;
 
                 return Row(
                   children: [
@@ -125,25 +124,25 @@ class EventDetailsScreen extends StatelessWidget {
                         shape: BoxShape.circle,
                         color: noSpotsAvailable
                             ? Colors.grey
-                            : (eventController.isJoined.value
+                            : (eventDetails.isJoined.value
                                 ? Colors.red
                                 : AppColors.primary),
                       ),
                       child: IconButton(
                         icon: Icon(
-                          eventController.isJoined.value
+                          eventDetails.isJoined.value
                               ? Icons.remove
                               : Icons.add,
                           color: Colors.white,
                         ),
                         onPressed: noSpotsAvailable
                             ? null
-                            : eventController.toggleJoin,
+                            :()=> eventController.toggleJoinEvent(eventDetails),
                       ),
                     ),
                     const SizedBox(width: 12),
                     Text(
-                      eventController.isJoined.value ? 'Unjoin' : 'Join!',
+                      eventDetails.isJoined.value ? 'Unjoin' : 'Join!',
                       style: AppStyles.subtitle,
                     ),
                   ],

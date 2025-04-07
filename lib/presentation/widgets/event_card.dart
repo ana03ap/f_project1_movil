@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 
 class EventCard extends StatelessWidget {
   final String title;
-  final String locationName;
-  final String locationPlace;
+  final String location;
   final String path;
+  final String date;
   final VoidCallback onTap;
 
   const EventCard({
     Key? key,
     required this.title,
-    required this.locationName,
-    required this.locationPlace,
+    required this.location,
+    required this.date,
     required this.path,
     required this.onTap,
   }) : super(key: key);
@@ -23,7 +23,7 @@ class EventCard extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.all(20),
         width: 370,
-        height: 130,
+        height: 115,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
@@ -55,24 +55,31 @@ class EventCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 2),
                         Padding(
-                          padding: const EdgeInsets.all(6),
+                          padding: const EdgeInsets.all(2),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                locationName,
-                                style: const TextStyle(
-                                  color: Color.fromARGB(255, 60, 31, 110),
-                                ),
-                              ),
-                              Text(
-                                locationPlace,
-                                style: const TextStyle(
-                                  color: Color.fromARGB(255, 60, 31, 110),
-                                ),
-                              ),
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.location_on,
+                                    size: 16,
+                                    color: Colors.purple,
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 3),
+                                    child: Text(
+                                      location,
+                                      style: const TextStyle(
+                                        color: Colors.purple,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              )
                             ],
                           ),
                         ),
@@ -80,17 +87,37 @@ class EventCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  Container(
-                    width: 120,
-                    height: 70,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      image: DecorationImage(
-                        image: AssetImage(path),
-                        fit: BoxFit.cover,
-                      ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Stack(
+                      children: [
+                        Image.asset(
+                          path,
+                          width: 120,
+                          height: 70,
+                          fit: BoxFit.cover,
+                        ),
+                        Container(
+                          width: 120,
+                          height: 70,
+                          color: Colors.black.withOpacity(0.4),
+                        ),
+                        Container(
+                          width: 120,
+                          height: 70,
+                          alignment: Alignment.center,
+                          child: Text(
+                            date,
+                            style: const TextStyle(
+                              fontSize: 10,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
+                  )
                 ],
               ),
             ),

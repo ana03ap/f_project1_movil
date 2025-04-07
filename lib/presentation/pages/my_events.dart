@@ -9,6 +9,7 @@ import '../widgets/event_card.dart';
 import '../widgets/pastevent_card.dart';
 import '../../core/constants/app_assets.dart';
 
+//ESTO POR AHORA ESTÁ ESTATICO, NO SE MA IMPLEMENTADO QUE CUANDO LE DE JOIN SE GUARDE PORQUE NO HAY BACKEND
 class MyEvents extends StatelessWidget {
   final TopNavController topNavController = Get.put(TopNavController());
   final EventController eventController = Get.find<EventController>();
@@ -53,9 +54,9 @@ class MyEvents extends StatelessWidget {
                       children: [
                         EventCard(
                           title: "Reproductive Justice",
-                          locationName: "Hall B1",
-                          locationPlace: "Convention Center",
+                          location: "Hall B1",
                           path: AppAssets.sexRights,
+                          date: "April 20, 2025, 9:00 AM",
                           onTap: () => navigateToEventDetails(
                             "Reproductive Justice: Rights and Realities",
                             "Hall B1 / Convention Center",
@@ -67,9 +68,9 @@ class MyEvents extends StatelessWidget {
                         ),
                         EventCard(
                           title: "Understanding Contraceptive Options",
-                          locationName: "Room 2A",
-                          locationPlace: "Health Pavilion",
-                          path: 'lib/assets/sexualrights.png',
+                          location: "Room 2A",
+                          path: AppAssets.sexRights,
+                          date: "April 20, 2025, 9:00 AM",
                           onTap: () => navigateToEventDetails(
                             "Understanding Contraceptive Options",
                             "Room 2A / Health Pavilion",
@@ -81,9 +82,9 @@ class MyEvents extends StatelessWidget {
                         ),
                         EventCard(
                           title: "Emergency Contraception",
-                          locationName: "Advocacy Center",
-                          locationPlace: "Downtown Campus",
-                          path: 'AppAssets.sexRights',
+                          location: "Advocacy Center",
+                          path: AppAssets.sexRights,
+                          date: "April 20, 2025, 9:00 AM",
                           onTap: () => navigateToEventDetails(
                             "Emergency Contraception: Myths and Facts",
                             "Advocacy Center / Downtown Campus",
@@ -95,9 +96,9 @@ class MyEvents extends StatelessWidget {
                         ),
                         EventCard(
                           title: "Menstrual Health Matters",
-                          locationName: "Room C3",
-                          locationPlace: "Equity Hub",
-                          path: 'AppAssets.sexRights',
+                          location: "Room C3",
+                          path: AppAssets.sexRights,
+                          date: "April 20, 2025, 9:00 AM",
                           onTap: () => navigateToEventDetails(
                             "Menstrual Equity and Public Policy",
                             "Room C3 / Equity Hub",
@@ -109,9 +110,9 @@ class MyEvents extends StatelessWidget {
                         ),
                         EventCard(
                           title: "Access to Safe Abortions",
-                          locationName: "Main Auditorium",
-                          locationPlace: "Convention Center",
-                          path: 'AppAssets.sexRights',
+                          location: "Main Auditorium",
+                          path: AppAssets.sexRights,
+                          date: "April 20, 2025, 9:00 AM",
                           onTap: () => navigateToEventDetails(
                             "Access to Safe Abortions: Legal and Medical Perspectives",
                             "Main Auditorium / Convention Center",
@@ -127,25 +128,29 @@ class MyEvents extends StatelessWidget {
                       children: [
                         PastEventCard(
                           title: "Reproductive Justice",
-                          path: 'AppAssets.sexRights',
+                          path: AppAssets.sexRights,
+                          date: "April 20, 2025, 9:00 AM",
                           score: "4.5",
                           onTap: () => navigateToFeedback(),
                         ),
                         PastEventCard(
                           title: "Understanding Contraceptive Options Today",
-                          path: 'AppAssets.sexRights',
+                          path: AppAssets.sexRights,
+                          date: "April 20, 2025, 9:00 AM",
                           score: "3.0",
                           onTap: () => navigateToFeedback(),
                         ),
                         PastEventCard(
                           title: "Access to Safe Abortions",
-                          path: 'AppAssets.sexRights',
+                          path: AppAssets.sexRights,
+                          date: "April 20, 2025, 9:00 AM",
                           score: "4.5",
                           onTap: () => navigateToFeedback(),
                         ),
                         PastEventCard(
                           title: "Menstrual Equity and Public Policy",
-                          path: 'AppAssets.sexRights',
+                          path: AppAssets.sexRights,
+                          date: "April 20, 2025, 9:00 AM",
                           score: "4.0",
                           onTap: () => navigateToFeedback(),
                         ),

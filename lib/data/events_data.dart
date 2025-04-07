@@ -5,7 +5,7 @@ class Event {
   final int participants;
   final int availableSpots;
   final String date;
-  //final String image;
+  final String path;
   final String type;
 
   Event({
@@ -15,7 +15,7 @@ class Event {
     required this.participants,
     required this.availableSpots,
     required this.date,
-    //required this.image,
+    required this.path,
     required this.type,
   });
 }
@@ -30,6 +30,7 @@ List<Event> eventsList = [
     participants: 40,
     availableSpots: 18,
     date: "April 27, 2025, 11:00 AM",
+    path: "lib/assets/unbound01.jpeg",
     type: "Unbound",
   ),
   Event(
@@ -40,6 +41,7 @@ List<Event> eventsList = [
     participants: 50,
     availableSpots: 27,
     date: "April 27, 2025, 3:00 PM",
+    path: "lib/assets/unbound02.png",
     type: "Unbound",
   ),
   Event(
@@ -50,6 +52,7 @@ List<Event> eventsList = [
     participants: 45,
     availableSpots: 12,
     date: "April 28, 2025, 10:00 AM",
+    path: "lib/assets/unbound03.jpg",
     type: "Unbound",
   ),
   Event(
@@ -60,6 +63,7 @@ List<Event> eventsList = [
     participants: 50,
     availableSpots: 20,
     date: "April 28, 2025, 1:00 PM",
+    path: "lib/assets/unbound04.jpg",
     type: "Unbound",
   ),
 
@@ -72,6 +76,7 @@ List<Event> eventsList = [
     participants: 65,
     availableSpots: 20,
     date: "April 25, 2025, 11:00 AM",
+    path: "lib/assets/education01.png",
     type: "education",
   ),
   Event(
@@ -82,6 +87,7 @@ List<Event> eventsList = [
     participants: 50,
     availableSpots: 15,
     date: "April 25, 2025, 3:00 PM",
+    path: "lib/assets/education02.png",
     type: "education",
   ),
   Event(
@@ -92,6 +98,7 @@ List<Event> eventsList = [
     participants: 55,
     availableSpots: 10,
     date: "April 26, 2025, 9:00 AM",
+    path: "lib/assets/education03.jpg",
     type: "education",
   ),
   Event(
@@ -102,6 +109,7 @@ List<Event> eventsList = [
     participants: 40,
     availableSpots: 8,
     date: "April 26, 2025, 1:00 PM",
+    path: "lib/assets/education04.png",
     type: "education",
   ),
   Event(
@@ -112,6 +120,7 @@ List<Event> eventsList = [
     participants: 35,
     availableSpots: 5,
     date: "April 27, 2025, 10:00 AM",
+    path: "lib/assets/education05.jpg",
     type: "education",
   ),
   Event(
@@ -122,6 +131,7 @@ List<Event> eventsList = [
     participants: 45,
     availableSpots: 12,
     date: "April 27, 2025, 2:00 PM",
+    path: "lib/assets/education06.webp",
     type: "education",
   ),
 
@@ -135,6 +145,7 @@ List<Event> eventsList = [
     participants: 20,
     availableSpots: 4,
     date: "May 10, 2025, 3:00 PM",
+    path: "lib/assets/bodyliteracy01.jpg",
     type: "bodyliteracy",
   ),
   Event(
@@ -145,6 +156,7 @@ List<Event> eventsList = [
     participants: 25,
     availableSpots: 6,
     date: "May 11, 2025, 5:30 PM",
+    path: "lib/assets/bodyliteracy02.jpg",
     type: "bodyliteracy",
   ),
   Event(
@@ -155,6 +167,7 @@ List<Event> eventsList = [
     participants: 22,
     availableSpots: 2,
     date: "May 12, 2025, 4:00 PM",
+    path: "lib/assets/bodyliteracy03.jpg",
     type: "bodyliteracy",
   ),
   Event(
@@ -165,6 +178,7 @@ List<Event> eventsList = [
     participants: 18,
     availableSpots: 5,
     date: "May 13, 2025, 6:00 PM",
+    path: "lib/assets/bodyliteracy04.png",
     type: "bodyliteracy",
   ),
 
@@ -178,6 +192,7 @@ List<Event> eventsList = [
     participants: 70,
     availableSpots: 32,
     date: "April 26, 2025, 11:00 AM",
+    path: "lib/assets/culture01.jpg",
     type: "culture",
   ),
   Event(
@@ -188,6 +203,7 @@ List<Event> eventsList = [
     participants: 50,
     availableSpots: 18,
     date: "April 26, 2025, 2:00 PM",
+    path: "lib/assets/culture02.jpg",
     type: "culture",
   ),
   Event(
@@ -198,6 +214,7 @@ List<Event> eventsList = [
     participants: 40,
     availableSpots: 9,
     date: "April 26, 2025, 4:00 PM",
+    path: "lib/assets/culture03.jpg",
     type: "culture",
   ),
   Event(
@@ -208,6 +225,7 @@ List<Event> eventsList = [
     participants: 60,
     availableSpots: 27,
     date: "April 27, 2025, 11:00 AM",
+    path: "lib/assets/culture04.jpg",
     type: "culture",
   ),
   Event(
@@ -218,6 +236,7 @@ List<Event> eventsList = [
     participants: 50,
     availableSpots: 10,
     date: "April 27, 2025, 2:00 PM",
+    path: "lib/assets/culture05.jpg",
     type: "culture",
   ),
 
@@ -230,6 +249,7 @@ List<Event> eventsList = [
     participants: 70,
     availableSpots: 25,
     date: "April 27, 2025, 10:00 AM",
+    path: "lib/assets/cybertouch01.png",
     type: "Cybertouch",
   ),
 
@@ -241,6 +261,7 @@ List<Event> eventsList = [
     participants: 60,
     availableSpots: 22,
     date: "April 27, 2025, 11:30 AM",
+    path: "lib/assets/cybertouch02.png",
     type: "Cybertouch",
   ),
 
@@ -252,6 +273,7 @@ List<Event> eventsList = [
     participants: 50,
     availableSpots: 16,
     date: "April 27, 2025, 1:00 PM",
+    path: "lib/assets/cybertouch03.jpg",
     type: "Cybertouch",
   ),
 
@@ -263,19 +285,10 @@ List<Event> eventsList = [
     participants: 45,
     availableSpots: 12,
     date: "April 27, 2025, 3:00 PM",
+    path: "lib/assets/cybertouch04.png",
     type: "Cybertouch",
   ),
 
-  Event(
-    title: "Virtual Intimacy: Love and Sex in VR",
-    location: "Innovation Dome",
-    details:
-        "Virtual reality is reshaping how we experience intimacy. This interactive session delves into the world of VR dating, digital embodiment, and the future of sex tech. Participants will explore both the possibilities and ethical concerns around virtual closeness.",
-    participants: 40,
-    availableSpots: 10,
-    date: "April 28, 2025, 10:00 AM",
-    type: "Cybertouch",
-  ),
   Event(
     title: "Catfishing, Scams, and Digital Vulnerability",
     location: "Cybersecurity Hall",
@@ -284,6 +297,7 @@ List<Event> eventsList = [
     participants: 60,
     availableSpots: 28,
     date: "April 28, 2025, 12:00 PM",
+    path: "lib/assets/cybertouch06.png",
     type: "Cybertouch",
   ),
   Event(
@@ -294,6 +308,7 @@ List<Event> eventsList = [
     participants: 50,
     availableSpots: 19,
     date: "April 28, 2025, 2:00 PM",
+    path: "lib/assets/cybertouch07.jpeg",
     type: "Cybertouch",
   ),
 
@@ -306,6 +321,7 @@ List<Event> eventsList = [
     participants: 70,
     availableSpots: 28,
     date: "April 22, 2025, 9:00 AM",
+    path: "lib/assets/identity01.png",
     type: "Identity",
   ),
   Event(
@@ -316,6 +332,7 @@ List<Event> eventsList = [
     participants: 50,
     availableSpots: 21,
     date: "April 22, 2025, 11:00 AM",
+    path: "lib/assets/identity02.png",
     type: "Identity",
   ),
   Event(
@@ -326,6 +343,7 @@ List<Event> eventsList = [
     participants: 40,
     availableSpots: 18,
     date: "April 22, 2025, 2:00 PM",
+    path: "lib/assets/identity03.png",
     type: "Identity",
   ),
   Event(
@@ -336,6 +354,7 @@ List<Event> eventsList = [
     participants: 60,
     availableSpots: 25,
     date: "April 23, 2025, 10:00 AM",
+    path: "lib/assets/identity04.png",
     type: "Identity",
   ),
   Event(
@@ -346,6 +365,7 @@ List<Event> eventsList = [
     participants: 50,
     availableSpots: 20,
     date: "April 23, 2025, 12:00 PM",
+    path: "lib/assets/identity05.jpeg",
     type: "Identity",
   ),
   Event(
@@ -356,46 +376,7 @@ List<Event> eventsList = [
     participants: 45,
     availableSpots: 13,
     date: "April 23, 2025, 3:00 PM",
-    type: "Identity",
-  ),
-  Event(
-    title: "Swipe Culture: Dating in the Digital Age",
-    location: "Tech Lounge A",
-    details:
-        "From Tinder to Bumble, dating apps have transformed how we connect. This talk explores how technology shapes desire, expectations, and emotional labor in modern relationships. We’ll discuss the psychological effects of swipe culture and how to build healthier digital connections.",
-    participants: 70,
-    availableSpots: 25,
-    date: "April 27, 2025, 10:00 AM",
-    type: "Identity",
-  ),
-  Event(
-    title: "Consent in the Age of Screens",
-    location: "Ethics Room C",
-    details:
-        "Digital spaces require new forms of consent. This session tackles the complexities of sharing images, sexting, and digital boundaries. We’ll unpack real-world cases and provide strategies for respectful, consensual digital intimacy.",
-    participants: 60,
-    availableSpots: 22,
-    date: "April 27, 2025, 11:30 AM",
-    type: "Identity",
-  ),
-  Event(
-    title: "Emotional Safety in Online Relationships",
-    location: "Connection Hub",
-    details:
-        "Online relationships can foster closeness—but also risk manipulation, ghosting, or emotional abuse. This session explores how to recognize red flags, establish healthy communication, and prioritize well-being when navigating romantic and sexual relationships online.",
-    participants: 50,
-    availableSpots: 16,
-    date: "April 27, 2025, 1:00 PM",
-    type: "Identity",
-  ),
-  Event(
-    title: "Nudes and Trust: Ethics of Sexting",
-    location: "Media Room B",
-    details:
-        "Sexting can be empowering or risky, depending on context. We’ll explore the ethical implications of sharing intimate content, what consent looks like in these exchanges, and how digital trust is built or broken.",
-    participants: 45,
-    availableSpots: 12,
-    date: "April 27, 2025, 3:00 PM",
+    path: "lib/assets/identity06.png",
     type: "Identity",
   ),
 
@@ -408,6 +389,7 @@ List<Event> eventsList = [
     participants: 60,
     availableSpots: 22,
     date: "April 19, 2025, 10:00 AM",
+    path: "lib/assets/sexhealth01.png",
     type: "sexHealth",
   ),
   Event(
@@ -418,6 +400,7 @@ List<Event> eventsList = [
     participants: 50,
     availableSpots: 17,
     date: "April 19, 2025, 12:00 PM",
+    path: "lib/assets/sexhealth02.png",
     type: "sexHealth",
   ),
   Event(
@@ -428,6 +411,7 @@ List<Event> eventsList = [
     participants: 45,
     availableSpots: 19,
     date: "April 19, 2025, 2:00 PM",
+    path: "lib/assets/sexhealth03.png",
     type: "sexHealth",
   ),
   Event(
@@ -438,6 +422,7 @@ List<Event> eventsList = [
     participants: 40,
     availableSpots: 12,
     date: "April 20, 2025, 9:00 AM",
+    path: "lib/assets/sexhealth04.png",
     type: "sexHealth",
   ),
   Event(
@@ -448,6 +433,7 @@ List<Event> eventsList = [
     participants: 100,
     availableSpots: 38,
     date: "April 20, 2025, 11:00 AM",
+    path: "lib/assets/sexhealth05.png",
     type: "sexHealth",
   ),
   Event(
@@ -458,16 +444,7 @@ List<Event> eventsList = [
     participants: 60,
     availableSpots: 24,
     date: "April 20, 2025, 2:00 PM",
-    type: "sexHealth",
-  ),
-  Event(
-    title: "Intersectionality in Reproductive Rights Advocacy",
-    location: "Advocacy Center",
-    details:
-        "Exploring how overlapping identities influence access to reproductive care...",
-    participants: 50,
-    availableSpots: 19,
-    date: "April 21, 2025, 11:00 AM",
+    path: "lib/assets/sexhealth06.png",
     type: "sexHealth",
   ),
 ];

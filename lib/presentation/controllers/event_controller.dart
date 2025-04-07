@@ -1,15 +1,22 @@
+import 'package:f_project_1/data/events_data.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
 class EventController extends GetxController {
   var isJoined = false.obs;
   var availableSpots = 0.obs;
-  var selectedEvent = Rxn<
-      Map<String,
-          dynamic>>(); 
+  var selectedEvent = Rxn<Map<String, dynamic>>();
+
+  var selectedFilter = ''.obs; 
+  var filteredEvents = <Event>[].obs; 
+
+  @override
+  void onInit() {
+    super.onInit();
+    resetFilter(); 
+  }
 
   void initialize(int spots) {
-    print("Inicializando con spots: $spots");
     availableSpots.value = spots;
     isJoined.value = false;
   }
@@ -35,17 +42,28 @@ class EventController extends GetxController {
   }
 
   void selectEvent(Map<String, dynamic> event) {
-    print("🟡 Evento recibido: $event"); // Debug Mejorado
-    selectedEvent.value = event; // Asignar el evento seleccionado
+    selectedEvent.value = event;
 
     if (event.containsKey('availableSpots')) {
       int spots = event['availableSpots'];
-      initialize(spots); // Llamar a initialize con el valor obtenido
+      initialize(spots);
     } else {
       availableSpots.value = 0;
     }
+  }
 
-    print(
-        "🔵 Available Spots seteados a: ${availableSpots.value}"); // Debug Mejorado
+  void filterEvents(String type) {
+    selectedFilter.value = type;
+
+    if (type.isEmpty) {
+      filteredEvents.value = eventsList; 
+    } else {
+      filteredEvents.value = eventsList.where((event) => event.type == type).toList();
+    }
+  }
+
+  void resetFilter() {
+    selectedFilter.value = ''; 
+    filteredEvents.value = eventsList; 
   }
 }

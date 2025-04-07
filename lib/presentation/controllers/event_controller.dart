@@ -1,69 +1,69 @@
 import 'package:f_project_1/data/events_data.dart';
 import 'package:get/get.dart';
-import 'package:flutter/material.dart';
 
 class EventController extends GetxController {
-  var isJoined = false.obs;
-  var availableSpots = 0.obs;
-  var selectedEvent = Rxn<Map<String, dynamic>>();
-
-  var selectedFilter = ''.obs; 
-  var filteredEvents = <Event>[].obs; 
+  final RxList<Event> joinedEvents = <Event>[].obs;
+  final RxList<Event> filteredEvents = <Event>[].obs;
+  final Rxn<Event> selectedEvent = Rxn<Event>();
+  final RxString selectedFilter = ''.obs;
+  
+  // Nota: availableSpots ahora es manejado por cada Event individualmente
 
   @override
   void onInit() {
     super.onInit();
-    resetFilter(); 
+    resetFilter();
   }
 
-  void initialize(int spots) {
-    availableSpots.value = spots;
-    isJoined.value = false;
-  }
-
-  void toggleJoin() {
-    if (!isJoined.value && availableSpots.value > 0) {
-      isJoined.value = true;
-      availableSpots.value -= 1;
-    } else if (isJoined.value) {
-      isJoined.value = false;
-      availableSpots.value += 1;
-    }
-
-    if (availableSpots.value == 0 && !isJoined.value) {
-      Get.snackbar(
-        'No More Spots',
-        'No spots available for this event.',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
-    }
-  }
-
-  void selectEvent(Map<String, dynamic> event) {
+  void selectEvent(Event event) {
     selectedEvent.value = event;
+  }
 
-    if (event.containsKey('availableSpots')) {
-      int spots = event['availableSpots'];
-      initialize(spots);
+  void toggleJoinEvent(Event event) {
+    if (event.isJoined.value) {
+      unjoinEvent(event);
     } else {
-      availableSpots.value = 0;
+      joinEvent(event);
     }
+  }
+
+  void joinEvent(Event event) {
+    if (event.availableSpots.value > 0) {
+      event.isJoined.value = true;
+      event.availableSpots.value--;
+      
+      if (!joinedEvents.any((e) => e.id == event.id)) {
+        joinedEvents.add(event);
+      }
+      
+      updateFilteredEvents();
+    }
+  }
+
+  void unjoinEvent(Event event) {
+    event.isJoined.value = false;
+    event.availableSpots.value++;
+    joinedEvents.removeWhere((e) => e.id == event.id);
+    updateFilteredEvents();
   }
 
   void filterEvents(String type) {
     selectedFilter.value = type;
-
-    if (type.isEmpty) {
-      filteredEvents.value = eventsList; 
-    } else {
-      filteredEvents.value = eventsList.where((event) => event.type == type).toList();
-    }
+    updateFilteredEvents();
   }
 
   void resetFilter() {
-    selectedFilter.value = ''; 
-    filteredEvents.value = eventsList; 
+    selectedFilter.value = '';
+    updateFilteredEvents();
+  }
+
+  void updateFilteredEvents() {
+    if (selectedFilter.value.isEmpty) {
+      filteredEvents.assignAll(eventsList);
+    } else {
+      filteredEvents.assignAll(
+        eventsList.where((event) => event.type == selectedFilter.value),
+      );
+    }
   }
 }

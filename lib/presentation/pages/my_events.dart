@@ -19,11 +19,19 @@ class MyEvents extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('PuntoG'),
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        title: Text(
+          'PuntoG',
+          style: TextStyle(
+            color: Theme.of(context).appBarTheme.foregroundColor ??
+                Theme.of(context).textTheme.titleLarge?.color,
+          ),
+        ),
         centerTitle: true,
-        backgroundColor: Colors.white,
         elevation: 0,
-        foregroundColor: AppColors.textPrimary,
+        iconTheme: IconThemeData(
+          color: Theme.of(context).iconTheme.color,
+        ),
       ),
       body: Column(
         children: [
@@ -31,13 +39,12 @@ class MyEvents extends StatelessWidget {
           Expanded(
             child: Obx(() {
               if (topNavController.currentIndex.value == 0) {
-                // EVENTOS FUTUROS (UPCOMING)
                 final upcomingEvents = eventController.joinedEvents
                     .where((event) => eventController.isEventFuture(event.date))
                     .toList();
-                
+
                 return upcomingEvents.isEmpty
-                    ? _buildEmptyState("No tienes eventos próximos")
+                    ? _buildEmptyState("No upcoming events")
                     : ListView.builder(
                         itemCount: upcomingEvents.length,
                         itemBuilder: (context, index) {
@@ -46,7 +53,8 @@ class MyEvents extends StatelessWidget {
                             title: event.title,
                             location: event.location,
                             path: event.path,
-                            date: event.date, // Usamos date directamente (sin formateo)
+                            date: event
+                                .date, // Usamos date directamente (sin formateo)
                             onTap: () => _navigateToEventDetails(event),
                           );
                         },
@@ -54,11 +62,12 @@ class MyEvents extends StatelessWidget {
               } else {
                 // EVENTOS PASADOS
                 final pastEvents = eventController.joinedEvents
-                    .where((event) => !eventController.isEventFuture(event.date))
+                    .where(
+                        (event) => !eventController.isEventFuture(event.date))
                     .toList();
-                
+
                 return pastEvents.isEmpty
-                    ? _buildEmptyState("No tienes eventos pasados")
+                    ? _buildEmptyState("No past events")
                     : ListView.builder(
                         itemCount: pastEvents.length,
                         itemBuilder: (context, index) {

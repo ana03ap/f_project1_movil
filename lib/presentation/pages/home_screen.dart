@@ -8,11 +8,10 @@ class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
   final HomeController homeController = Get.find<HomeController>();
   final TextEditingController nameController = TextEditingController();
-  
 
   void navigateToStartPage() {
     if (nameController.text.isNotEmpty) {
-       homeController.setName(nameController.text);
+      homeController.setName(nameController.text);
 
       Get.toNamed('/startpage');
     } else {

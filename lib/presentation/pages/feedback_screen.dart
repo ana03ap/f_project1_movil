@@ -14,13 +14,16 @@ class FeedbackScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('PuntoG'),
         centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor: theme.scaffoldBackgroundColor,
         elevation: 0,
-        foregroundColor: AppColors.textPrimary,
+        foregroundColor: theme.textTheme.titleLarge?.color,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -28,10 +31,7 @@ class FeedbackScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(height: 20),
-            const Text(
-              'Leave a feedback!',
-              style: AppStyles.title,
-            ),
+            Text('Leave a feedback!', style: theme.textTheme.headlineSmall),
             const SizedBox(height: 20),
             TextField(
               controller: feedbackController,
@@ -40,45 +40,46 @@ class FeedbackScreen extends StatelessWidget {
                 hintText: 'Write a feedback...',
                 border: InputBorder.none,
                 filled: true,
-                fillColor: const Color.fromARGB(255, 247, 247, 247),
+                fillColor: isDark ? Colors.grey[850] : const Color(0xFFF7F7F7),
                 contentPadding: const EdgeInsets.all(16),
-                hintStyle:
-                  const TextStyle(color: const Color.fromARGB(255, 149, 149, 149)),
+                hintStyle: TextStyle(
+                    color: isDark ? Colors.grey[400] : const Color(0xFF959595)),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: const BorderSide(
-                      color: Color.fromARGB(255, 123, 56, 186), width: 2),
+                    color: Color.fromARGB(255, 123, 56, 186),
+                    width: 2,
+                  ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(
-                      color:  Color.fromARGB(255, 250, 250, 250),
-                      width: 1),
+                  borderSide: BorderSide(
+                    color: isDark ? Colors.grey[700]! : const Color(0xFFFAFAFA),
+                    width: 1,
+                  ),
                 ),
               ),
             ),
             const SizedBox(height: 20),
-            const Text(
-              'Rate your experience:',
-              style: AppStyles.subtitle,
-            ),
+            Text('Rate your experience:', style: theme.textTheme.titleMedium),
             const SizedBox(height: 10),
             Obx(() => Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(
-                      5,
-                      (index) => IconButton(
-                            onPressed: () {
-                              selectedRating.value = index + 1;
-                            },
-                            icon: Icon(
-                              Icons.star,
-                              color: index < selectedRating.value
-                                  ? Colors.purple
-                                  : Colors.grey,
-                              size: 32,
-                            ),
-                          )),
+                    5,
+                    (index) => IconButton(
+                      onPressed: () {
+                        selectedRating.value = index + 1;
+                      },
+                      icon: Icon(
+                        Icons.star,
+                        color: index < selectedRating.value
+                            ? AppColors.primary
+                            : Colors.grey,
+                        size: 32,
+                      ),
+                    ),
+                  ),
                 )),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -89,6 +90,8 @@ class FeedbackScreen extends StatelessWidget {
                     'Feedback Sent!',
                     'Thank you for your feedback!',
                     snackPosition: SnackPosition.BOTTOM,
+                    backgroundColor: isDark ? Colors.grey[800] : Colors.white,
+                    colorText: theme.textTheme.bodyLarge?.color,
                   );
                   feedbackController.clear();
                   selectedRating.value = 0;

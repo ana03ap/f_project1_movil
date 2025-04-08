@@ -19,12 +19,11 @@ class MyEvents extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-        title: Text(
+         backgroundColor: const Color.fromARGB(255, 178, 144, 184),
+        title: const Text(
           'PuntoG',
           style: TextStyle(
-            color: Theme.of(context).appBarTheme.foregroundColor ??
-                Theme.of(context).textTheme.titleLarge?.color,
+            color: Colors.white
           ),
         ),
         centerTitle: true,
@@ -54,7 +53,7 @@ class MyEvents extends StatelessWidget {
                             location: event.location,
                             path: event.path,
                             date: event
-                                .date, // Usamos date directamente (sin formateo)
+                                .date, 
                             onTap: () => _navigateToEventDetails(event),
                           );
                         },
@@ -73,10 +72,7 @@ class MyEvents extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final event = pastEvents[index];
                           return PastEventCard(
-                            title: event.title,
-                            path: event.path,
-                            date: event.date, // Usamos date directamente
-                            score: _calculateEventScore(event),
+                            event: event,
                             onTap: () => _navigateToFeedback(event),
                           );
                         },
@@ -110,12 +106,8 @@ class MyEvents extends StatelessWidget {
   void _navigateToFeedback(Event event) {
     // 1. Opcional: Guarda el evento si necesitas datos en el feedback
     eventController.selectedEvent.value = event;
-    // 2. Navega a feedback
     Get.toNamed('/feedback');
   }
 
-  String _calculateEventScore(Event event) {
-    // Lógica temporal (puedes conectarlo a tu backend después)
-    return "4.5";
-  }
+
 }

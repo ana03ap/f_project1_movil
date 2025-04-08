@@ -1,11 +1,11 @@
-import 'package:f_project_1/core/constants/app_routes.dart';
-import 'package:f_project_1/presentation/controllers/bottom_nav_controller.dart';
-import 'package:f_project_1/presentation/controllers/event_controller.dart';
-import 'package:f_project_1/presentation/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'core/constants/app_colors.dart';
+import 'core/constants/app_routes.dart';
+import 'presentation/controllers/home_controller.dart';
+import 'presentation/controllers/bottom_nav_controller.dart';
+import 'presentation/controllers/event_controller.dart';
 
 void main() {
   Get.put(HomeController());
@@ -26,11 +26,16 @@ class MyApp extends StatelessWidget {
       builder: (theme, darkTheme) {
         return GetMaterialApp(
           title: 'PuntoG',
+          color: AppColors.primary, 
           theme: theme.copyWith(
-            textTheme: GoogleFonts.leagueSpartanTextTheme(theme.textTheme),
+            textTheme: theme.textTheme.apply(
+              fontFamily: 'LeagueSpartan',
+            ),
           ),
           darkTheme: darkTheme.copyWith(
-            textTheme: GoogleFonts.leagueSpartanTextTheme(darkTheme.textTheme),
+            textTheme: darkTheme.textTheme.apply(
+              fontFamily: 'LeagueSpartan',
+            ),
           ),
           debugShowCheckedModeBanner: false,
           initialRoute: AppRoutes.splash,

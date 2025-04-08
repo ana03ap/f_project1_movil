@@ -54,10 +54,12 @@ dev_dependencies:
 
 flutter:
 
-  #fonts:
-  #  - family: LeagueSpartan
-  #    fonts:
-  #      - asset: fonts/LeagueSpartan-VariableFont_wght.ttf
+
+  fonts:
+    - family: LeagueSpartan
+      fonts:
+        - asset: lib/assets/fonts/LeagueSpartan-VariableFont_wght.ttf
+
 
 
   # The following line ensures that the Material Icons font is

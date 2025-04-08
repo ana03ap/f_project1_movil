@@ -1,5 +1,6 @@
 import 'package:f_project_1/data/events_data.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';// esto es pa las fechas 
 
 class EventController extends GetxController {
   final RxList<Event> joinedEvents = <Event>[].obs;
@@ -14,7 +15,7 @@ class EventController extends GetxController {
     super.onInit();
     resetFilter();
   }
-
+//MANEJO DE EVENTOS 
   void selectEvent(Event event) {
     selectedEvent.value = event;
   }
@@ -47,6 +48,8 @@ class EventController extends GetxController {
     updateFilteredEvents();
   }
 
+
+// FILTRADO
   void filterEvents(String type) {
     selectedFilter.value = type;
     updateFilteredEvents();
@@ -64,6 +67,21 @@ class EventController extends GetxController {
       filteredEvents.assignAll(
         eventsList.where((event) => event.type == selectedFilter.value),
       );
+    }
+  }
+
+  // MANJEAR LAS FECHAS PAL UPCOMING Y PASE EVENTS
+
+
+
+  bool isEventFuture(String dateString) {
+    try {
+      final format = DateFormat("MMMM dd, yyyy, h:mm a", "en_US");
+      final eventDate = format.parse(dateString, true).toLocal();
+      return eventDate.isAfter(DateTime.now().toLocal());
+    } catch (e) {
+      print('⚠️ Error parsing date: $dateString');
+      return true; // Por defecto, lo considera futuro
     }
   }
 }

@@ -32,9 +32,7 @@ class EventCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: isDark
-                  ? const Color.fromARGB(0, 0, 0, 0)
-                  : Colors.grey.withOpacity(0.3),
+              color: isDark ? const Color.fromARGB(0, 0, 0, 0) : Colors.grey,
               blurRadius: 3,
               offset: const Offset(0, 2),
             ),
@@ -65,25 +63,29 @@ class EventCard extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                children: [
-                                  const Icon(
-                                    Icons.location_on,
-                                    size: 16,
-                                    color: Colors.purple,
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 3),
-                                    child: Text(
-                                      location,
-                                      style: TextStyle(
-                                        color: Colors.purple.shade300,
+                              Padding(
+                                padding: const EdgeInsets.only(top: 2),
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.location_on,
+                                      size: 16,
+                                      color: Colors.purple,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Expanded(
+                                      child: Text(
+                                        location,
+                                        style: TextStyle(
+                                          color: Colors.purple.shade300,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
                                       ),
                                     ),
-                                  )
-                                ],
-                              )
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),

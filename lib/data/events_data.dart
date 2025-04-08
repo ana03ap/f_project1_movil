@@ -6,25 +6,33 @@ class Event {
   final String location;
   final String details;
   final int participants;
-  RxInt availableSpots; // Cambiado a RxInt para ser reactivo y mutable
+  RxInt availableSpots; 
   final String date;
   final String path;
   final String type;
-  final RxBool isJoined; // Nuevo atributo
-
+  final RxBool isJoined; 
+  final List<double> ratings = [];
+ final RxDouble averageRating; 
   Event({
     required this.id,
     required this.title,
     required this.location,
     required this.details,
-    required int availableSpots, // Cambiado a int para inicialización
+    required int availableSpots, 
     required this.participants,
     required this.date,
     required this.path,
     required this.type,
     required bool isJoined,
   })  : availableSpots = RxInt(availableSpots),
-        isJoined = RxBool(isJoined); // Inicializado como RxInt
+        isJoined = RxBool(isJoined),
+        averageRating = 0.0.obs;
+
+  void updateAverageRating() {
+    averageRating.value = ratings.isEmpty
+        ? 0.0
+        : ratings.reduce((a, b) => a + b) / ratings.length;
+  }
 }
 
 List<Event> eventsList = [
@@ -61,7 +69,7 @@ List<Event> eventsList = [
           "A session for those who’ve ever felt confused, curious, or uncomfortable asking questions. We’ll talk about the cultural silence around sex, how it affects our relationships and self-esteem, and how to unlearn fear with empathy and facts.",
       participants: 45,
       availableSpots: 12,
-      date: "April 4, 2025, 10:00 AM",// PRUEBA PARA PAST EVENTS 
+      date: "April 4, 2025, 10:00 AM", // PRUEBA PARA PAST EVENTS
       path: "lib/assets/unbound03.jpg",
       type: "Unbound",
       isJoined: false),
@@ -73,7 +81,7 @@ List<Event> eventsList = [
           "Exploring how social expectations around gender and sexuality influence how we see ourselves and others. This is a space to reflect on identity, pressure, freedom, and what it means to connect in ways that are truly our own.",
       participants: 50,
       availableSpots: 20,
-      date: "April 1, 2025, 1:00 PM",// PRUEBA PARA PAST EVENTS
+      date: "April 1, 2025, 1:00 PM", // PRUEBA PARA PAST EVENTS
       path: "lib/assets/unbound04.jpg",
       type: "Unbound",
       isJoined: false),

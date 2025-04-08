@@ -6,11 +6,11 @@ class BottomNavController extends GetxController {
     final String name = Get.arguments ?? 'Guest';
     
     if (index == 0) {
-      Get.offNamed('/startpage', arguments: name);
+      Get.offAllNamed('/startpage', arguments: name);
     } else if (index == 1) {
-      Get.offNamed('/my_events');
+      Get.offAllNamed('/my_events');
     } else if (index == 2) {
-      Get.offNamed('/profile', arguments: name);
+      Get.offAllNamed('/profile', arguments: name);
     }
   }
 

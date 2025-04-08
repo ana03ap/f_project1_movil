@@ -14,15 +14,14 @@ class EventDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-    final purple = AppColors.primary;
+    const purple = AppColors.primary;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('PuntoG'),
         centerTitle: true,
-        backgroundColor: theme.colorScheme.background,
-        foregroundColor: theme.colorScheme.onBackground,
+        backgroundColor: theme.colorScheme.surface,
+        foregroundColor: theme.colorScheme.onSurface,
         elevation: 0,
       ),
       body: Obx(() {
@@ -49,7 +48,7 @@ class EventDetailsScreen extends StatelessWidget {
                       errorBuilder: (context, error, stackTrace) {
                         return Container(
                           height: 180,
-                          color: Colors.grey,
+                          color: AppColors.grey,
                           child: const Center(child: Text('Image not found')),
                         );
                       },
@@ -57,7 +56,7 @@ class EventDetailsScreen extends StatelessWidget {
                     Container(
                       height: 180,
                       width: double.infinity,
-                      color: Colors.black.withOpacity(0.5),
+                      color: AppColors.black.withOpacity(0.5),
                     ),
                     Container(
                       height: 180,
@@ -67,7 +66,7 @@ class EventDetailsScreen extends StatelessWidget {
                         eventDetails.date,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: AppColors.white,
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
@@ -86,7 +85,7 @@ class EventDetailsScreen extends StatelessWidget {
               const SizedBox(height: 8),
               Row(
                 children: [
-                  Icon(Icons.location_on, color: purple),
+                  const Icon(Icons.location_on, color: purple),
                   const SizedBox(width: 5),
                   Text(
                     eventDetails.location,
@@ -99,7 +98,7 @@ class EventDetailsScreen extends StatelessWidget {
               const SizedBox(height: 8),
               Row(
                 children: [
-                  Icon(Icons.people, color: purple),
+                  const Icon(Icons.people, color: purple),
                   const SizedBox(width: 5),
                   Text(
                     'Maximum number of participants: ${eventDetails.participants}',
@@ -148,9 +147,9 @@ class EventDetailsScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: noSpotsAvailable
-                            ? Colors.grey
+                            ? AppColors.grey
                             : (eventDetails.isJoined.value
-                                ? Colors.red
+                                ? AppColors.error
                                 : purple),
                       ),
                       child: IconButton(
@@ -158,12 +157,11 @@ class EventDetailsScreen extends StatelessWidget {
                           eventDetails.isJoined.value
                               ? Icons.remove
                               : Icons.add,
-                          color: Colors.white,
+                          color: AppColors.white,
                         ),
                         onPressed: noSpotsAvailable
                             ? null
-                            : () =>
-                                eventController.toggleJoinEvent(eventDetails),
+                            : () => eventController.toggleJoinEvent(eventDetails),
                       ),
                     ),
                     const SizedBox(width: 12),

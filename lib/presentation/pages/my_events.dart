@@ -19,12 +19,11 @@ class MyEvents extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-        title: Text(
+         backgroundColor: const Color.fromARGB(255, 178, 144, 184),
+        title: const Text(
           'PuntoG',
           style: TextStyle(
-            color: Theme.of(context).appBarTheme.foregroundColor ??
-                Theme.of(context).textTheme.titleLarge?.color,
+            color: Colors.white
           ),
         ),
         centerTitle: true,
@@ -54,7 +53,7 @@ class MyEvents extends StatelessWidget {
                             location: event.location,
                             path: event.path,
                             date: event
-                                .date, // Usamos date directamente (sin formateo)
+                                .date, 
                             onTap: () => _navigateToEventDetails(event),
                           );
                         },

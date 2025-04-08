@@ -96,7 +96,7 @@ class EventController extends GetxController {
     
     // Cierra el diálogo de feedback
   
-    Get.snackbar('Gracias', 'Tu rating ha sido registrado',snackPosition: SnackPosition.BOTTOM);
+    Get.snackbar('Thanks!', 'Your rating has been recorded.',snackPosition: SnackPosition.BOTTOM);
   }
 
 }

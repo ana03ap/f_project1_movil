@@ -6,11 +6,11 @@ class Event {
   final String location;
   final String details;
   final int participants;
-  RxInt availableSpots; // Cambiado a RxInt para ser reactivo y mutable
+  RxInt availableSpots; 
   final String date;
   final String path;
   final String type;
-  final RxBool isJoined; // Nuevo atributo
+  final RxBool isJoined; 
   final List<double> ratings = [];
  final RxDouble averageRating; 
   Event({
@@ -18,7 +18,7 @@ class Event {
     required this.title,
     required this.location,
     required this.details,
-    required int availableSpots, // Cambiado a int para inicialización
+    required int availableSpots, 
     required this.participants,
     required this.date,
     required this.path,
@@ -26,7 +26,7 @@ class Event {
     required bool isJoined,
   })  : availableSpots = RxInt(availableSpots),
         isJoined = RxBool(isJoined),
-        averageRating = 0.0.obs;// Inicializado como RxInt
+        averageRating = 0.0.obs;
 
   void updateAverageRating() {
     averageRating.value = ratings.isEmpty

@@ -122,7 +122,7 @@ class PastEventCard extends StatelessWidget {
                         Container(
                           width: 120,
                           height: 70,
-                          color: Colors.black.withOpacity(0.6),
+                          color: Colors.black,
                         ),
                         Container(
                           width: 120,

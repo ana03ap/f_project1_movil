@@ -34,7 +34,7 @@ class EventCard extends StatelessWidget {
             BoxShadow(
               color: isDark
                   ? const Color.fromARGB(0, 0, 0, 0)
-                  : Colors.grey.withOpacity(0.3),
+                  : Colors.grey,
               blurRadius: 3,
               offset: const Offset(0, 2),
             ),

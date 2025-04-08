@@ -110,7 +110,6 @@ class MyEvents extends StatelessWidget {
   void _navigateToFeedback(Event event) {
     // 1. Opcional: Guarda el evento si necesitas datos en el feedback
     eventController.selectedEvent.value = event;
-    // 2. Navega a feedback
     Get.toNamed('/feedback');
   }
 

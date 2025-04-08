@@ -1,9 +1,7 @@
 import 'package:get/get.dart';
 
 class BottomNavController extends GetxController {
-  // Eliminamos el RxInt ya que no lo necesitamos como observable
-  // porque ahora determinamos el índice basado en la ruta
-  
+ 
   void onTap(int index) {
     final String name = Get.arguments ?? 'Guest';
     

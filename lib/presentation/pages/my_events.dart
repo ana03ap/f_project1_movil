@@ -1,30 +1,19 @@
 import 'package:f_project_1/data/events_data.dart';
 import 'package:f_project_1/presentation/controllers/event_controller.dart';
+import 'package:f_project_1/presentation/controllers/top_nav_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/constants/app_colors.dart';
-import '../controllers/top_nav_controller.dart';
-import '../widgets/top_nav_bar.dart';
 import '../widgets/bottom_nav_bar.dart';
 import '../widgets/event_card.dart';
 import '../widgets/pastevent_card.dart';
-import '../../core/constants/app_assets.dart';
+import '../widgets/top_nav_bar.dart';
 
-//ESTO POR AHORA ESTÁ ESTATICO, NO SE HA IMPLEMENTADO QUE AL DAR JOIN SE GUARDE PORQUE NO HAY BACKEND
 class MyEvents extends StatelessWidget {
   final TopNavController topNavController = Get.put(TopNavController());
   final EventController eventController = Get.find<EventController>();
 
   MyEvents({Key? key}) : super(key: key);
-
-  void navigateToEventDetails(Event event) {
-    eventController.selectEvent(event);
-    Get.toNamed('/details_screen');
-  }
-
-  void navigateToFeedback() {
-    Get.toNamed('/feedback');
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,74 +30,83 @@ class MyEvents extends StatelessWidget {
           TopNavBar(),
           Expanded(
             child: Obx(() {
-              return topNavController.currentIndex.value == 0
-                  ? Obx(() {
-            final joinedEvents = eventController.joinedEvents
-                .where((event) => event.isJoined.value)
-                .toList();
+              if (topNavController.currentIndex.value == 0) {
+                // EVENTOS FUTUROS (UPCOMING)
+                final upcomingEvents = eventController.joinedEvents
+                    .where((event) => eventController.isEventFuture(event.date))
+                    .toList();
                 
-            return joinedEvents.isEmpty
-                ? const Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(20.0),
-                      child: Text(
-                        "No te has unido a ningún evento",
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
-                  )
-                : ListView(
-                    children: joinedEvents
-                        .map((event) => EventCard(
-                              title: event.title,
-                              location: event.location,
-                              path: event.path,
-                              date: event.date,
-                              onTap: () => navigateToEventDetails(event),
-                            ))
-                        .toList(),
-                  );
-          })
-                  : ListView(
-                      children: [
-                        PastEventCard(
-                          title: "Reproductive Justice",
-                          path: AppAssets.sexRights,
-                          date: "April 20, 2025, 9:00 AM",
-                          score: "4.5",
-                          onTap: () => navigateToFeedback(),
-                        ),
-                        PastEventCard(
-                          title: "Understanding Contraceptive Options Today",
-                          path: AppAssets.sexRights,
-                          date: "April 20, 2025, 9:00 AM",
-                          score: "3.0",
-                          onTap: () => navigateToFeedback(),
-                        ),
-                        PastEventCard(
-                          title: "Access to Safe Abortions",
-                          path: AppAssets.sexRights,
-                          date: "April 20, 2025, 9:00 AM",
-                          score: "4.5",
-                          onTap: () => navigateToFeedback(),
-                        ),
-                        PastEventCard(
-                          title: "Menstrual Equity and Public Policy",
-                          path: AppAssets.sexRights,
-                          date: "April 20, 2025, 9:00 AM",
-                          score: "4.0",
-                          onTap: () => navigateToFeedback(),
-                        ),
-                      ],
-                    );
+                return upcomingEvents.isEmpty
+                    ? _buildEmptyState("No tienes eventos próximos")
+                    : ListView.builder(
+                        itemCount: upcomingEvents.length,
+                        itemBuilder: (context, index) {
+                          final event = upcomingEvents[index];
+                          return EventCard(
+                            title: event.title,
+                            location: event.location,
+                            path: event.path,
+                            date: event.date, // Usamos date directamente (sin formateo)
+                            onTap: () => _navigateToEventDetails(event),
+                          );
+                        },
+                      );
+              } else {
+                // EVENTOS PASADOS
+                final pastEvents = eventController.joinedEvents
+                    .where((event) => !eventController.isEventFuture(event.date))
+                    .toList();
+                
+                return pastEvents.isEmpty
+                    ? _buildEmptyState("No tienes eventos pasados")
+                    : ListView.builder(
+                        itemCount: pastEvents.length,
+                        itemBuilder: (context, index) {
+                          final event = pastEvents[index];
+                          return PastEventCard(
+                            title: event.title,
+                            path: event.path,
+                            date: event.date, // Usamos date directamente
+                            score: _calculateEventScore(event),
+                            onTap: () => _navigateToFeedback(event),
+                          );
+                        },
+                      );
+              }
             }),
           ),
         ],
       ),
       bottomNavigationBar: BottomNavBar(),
     );
+  }
+
+  // ========== MÉTODOS AUXILIARES ==========
+  Widget _buildEmptyState(String message) {
+    return Center(
+      child: Text(
+        message,
+        style: const TextStyle(color: Colors.grey, fontSize: 16),
+      ),
+    );
+  }
+
+  void _navigateToEventDetails(Event event) {
+    // 1. Guarda el evento seleccionado
+    eventController.selectEvent(event);
+    // 2. Navega a detalles
+    Get.toNamed('/details_screen');
+  }
+
+  void _navigateToFeedback(Event event) {
+    // 1. Opcional: Guarda el evento si necesitas datos en el feedback
+    eventController.selectedEvent.value = event;
+    // 2. Navega a feedback
+    Get.toNamed('/feedback');
+  }
+
+  String _calculateEventScore(Event event) {
+    // Lógica temporal (puedes conectarlo a tu backend después)
+    return "4.5";
   }
 }

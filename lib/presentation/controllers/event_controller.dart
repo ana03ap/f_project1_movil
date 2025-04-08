@@ -7,7 +7,6 @@ class EventController extends GetxController {
   final RxList<Event> filteredEvents = <Event>[].obs;
   final Rxn<Event> selectedEvent = Rxn<Event>();
   final RxString selectedFilter = ''.obs;
-  
   // Nota: availableSpots ahora es manejado por cada Event individualmente
 
   @override
@@ -84,4 +83,20 @@ class EventController extends GetxController {
       return true; // Por defecto, lo considera futuro
     }
   }
+
+
+  //FEEBACK
+
+    void addFeedback(Event event, double rating) {
+    event.ratings.add(rating); // Añade el nuevo rating a la lista
+    event.updateAverageRating();
+    
+    // Opcional: Guardar en SharedPreferences si necesitas persistencia
+    // _saveRatings(event);
+    
+    // Cierra el diálogo de feedback
+  
+    Get.snackbar('Gracias', 'Tu rating ha sido registrado',snackPosition: SnackPosition.BOTTOM);
+  }
+
 }

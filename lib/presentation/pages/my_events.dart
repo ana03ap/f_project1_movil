@@ -73,10 +73,7 @@ class MyEvents extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final event = pastEvents[index];
                           return PastEventCard(
-                            title: event.title,
-                            path: event.path,
-                            date: event.date, // Usamos date directamente
-                            score: _calculateEventScore(event),
+                            event: event,
                             onTap: () => _navigateToFeedback(event),
                           );
                         },
@@ -113,8 +110,5 @@ class MyEvents extends StatelessWidget {
     Get.toNamed('/feedback');
   }
 
-  String _calculateEventScore(Event event) {
-    // Lógica temporal (puedes conectarlo a tu backend después)
-    return "4.5";
-  }
+
 }

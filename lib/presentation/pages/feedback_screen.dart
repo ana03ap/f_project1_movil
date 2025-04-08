@@ -1,4 +1,5 @@
 import 'package:f_project_1/presentation/controllers/bottom_nav_controller.dart';
+import 'package:f_project_1/presentation/controllers/event_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/constants/app_colors.dart';
@@ -84,21 +85,18 @@ class FeedbackScreen extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                if (feedbackController.text.isNotEmpty &&
-                    selectedRating.value > 0) {
-                  Get.snackbar(
-                    'Feedback Sent!',
-                    'Thank you for your feedback!',
-                    snackPosition: SnackPosition.BOTTOM,
-                    backgroundColor: isDark ? Colors.grey[800] : Colors.white,
-                    colorText: theme.textTheme.bodyLarge?.color,
-                  );
-                  feedbackController.clear();
-                  selectedRating.value = 0;
+                if (selectedRating.value > 0) {
+                  final event = Get.find<EventController>().selectedEvent.value;
+                  if (event != null) {
+                    Get.find<EventController>().addFeedback(
+                      event,
+                      selectedRating.value.toDouble(),
+                    );
+                  }
                 } else {
                   Get.snackbar(
                     'Error',
-                    'Please write feedback and select a rating.',
+                    'Por favor selecciona un rating',
                     snackPosition: SnackPosition.BOTTOM,
                     backgroundColor: Colors.red,
                     colorText: Colors.white,

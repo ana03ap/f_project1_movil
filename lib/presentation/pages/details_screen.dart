@@ -14,15 +14,15 @@ class EventDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-    final purple = AppColors.primary;
+
+    const purple = AppColors.primary;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('PuntoG'),
         centerTitle: true,
-        backgroundColor: theme.colorScheme.background,
-        foregroundColor: theme.colorScheme.onBackground,
+        backgroundColor: theme.colorScheme.surface,
+        foregroundColor: theme.colorScheme.onSurface,
         elevation: 0,
       ),
       body: Obx(() {
@@ -57,6 +57,7 @@ class EventDetailsScreen extends StatelessWidget {
                     Container(
                       height: 180,
                       width: double.infinity,
+                      // ignore: deprecated_member_use
                       color: Colors.black.withOpacity(0.5),
                     ),
                     Container(
@@ -86,7 +87,7 @@ class EventDetailsScreen extends StatelessWidget {
               const SizedBox(height: 8),
               Row(
                 children: [
-                  Icon(Icons.location_on, color: purple),
+                  const Icon(Icons.location_on, color: purple),
                   const SizedBox(width: 5),
                   Text(
                     eventDetails.location,
@@ -99,7 +100,7 @@ class EventDetailsScreen extends StatelessWidget {
               const SizedBox(height: 8),
               Row(
                 children: [
-                  Icon(Icons.people, color: purple),
+                  const Icon(Icons.people, color: purple),
                   const SizedBox(width: 5),
                   Text(
                     'Maximum number of participants: ${eventDetails.participants}',

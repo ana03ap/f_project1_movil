@@ -18,6 +18,9 @@ class PastEventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -25,13 +28,13 @@ class PastEventCard extends StatelessWidget {
         width: 370,
         height: 130,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: isDark ? Colors.grey[850] : Colors.white,
           borderRadius: BorderRadius.circular(12),
-          boxShadow: const [
+          boxShadow: [
             BoxShadow(
-              color: Colors.grey,
+              color: isDark ? Colors.black54 : Colors.grey,
               blurRadius: 3,
-              offset: Offset(0, 2),
+              offset: const Offset(0, 2),
             ),
           ],
         ),
@@ -54,9 +57,10 @@ class PastEventCard extends StatelessWidget {
                               Expanded(
                                 child: Text(
                                   title,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
+                                    color: isDark ? Colors.white : Colors.black,
                                   ),
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
@@ -89,7 +93,12 @@ class PastEventCard extends StatelessWidget {
                                   padding: const EdgeInsets.only(top: 4),
                                   child: Text(
                                     score,
-                                    style: const TextStyle(fontSize: 14),
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: isDark
+                                          ? Colors.white70
+                                          : Colors.black87,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -113,7 +122,7 @@ class PastEventCard extends StatelessWidget {
                         Container(
                           width: 120,
                           height: 70,
-                          color: Colors.black,
+                          color: Colors.black.withOpacity(0.6),
                         ),
                         Container(
                           width: 120,
@@ -133,17 +142,19 @@ class PastEventCard extends StatelessWidget {
                   )
                 ],
               ),
-              const Padding(
-                padding: EdgeInsets.only(left: 4),
+              Padding(
+                padding: const EdgeInsets.only(left: 4, top: 8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Icon(Icons.add_comment, color: Colors.purple),
-                    SizedBox(width: 5),
+                    const Icon(Icons.add_comment, color: Colors.purple),
+                    const SizedBox(width: 5),
                     Text(
                       "Give a feedback!",
-                      style: TextStyle(color: Colors.grey),
+                      style: TextStyle(
+                        color: isDark ? Colors.grey[300] : Colors.grey[700],
+                      ),
                     ),
                   ],
                 ),

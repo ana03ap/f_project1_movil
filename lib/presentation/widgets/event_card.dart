@@ -18,6 +18,9 @@ class EventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -25,13 +28,15 @@ class EventCard extends StatelessWidget {
         width: 370,
         height: 115,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: isDark ? Colors.grey[850] : theme.cardColor,
           borderRadius: BorderRadius.circular(12),
-          boxShadow: const [
+          boxShadow: [
             BoxShadow(
-              color: Colors.grey,
+              color: isDark
+                  ? const Color.fromARGB(0, 0, 0, 0)
+                  : Colors.grey.withOpacity(0.3),
               blurRadius: 3,
-              offset: Offset(0, 2),
+              offset: const Offset(0, 2),
             ),
           ],
         ),
@@ -48,9 +53,8 @@ class EventCard extends StatelessWidget {
                       children: [
                         Text(
                           title,
-                          style: const TextStyle(
+                          style: theme.textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
-                            fontSize: 16,
                           ),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
@@ -73,8 +77,8 @@ class EventCard extends StatelessWidget {
                                     padding: const EdgeInsets.only(top: 3),
                                     child: Text(
                                       location,
-                                      style: const TextStyle(
-                                        color: Colors.purple,
+                                      style: TextStyle(
+                                        color: Colors.purple.shade300,
                                       ),
                                     ),
                                   )

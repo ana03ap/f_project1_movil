@@ -3,43 +3,47 @@ import 'package:flutter/material.dart';
 class ContainerIconWithText extends StatelessWidget {
   final IconData icon;
   final String label;
+  final bool isSelected;
 
   const ContainerIconWithText({
     Key? key,
     required this.icon,
     required this.label,
+    required this.isSelected,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 60,
-            height: 70,
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 240, 240, 240),
-              borderRadius: BorderRadius.all(Radius.circular(7)),
-            ),
-            child: Center(
-              child: Icon(
-                icon,
-                color: Colors.deepPurple,
-                size: 30,
-              ),
-            ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 8),
+          width: 70,
+          height: 70,
+          decoration: BoxDecoration(
+            color: isSelected
+                ? Colors.purple.withOpacity(0.2)
+                : Colors.grey.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(12),
           ),
-          const SizedBox(height: 5),
-          Text(
-            label,
-            style: const TextStyle(fontSize: 15, color: Colors.grey),
-            textAlign: TextAlign.center,
+          child: Icon(
+            icon,
+            color: isSelected ? Colors.purple : Colors.grey,
+            size: 30,
           ),
-        ],
-      ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          label,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: isSelected ? Colors.purple : Colors.grey,
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
     );
   }
 }

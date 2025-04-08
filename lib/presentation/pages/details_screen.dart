@@ -13,12 +13,16 @@ class EventDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final purple = AppColors.primary;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('PuntoG'),
         centerTitle: true,
-        backgroundColor: AppColors.background,
-        foregroundColor: AppColors.textPrimary,
+        backgroundColor: theme.colorScheme.background,
+        foregroundColor: theme.colorScheme.onBackground,
         elevation: 0,
       ),
       body: Obx(() {
@@ -27,7 +31,6 @@ class EventDetailsScreen extends StatelessWidget {
         if (eventDetails == null) {
           return const Center(child: CircularProgressIndicator());
         }
-
 
         return SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
@@ -51,13 +54,10 @@ class EventDetailsScreen extends StatelessWidget {
                         );
                       },
                     ),
-                    Opacity(
-                      opacity: 0.5,
-                      child: Container(
-                        height: 180,
-                        width: double.infinity,
-                        color: Colors.black,
-                      ),
+                    Container(
+                      height: 180,
+                      width: double.infinity,
+                      color: Colors.black.withOpacity(0.5),
                     ),
                     Container(
                       height: 180,
@@ -77,39 +77,64 @@ class EventDetailsScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              Text(eventDetails.title, style: AppStyles.title),
+              Text(
+                eventDetails.title,
+                style: AppStyles.title.copyWith(
+                  color: theme.textTheme.titleLarge?.color,
+                ),
+              ),
               const SizedBox(height: 8),
               Row(
                 children: [
-                  const Icon(Icons.location_on, color: AppColors.primary),
+                  Icon(Icons.location_on, color: purple),
                   const SizedBox(width: 5),
-                  Text(eventDetails.location, style: AppStyles.normal),
+                  Text(
+                    eventDetails.location,
+                    style: AppStyles.normal.copyWith(
+                      color: theme.textTheme.bodyMedium?.color,
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(height: 8),
               Row(
                 children: [
-                  const Icon(Icons.people, color: AppColors.primary),
+                  Icon(Icons.people, color: purple),
                   const SizedBox(width: 5),
                   Text(
-                      'Maximum number of participants: ${eventDetails.participants}',
-                      style: AppStyles.normal),
+                    'Maximum number of participants: ${eventDetails.participants}',
+                    style: AppStyles.normal.copyWith(
+                      color: theme.textTheme.bodyMedium?.color,
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(height: 16),
-              const Text('Details', style: AppStyles.subtitle),
+              Text(
+                'Details',
+                style: AppStyles.subtitle.copyWith(
+                  color: theme.textTheme.titleMedium?.color,
+                ),
+              ),
               const SizedBox(height: 8),
-              Text(eventDetails.details, style: AppStyles.normal),
+              Text(
+                eventDetails.details,
+                style: AppStyles.normal.copyWith(
+                  color: theme.textTheme.bodyMedium?.color,
+                ),
+              ),
               const SizedBox(height: 16),
               Obx(() => Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      border: Border.all(color: AppColors.buttonBorder),
+                      border: Border.all(color: theme.dividerColor),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
-                      'Available spots: ${eventDetails.availableSpots.value}',// ya puedo hacer esto pq la variable ya es reactiva 
-                      style: AppStyles.bold,
+                      'Available spots: ${eventDetails.availableSpots.value}',
+                      style: AppStyles.bold.copyWith(
+                        color: theme.textTheme.bodyLarge?.color,
+                      ),
                     ),
                   )),
               const SizedBox(height: 16),
@@ -126,7 +151,7 @@ class EventDetailsScreen extends StatelessWidget {
                             ? Colors.grey
                             : (eventDetails.isJoined.value
                                 ? Colors.red
-                                : AppColors.primary),
+                                : purple),
                       ),
                       child: IconButton(
                         icon: Icon(
@@ -137,13 +162,16 @@ class EventDetailsScreen extends StatelessWidget {
                         ),
                         onPressed: noSpotsAvailable
                             ? null
-                            :()=> eventController.toggleJoinEvent(eventDetails),
+                            : () =>
+                                eventController.toggleJoinEvent(eventDetails),
                       ),
                     ),
                     const SizedBox(width: 12),
                     Text(
                       eventDetails.isJoined.value ? 'Unjoin' : 'Join!',
-                      style: AppStyles.subtitle,
+                      style: AppStyles.subtitle.copyWith(
+                        color: theme.textTheme.titleMedium?.color,
+                      ),
                     ),
                   ],
                 );

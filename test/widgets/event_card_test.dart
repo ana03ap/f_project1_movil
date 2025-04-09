@@ -23,15 +23,15 @@ void main() {
       ),
     );
 
-    // Verifica que se renderice el texto del título, ubicación y fecha
+    // Verify that the title, location, and date texts are rendered
     expect(find.text('Test Event'), findsOneWidget);
     expect(find.text('Test Location'), findsOneWidget);
     expect(find.text('April 27, 2025, 11:00 AM'), findsOneWidget);
 
-    // Verifica que se renderice el ícono de ubicación
+    // Verify that the location icon is rendered
     expect(find.byIcon(Icons.location_on), findsOneWidget);
 
-    // Simula el tap
+    // Simulate the tap
     await tester.tap(find.byType(EventCard));
     expect(tapped, isTrue);
   });

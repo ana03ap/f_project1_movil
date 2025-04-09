@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import '../widgets/container_icon_with_text.dart';
 import '../widgets/event_card.dart';
 import '../widgets/bottom_nav_bar.dart';
-import 'package:f_project_1/data/datasources/events_data.dart';
+
 
 class Startpage extends StatelessWidget {
   final BottomNavController bottomNavController = Get.find();

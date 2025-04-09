@@ -1,4 +1,3 @@
-import 'package:f_project_1/data/datasources/events_data.dart';
 import 'package:f_project_1/data/models/event_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';

@@ -1,45 +1,8 @@
-import 'package:get/get.dart';
+import '../models/event_model.dart';
 
-class Event {
-  final int id;
-  final String title;
-  final String location;
-  final String details;
-  final int participants;
-  final String date;
-  final String path;
-  final String type;
-
-  RxInt availableSpots;
-  RxBool isJoined;
-  RxDouble averageRating;
-  final List<double> ratings = [];
-
-  Event({
-    required this.id,
-    required this.title,
-    required this.location,
-    required this.details,
-    required int availableSpots, // se recibe como int
-    required this.participants,
-    required this.date,
-    required this.path,
-    required this.type,
-    required bool isJoined, // se recibe como bool
-  })  : availableSpots = availableSpots.obs, // se convierte a RxInt
-        isJoined = isJoined.obs, // se convierte a RxBool
-        averageRating = 0.0.obs; // se inicializa como RxDouble
-
-  void updateAverageRating() {
-    averageRating.value = ratings.isEmpty
-        ? 0.0
-        : ratings.reduce((a, b) => a + b) / ratings.length;
-  }
-}
-
-List<Event> eventsList = [
+List<EventModel> eventsList = [
 // UNBOUND ------------------------------------------------------------------------------
-  Event(
+  EventModel(
       id: 1,
       title: "The Things We Wish We’d Learned Sooner",
       location: "Reflection Room",
@@ -51,7 +14,7 @@ List<Event> eventsList = [
       path: "lib/assets/unbound01.jpeg",
       type: "Unbound",
       isJoined: false),
-  Event(
+  EventModel(
       id: 2,
       title: "Consent Isn’t Just a Word: Rethinking Connection",
       location: "Youth Circle Room",
@@ -63,7 +26,7 @@ List<Event> eventsList = [
       path: "lib/assets/unbound02.png",
       type: "Unbound",
       isJoined: false),
-  Event(
+  EventModel(
       id: 3,
       title: "Breaking the Ice: Naming the Unspoken Around Sex",
       location: "Open Dialogue Space",
@@ -75,7 +38,7 @@ List<Event> eventsList = [
       path: "lib/assets/unbound03.jpg",
       type: "Unbound",
       isJoined: false),
-  Event(
+  EventModel(
       id: 4,
       title: "Gender, Body & Desire: Finding Your Own Voice",
       location: "Identity Room",
@@ -89,7 +52,7 @@ List<Event> eventsList = [
       isJoined: false),
 
 // SEXED ----------------------------------------------------------------------------------
-  Event(
+  EventModel(
       id: 5,
       title: "Pleasure is Political: Redefining Sex Ed",
       location: "Liberation Hall",
@@ -101,7 +64,7 @@ List<Event> eventsList = [
       path: "lib/assets/education01.png",
       type: "education",
       isJoined: false),
-  Event(
+  EventModel(
       id: 6,
       title: "Consent Beyond 'Yes' and 'No'",
       location: "Empathy Studio",
@@ -113,7 +76,7 @@ List<Event> eventsList = [
       path: "lib/assets/education02.png",
       type: "education",
       isJoined: false),
-  Event(
+  EventModel(
       id: 7,
       title: "Erotic Anatomy: Knowing Ourselves Deeply",
       location: "Body Wisdom Room",
@@ -125,7 +88,7 @@ List<Event> eventsList = [
       path: "lib/assets/education03.jpg",
       type: "education",
       isJoined: false),
-  Event(
+  EventModel(
       id: 8,
       title: "Sexuality Across the Lifespan",
       location: "Continuum Space",
@@ -137,7 +100,7 @@ List<Event> eventsList = [
       path: "lib/assets/education04.png",
       type: "education",
       isJoined: false),
-  Event(
+  EventModel(
       id: 9,
       title: "Pleasure and Disability",
       location: "Accessible Love Room",
@@ -149,7 +112,7 @@ List<Event> eventsList = [
       path: "lib/assets/education05.jpg",
       type: "education",
       isJoined: false),
-  Event(
+  EventModel(
       id: 10,
       title: "Tools for Talking About Sex With Kids and Teens",
       location: "Circle of Care",
@@ -164,7 +127,7 @@ List<Event> eventsList = [
 
   //BODY LITERACY
 
-  Event(
+  EventModel(
       id: 11,
       title: "Getting to Know My Body Without Judgment",
       location: "Quiet Room",
@@ -176,7 +139,7 @@ List<Event> eventsList = [
       path: "lib/assets/bodyliteracy01.jpg",
       type: "bodyliteracy",
       isJoined: false),
-  Event(
+  EventModel(
       id: 12,
       title: "How to Talk About What I Feel",
       location: "Circle Space",
@@ -188,7 +151,7 @@ List<Event> eventsList = [
       path: "lib/assets/bodyliteracy02.jpg",
       type: "bodyliteracy",
       isJoined: false),
-  Event(
+  EventModel(
       id: 13,
       title: "Languages of Affection and Care",
       location: "Blue Room",
@@ -200,7 +163,7 @@ List<Event> eventsList = [
       path: "lib/assets/bodyliteracy03.jpg",
       type: "bodyliteracy",
       isJoined: false),
-  Event(
+  EventModel(
       id: 14,
       title: "Intimacy Is Also Learned",
       location: "Inner Garden",
@@ -215,7 +178,7 @@ List<Event> eventsList = [
 
   // CULTURE
 
-  Event(
+  EventModel(
       id: 15,
       title: "A History of Desire: From Taboos to Liberation",
       location: "Heritage Hall",
@@ -227,7 +190,7 @@ List<Event> eventsList = [
       path: "lib/assets/culture01.jpg",
       type: "culture",
       isJoined: false),
-  Event(
+  EventModel(
       id: 16,
       title: "Colonialism, Gender, and the Body",
       location: "Decolonial Room",
@@ -239,7 +202,7 @@ List<Event> eventsList = [
       path: "lib/assets/culture02.jpg",
       type: "culture",
       isJoined: false),
-  Event(
+  EventModel(
       id: 17,
       title: "Spirituality and Sensuality Across Cultures",
       location: "Sacred Space",
@@ -251,7 +214,7 @@ List<Event> eventsList = [
       path: "lib/assets/culture03.jpg",
       type: "culture",
       isJoined: false),
-  Event(
+  EventModel(
       id: 18,
       title: "Erotic Myths and Ancient Rituals",
       location: "Temple Room",
@@ -263,7 +226,7 @@ List<Event> eventsList = [
       path: "lib/assets/culture04.jpg",
       type: "culture",
       isJoined: false),
-  Event(
+  EventModel(
       id: 19,
       title: "Media, Pleasure, and Representation",
       location: "Cinema Hall",
@@ -277,7 +240,7 @@ List<Event> eventsList = [
       isJoined: false),
 
   // CYBERTOUCH
-  Event(
+  EventModel(
       id: 20,
       title: "Swipe Culture: Dating in the Digital Age",
       location: "Tech Lounge A",
@@ -290,7 +253,7 @@ List<Event> eventsList = [
       type: "Cybertouch",
       isJoined: false),
 
-  Event(
+  EventModel(
       id: 21,
       title: "Consent in the Age of Screens",
       location: "Ethics Room C",
@@ -303,7 +266,7 @@ List<Event> eventsList = [
       type: "Cybertouch",
       isJoined: false),
 
-  Event(
+  EventModel(
       id: 22,
       title: "Emotional Safety in Online Relationships",
       location: "Connection Hub",
@@ -316,7 +279,7 @@ List<Event> eventsList = [
       type: "Cybertouch",
       isJoined: false),
 
-  Event(
+  EventModel(
       id: 23,
       title: "Nudes and Trust: Ethics of Sexting",
       location: "Media Room B",
@@ -329,7 +292,7 @@ List<Event> eventsList = [
       type: "Cybertouch",
       isJoined: false),
 
-  Event(
+  EventModel(
       id: 24,
       title: "Catfishing, Scams, and Digital Vulnerability",
       location: "Cybersecurity Hall",
@@ -341,7 +304,7 @@ List<Event> eventsList = [
       path: "lib/assets/cybertouch06.png",
       type: "Cybertouch",
       isJoined: false),
-  Event(
+  EventModel(
       id: 25,
       title: "Your Digital Footprint and Intimate Privacy",
       location: "Privacy Lab",
@@ -355,7 +318,7 @@ List<Event> eventsList = [
       isJoined: false),
 
   // GENDER IDENTITY
-  Event(
+  EventModel(
       id: 26,
       title: "Understanding the Gender Spectrum",
       location: "Diversity Hall A",
@@ -367,7 +330,7 @@ List<Event> eventsList = [
       path: "lib/assets/identity01.png",
       type: "Identity",
       isJoined: false),
-  Event(
+  EventModel(
       id: 27,
       title: "Trans and Non-Binary Healthcare Access",
       location: "Equality Room B",
@@ -379,7 +342,7 @@ List<Event> eventsList = [
       path: "lib/assets/identity02.png",
       type: "Identity",
       isJoined: false),
-  Event(
+  EventModel(
       id: 28,
       title: "Gender Expression in Media and Art",
       location: "Art Lab Studio",
@@ -391,7 +354,7 @@ List<Event> eventsList = [
       path: "lib/assets/identity03.png",
       type: "Identity",
       isJoined: false),
-  Event(
+  EventModel(
       id: 29,
       title: "The Politics of Pronouns",
       location: "Room D1",
@@ -403,7 +366,7 @@ List<Event> eventsList = [
       path: "lib/assets/identity04.png",
       type: "Identity",
       isJoined: false),
-  Event(
+  EventModel(
       id: 30,
       title: "Inclusive Language in Educational Spaces",
       location: "Education Center",
@@ -415,7 +378,7 @@ List<Event> eventsList = [
       path: "lib/assets/identity05.jpeg",
       type: "Identity",
       isJoined: false),
-  Event(
+  EventModel(
       id: 31,
       title: "Queer and Trans Youth Empowerment",
       location: "Youth Space",
@@ -429,7 +392,7 @@ List<Event> eventsList = [
       isJoined: false),
 
   // SEXUAL HEALTH
-  Event(
+  EventModel(
       id: 32,
       title: "Reproductive Justice: Rights and Realities",
       location: "Hall B1",
@@ -441,7 +404,7 @@ List<Event> eventsList = [
       path: "lib/assets/sexhealth01.png",
       type: "sexHealth",
       isJoined: false),
-  Event(
+  EventModel(
       id: 33,
       title: "Understanding Contraceptive Options Today",
       location: "Room 2A",
@@ -453,7 +416,7 @@ List<Event> eventsList = [
       path: "lib/assets/sexhealth02.png",
       type: "sexHealth",
       isJoined: false),
-  Event(
+  EventModel(
       id: 34,
       title: "Emergency Contraception: Myths and Facts",
       location: "Advocacy Center",
@@ -465,7 +428,7 @@ List<Event> eventsList = [
       path: "lib/assets/sexhealth03.png",
       type: "sexHealth",
       isJoined: false),
-  Event(
+  EventModel(
       id: 35,
       title: "Menstrual Equity and Public Policy",
       location: "Room C3",
@@ -477,7 +440,7 @@ List<Event> eventsList = [
       path: "lib/assets/sexhealth04.png",
       type: "sexHealth",
       isJoined: false),
-  Event(
+  EventModel(
       id: 36,
       title: "Access to Safe Abortions: Legal and Medical Perspectives",
       location: "Main Auditorium",
@@ -489,7 +452,7 @@ List<Event> eventsList = [
       path: "lib/assets/sexhealth05.png",
       type: "sexHealth",
       isJoined: false),
-  Event(
+  EventModel(
       id: 37,
       title: "Pregnancy, Parenthood, and Reproductive Choices",
       location: "Room A4",

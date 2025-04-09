@@ -1,10 +1,11 @@
 
+import 'package:f_project_1/data/models/event_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:f_project_1/data/events_data.dart'; // Asegúrate de importar tu modelo Event
+ 
 
 class PastEventCard extends StatelessWidget {
-  final Event event; // Ahora recibe el Evento completo
+  final EventModel event; 
   final VoidCallback onTap;
 
   const PastEventCard({
@@ -111,7 +112,7 @@ class PastEventCard extends StatelessWidget {
                     child: Stack(
                       children: [
                         Image.asset(
-                          event.path, // Accedemos desde el evento
+                          event.path, 
                           width: 120,
                           height: 70,
                           fit: BoxFit.cover,
@@ -126,7 +127,7 @@ class PastEventCard extends StatelessWidget {
                           height: 70,
                           alignment: Alignment.center,
                           child: Text(
-                            event.date, // Accedemos desde el evento
+                            event.date, 
                             style: const TextStyle(
                               fontSize: 10,
                               color: Colors.white,

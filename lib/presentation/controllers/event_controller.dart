@@ -1,25 +1,38 @@
-import 'package:f_project_1/data/events_data.dart';
+import 'package:f_project_1/domain/repositories/event_repository_impl.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';// esto es pa las fechas 
+import 'package:intl/intl.dart';
+
+import '../../data/models/event_model.dart';
+import '../../domain/usecases/join_event.dart';
+import '../../domain/usecases/unjoin_event.dart';
+import '../../domain/usecases/filter_events.dart';
+import '../../domain/repositories/event_repository.dart';
 
 class EventController extends GetxController {
-  final RxList<Event> joinedEvents = <Event>[].obs;
-  final RxList<Event> filteredEvents = <Event>[].obs;
-  final Rxn<Event> selectedEvent = Rxn<Event>();
+  // Repositorio actual (mock)
+  final EventRepository _repository = EventRepositoryImpl();
+
+  final RxList<EventModel> joinedEvents = <EventModel>[].obs;
+  final RxList<EventModel> filteredEvents = <EventModel>[].obs;
+  final Rxn<EventModel> selectedEvent = Rxn<EventModel>();
   final RxString selectedFilter = ''.obs;
-  // Nota: availableSpots ahora es manejado por cada Event individualmente
+
+  final JoinEvent _joinEventUseCase = JoinEvent();
+  final UnjoinEvent _unjoinEventUseCase = UnjoinEvent();
+  final FilterEvents _filterEventsUseCase = FilterEvents();
 
   @override
   void onInit() {
     super.onInit();
     resetFilter();
   }
-//MANEJO DE EVENTOS 
-  void selectEvent(Event event) {
+
+  // MANEJO DE EVENTOS
+  void selectEvent(EventModel event) {
     selectedEvent.value = event;
   }
 
-  void toggleJoinEvent(Event event) {
+  void toggleJoinEvent(EventModel event) {
     if (event.isJoined.value) {
       unjoinEvent(event);
     } else {
@@ -27,28 +40,26 @@ class EventController extends GetxController {
     }
   }
 
-  void joinEvent(Event event) {
-    if (event.availableSpots.value > 0) {
-      event.isJoined.value = true;
-      event.availableSpots.value--;
-      
-      if (!joinedEvents.any((e) => e.id == event.id)) {
-        joinedEvents.add(event);
-      }
-      
-      updateFilteredEvents();
+  void joinEvent(EventModel event) {
+    _joinEventUseCase(event);
+    _repository.joinEvent(event.id);
+
+    if (!joinedEvents.any((e) => e.id == event.id)) {
+      joinedEvents.add(event);
     }
+
+    updateFilteredEvents();
   }
 
-  void unjoinEvent(Event event) {
-    event.isJoined.value = false;
-    event.availableSpots.value++;
+  void unjoinEvent(EventModel event) {
+    _unjoinEventUseCase(event);
+    _repository.unjoinEvent(event.id);
+
     joinedEvents.removeWhere((e) => e.id == event.id);
     updateFilteredEvents();
   }
 
-
-// FILTRADO
+  // FILTRADO
   void filterEvents(String type) {
     selectedFilter.value = type;
     updateFilteredEvents();
@@ -60,43 +71,32 @@ class EventController extends GetxController {
   }
 
   void updateFilteredEvents() {
-    if (selectedFilter.value.isEmpty) {
-      filteredEvents.assignAll(eventsList);
-    } else {
-      filteredEvents.assignAll(
-        eventsList.where((event) => event.type == selectedFilter.value),
-      );
-    }
+    final allEvents = _repository.getAllEvents().cast<EventModel>();
+    final filtered = _filterEventsUseCase(selectedFilter.value, allEvents);
+    filteredEvents.assignAll(filtered);
   }
 
-  // MANJEAR LAS FECHAS PAL UPCOMING Y PASE EVENTS
-
-
-
+  // FECHAS
   bool isEventFuture(String dateString) {
     try {
       final format = DateFormat("MMMM dd, yyyy, h:mm a", "en_US");
       final eventDate = format.parse(dateString, true).toLocal();
       return eventDate.isAfter(DateTime.now().toLocal());
-    } catch (e) {
-      print('⚠️ Error parsing date: $dateString');
-      return true; // Por defecto, lo considera futuro
+    } catch (_) {
+      return true;
     }
   }
 
-
-  //FEEBACK
-
-    void addFeedback(Event event, double rating) {
-    event.ratings.add(rating); // Añade el nuevo rating a la lista
+  // FEEDBACK
+  void addFeedback(EventModel event, double rating) {
+    event.ratings.add(rating);
     event.updateAverageRating();
-    
-    // Opcional: Guardar en SharedPreferences si necesitas persistencia
-    // _saveRatings(event);
-    
-    // Cierra el diálogo de feedback
-  
-    Get.snackbar('Thanks!', 'Your rating has been recorded.',snackPosition: SnackPosition.BOTTOM);
-  }
+    _repository.addRating(event.id, rating);
 
+    Get.snackbar(
+      'Thanks!',
+      'Your rating has been recorded.',
+      snackPosition: SnackPosition.BOTTOM,
+    );
+  }
 }

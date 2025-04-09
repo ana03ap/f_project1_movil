@@ -12,14 +12,13 @@ class HomeScreen extends StatelessWidget {
   void navigateToStartPage() {
     if (nameController.text.isNotEmpty) {
       homeController.setName(nameController.text);
-
       Get.toNamed('/startpage');
     } else {
       Get.snackbar(
         'Error',
         'Please enter your name.',
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
+        backgroundColor: AppColors.error,
+        colorText: AppColors.white,
         snackPosition: SnackPosition.BOTTOM,
       );
     }
@@ -41,6 +40,7 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 20),
             TextField(
               controller: nameController,
+              style: const TextStyle(color: AppColors.textPrimary), 
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Input Name',
@@ -51,17 +51,16 @@ class HomeScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: navigateToStartPage,
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 167, 91, 248),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                backgroundColor: AppColors.primary,
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                 elevation: 4,
-                shadowColor: Colors.black,
+                shadowColor: AppColors.black,
               ),
               child: const Text(
                 'Start',
                 style: TextStyle(
                   fontSize: 18,
-                  color: Colors.white,
+                  color: AppColors.white,
                 ),
               ),
             )

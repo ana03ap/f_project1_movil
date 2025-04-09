@@ -10,27 +10,39 @@ class TopNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        
           children: [
-            _buildTab('Upcoming Events', 0),
-            _buildTab('Past Events', 1),
+            _buildFlexibleTab('Upcoming Events', 0),
+            _buildFlexibleTab('Past Events', 1),
           ],
         ));
   }
 
-  Widget _buildTab(String label, int index) {
-    return GestureDetector(
-      onTap: () => topNavController.onTap(index),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        child: Text(
-          label,
-          style: TextStyle(
-            fontSize: 16,
-            color: topNavController.currentIndex.value == index
-                ? Colors.purple
-                : Colors.grey,
+  Widget _buildFlexibleTab(String label, int index) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => topNavController.onTap(index),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 12.0),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                color: topNavController.currentIndex.value == index
+                    ? Colors.purple
+                    : Colors.transparent,
+                width: 2,
+              ),
+            ),
+          ),
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              color: topNavController.currentIndex.value == index
+                  ? Colors.purple
+                  : Colors.grey,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
       ),

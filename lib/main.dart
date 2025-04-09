@@ -29,12 +29,12 @@ class MyApp extends StatelessWidget {
           color: AppColors.primary, 
           theme: theme.copyWith(
             textTheme: theme.textTheme.apply(
-              fontFamily: 'LeagueSpartan',
+              fontFamily: 'Poppins',
             ),
           ),
           darkTheme: darkTheme.copyWith(
             textTheme: darkTheme.textTheme.apply(
-              fontFamily: 'LeagueSpartan',
+              fontFamily: 'Poppins',
             ),
           ),
           debugShowCheckedModeBanner: false,

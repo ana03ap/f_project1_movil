@@ -32,55 +32,58 @@ class MyEvents extends StatelessWidget {
           color: Theme.of(context).iconTheme.color,
         ),
       ),
-      body: Column(
-        children: [
-          TopNavBar(),
-          Expanded(
-            child: Obx(() {
-              if (topNavController.currentIndex.value == 0) {
-                final upcomingEvents = eventController.joinedEvents
-                    .where((event) => eventController.isEventFuture(event.date))
-                    .toList();
-
-                return upcomingEvents.isEmpty
-                    ? _buildEmptyState("No upcoming events")
-                    : ListView.builder(
-                        itemCount: upcomingEvents.length,
-                        itemBuilder: (context, index) {
-                          final event = upcomingEvents[index];
-                          return EventCard(
-                            title: event.title,
-                            location: event.location,
-                            path: event.path,
-                            date: event
-                                .date, 
-                            onTap: () => _navigateToEventDetails(event),
-                          );
-                        },
-                      );
-              } else {
-                // EVENTOS PASADOS
-                final pastEvents = eventController.joinedEvents
-                    .where(
-                        (event) => !eventController.isEventFuture(event.date))
-                    .toList();
-
-                return pastEvents.isEmpty
-                    ? _buildEmptyState("No past events")
-                    : ListView.builder(
-                        itemCount: pastEvents.length,
-                        itemBuilder: (context, index) {
-                          final event = pastEvents[index];
-                          return PastEventCard(
-                            event: event,
-                            onTap: () => _navigateToFeedback(event),
-                          );
-                        },
-                      );
-              }
-            }),
-          ),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.only(top:10),
+        child: Column(
+          children: [
+            TopNavBar(),
+            Expanded(
+              child: Obx(() {
+                if (topNavController.currentIndex.value == 0) {
+                  final upcomingEvents = eventController.joinedEvents
+                      .where((event) => eventController.isEventFuture(event.date))
+                      .toList();
+        
+                  return upcomingEvents.isEmpty
+                      ? _buildEmptyState("No upcoming events")
+                      : ListView.builder(
+                          itemCount: upcomingEvents.length,
+                          itemBuilder: (context, index) {
+                            final event = upcomingEvents[index];
+                            return EventCard(
+                              title: event.title,
+                              location: event.location,
+                              path: event.path,
+                              date: event
+                                  .date, 
+                              onTap: () => _navigateToEventDetails(event),
+                            );
+                          },
+                        );
+                } else {
+                  // EVENTOS PASADOS
+                  final pastEvents = eventController.joinedEvents
+                      .where(
+                          (event) => !eventController.isEventFuture(event.date))
+                      .toList();
+        
+                  return pastEvents.isEmpty
+                      ? _buildEmptyState("No past events")
+                      : ListView.builder(
+                          itemCount: pastEvents.length,
+                          itemBuilder: (context, index) {
+                            final event = pastEvents[index];
+                            return PastEventCard(
+                              event: event,
+                              onTap: () => _navigateToFeedback(event),
+                            );
+                          },
+                        );
+                }
+              }),
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavBar(),
     );

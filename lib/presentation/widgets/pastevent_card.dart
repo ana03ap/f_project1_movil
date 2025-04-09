@@ -1,9 +1,11 @@
+
+import 'package:f_project_1/data/models/event_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:f_project_1/data/events_data.dart';
+ 
 
 class PastEventCard extends StatelessWidget {
-  final Event event; 
+  final EventModel event; 
   final VoidCallback onTap;
 
   const PastEventCard({

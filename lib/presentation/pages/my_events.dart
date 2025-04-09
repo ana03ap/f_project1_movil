@@ -1,9 +1,8 @@
-import 'package:f_project_1/data/events_data.dart';
+import 'package:f_project_1/data/models/event_model.dart'; 
 import 'package:f_project_1/presentation/controllers/event_controller.dart';
 import 'package:f_project_1/presentation/controllers/top_nav_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../core/constants/app_colors.dart';
 import '../widgets/bottom_nav_bar.dart';
 import '../widgets/event_card.dart';
 import '../widgets/pastevent_card.dart';
@@ -32,55 +31,58 @@ class MyEvents extends StatelessWidget {
           color: Theme.of(context).iconTheme.color,
         ),
       ),
-      body: Column(
-        children: [
-          TopNavBar(),
-          Expanded(
-            child: Obx(() {
-              if (topNavController.currentIndex.value == 0) {
-                final upcomingEvents = eventController.joinedEvents
-                    .where((event) => eventController.isEventFuture(event.date))
-                    .toList();
-
-                return upcomingEvents.isEmpty
-                    ? _buildEmptyState("No upcoming events")
-                    : ListView.builder(
-                        itemCount: upcomingEvents.length,
-                        itemBuilder: (context, index) {
-                          final event = upcomingEvents[index];
-                          return EventCard(
-                            title: event.title,
-                            location: event.location,
-                            path: event.path,
-                            date: event
-                                .date, 
-                            onTap: () => _navigateToEventDetails(event),
-                          );
-                        },
-                      );
-              } else {
-                // EVENTOS PASADOS
-                final pastEvents = eventController.joinedEvents
-                    .where(
-                        (event) => !eventController.isEventFuture(event.date))
-                    .toList();
-
-                return pastEvents.isEmpty
-                    ? _buildEmptyState("No past events")
-                    : ListView.builder(
-                        itemCount: pastEvents.length,
-                        itemBuilder: (context, index) {
-                          final event = pastEvents[index];
-                          return PastEventCard(
-                            event: event,
-                            onTap: () => _navigateToFeedback(event),
-                          );
-                        },
-                      );
-              }
-            }),
-          ),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.only(top:10),
+        child: Column(
+          children: [
+            TopNavBar(),
+            Expanded(
+              child: Obx(() {
+                if (topNavController.currentIndex.value == 0) {
+                  final upcomingEvents = eventController.joinedEvents
+                      .where((event) => eventController.isEventFuture(event.date))
+                      .toList();
+        
+                  return upcomingEvents.isEmpty
+                      ? _buildEmptyState("No upcoming events")
+                      : ListView.builder(
+                          itemCount: upcomingEvents.length,
+                          itemBuilder: (context, index) {
+                            final event = upcomingEvents[index];
+                            return EventCard(
+                              title: event.title,
+                              location: event.location,
+                              path: event.path,
+                              date: event
+                                  .date, 
+                              onTap: () => _navigateToEventDetails(event),
+                            );
+                          },
+                        );
+                } else {
+                  // EVENTOS PASADOS
+                  final pastEvents = eventController.joinedEvents
+                      .where(
+                          (event) => !eventController.isEventFuture(event.date))
+                      .toList();
+        
+                  return pastEvents.isEmpty
+                      ? _buildEmptyState("No past events")
+                      : ListView.builder(
+                          itemCount: pastEvents.length,
+                          itemBuilder: (context, index) {
+                            final event = pastEvents[index];
+                            return PastEventCard(
+                              event: event,
+                              onTap: () => _navigateToFeedback(event),
+                            );
+                          },
+                        );
+                }
+              }),
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavBar(),
     );
@@ -96,15 +98,13 @@ class MyEvents extends StatelessWidget {
     );
   }
 
-  void _navigateToEventDetails(Event event) {
-    // 1. Guarda el evento seleccionado
+  void _navigateToEventDetails(EventModel event) {
     eventController.selectEvent(event);
-    // 2. Navega a detalles
     Get.toNamed('/details_screen');
   }
 
-  void _navigateToFeedback(Event event) {
-    // 1. Opcional: Guarda el evento si necesitas datos en el feedback
+  void _navigateToFeedback(EventModel event) {
+
     eventController.selectedEvent.value = event;
     Get.toNamed('/feedback');
   }

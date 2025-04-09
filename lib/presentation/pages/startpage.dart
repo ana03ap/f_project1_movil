@@ -1,3 +1,4 @@
+import 'package:f_project_1/data/models/event_model.dart';
 import 'package:f_project_1/presentation/controllers/bottom_nav_controller.dart';
 import 'package:f_project_1/presentation/controllers/event_controller.dart';
 import 'package:f_project_1/presentation/controllers/home_controller.dart';
@@ -6,7 +7,7 @@ import 'package:get/get.dart';
 import '../widgets/container_icon_with_text.dart';
 import '../widgets/event_card.dart';
 import '../widgets/bottom_nav_bar.dart';
-import 'package:f_project_1/data/events_data.dart';
+
 
 class Startpage extends StatelessWidget {
   final BottomNavController bottomNavController = Get.find();
@@ -38,7 +39,7 @@ class Startpage extends StatelessWidget {
 
   Startpage({Key? key}) : super(key: key);
 
-  void navigateToEventDetails(Event event) {
+  void navigateToEventDetails(EventModel event) {
     eventController.selectEvent(event);
     Get.toNamed('/details_screen');
   }
@@ -64,7 +65,7 @@ class Startpage extends StatelessWidget {
         children: [
           // CABECERA MORADA SIN PADDING
           SafeArea(
-            top: true,
+            top: false,
             bottom: false,
             minimum: EdgeInsets.zero,
             child: Container(

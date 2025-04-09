@@ -9,7 +9,7 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Obtenemos el índice actual basado en la ruta
+    
     final currentIndex = bottomNavController.getCurrentIndex();
     
     return BottomNavigationBar(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/constants/app_colors.dart';
 
 class EventCard extends StatelessWidget {
   final String title;
@@ -32,7 +33,7 @@ class EventCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: isDark ? const Color.fromARGB(0, 0, 0, 0) : Colors.grey,
+              color: isDark ? const Color.fromARGB(0, 0, 0, 0) : AppColors.grey,
               blurRadius: 3,
               offset: const Offset(0, 2),
             ),
@@ -70,7 +71,7 @@ class EventCard extends StatelessWidget {
                                     const Icon(
                                       Icons.location_on,
                                       size: 16,
-                                      color: Colors.purple,
+                                      color: AppColors.primary,
                                     ),
                                     const SizedBox(width: 4),
                                     Expanded(
@@ -106,21 +107,34 @@ class EventCard extends StatelessWidget {
                         Container(
                           width: 120,
                           height: 70,
-                          color: Colors.black.withOpacity(0.4),
+                          color: AppColors.black.withOpacity(0.4),
                         ),
                         Container(
                           width: 120,
                           height: 70,
                           alignment: Alignment.center,
-                          child: Text(
-                            date,
-                            style: const TextStyle(
+                          child: const Text(
+                            '',
+                            style: TextStyle(
                               fontSize: 10,
-                              color: Colors.white,
+                              color: AppColors.white,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
+                        Positioned.fill(
+                          child: Center(
+                            child: Text(
+                              date,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontSize: 10,
+                                color: AppColors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   )

@@ -1,4 +1,4 @@
-import 'package:f_project_1/data/events_data.dart';
+import 'package:f_project_1/data/models/event_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
@@ -17,9 +17,9 @@ class TestHomeController extends HomeController {
 class TestEventController extends EventController {
   @override
   // ignore: overridden_fields
-  final RxList<Event> joinedEvents = <Event>[].obs;
+  final RxList<EventModel> joinedEvents = <EventModel>[].obs;
 
-  void addTestEvents(List<Event> events) {
+  void addTestEvents(List<EventModel> events) {
     joinedEvents.addAll(events);
   }
 }
@@ -68,7 +68,7 @@ void main() {
 
   testWidgets('Displays event counter correctly (multiple events)', (tester) async {
     testEventController.joinedEvents.addAll([
-      Event(
+      EventModel(
         id: 1,
         title: 'Test Event 1',
         location: 'Location 1',
@@ -80,7 +80,7 @@ void main() {
         type: 'Test',
         isJoined: true,
       ),
-      Event(
+      EventModel(
         id: 2,
         title: 'Test Event 2',
         location: 'Location 2',

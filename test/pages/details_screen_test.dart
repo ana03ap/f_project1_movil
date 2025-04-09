@@ -1,15 +1,19 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:f_project_1/presentation/controllers/event_controller.dart';
-import 'package:f_project_1/data/events_data.dart'; 
+import 'package:f_project_1/data/models/event_model.dart';
+import 'package:f_project_1/domain/repositories/event_repository_impl.dart';
 
 void main() {
   late EventController controller;
-  late Event testEvent;
+  late EventModel testEvent;
 
   setUp(() {
     controller = Get.put(EventController());
-    testEvent = eventsList.first;
+
+    final eventRepository = EventRepositoryImpl();
+    testEvent = eventRepository.getAllEvents().first as EventModel;
+
     controller.resetFilter();
   });
 
@@ -50,4 +54,3 @@ void main() {
     expect(controller.joinedEvents.contains(testEvent), false);
   });
 }
-

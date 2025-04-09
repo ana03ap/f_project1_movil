@@ -28,29 +28,29 @@ void main() {
         ),
       );
 
-      // Verifica que se vean ambos textos
+      // Verify that both tab texts are visible
       expect(find.text('Upcoming Events'), findsOneWidget);
       expect(find.text('Past Events'), findsOneWidget);
 
-      // Verifica color inicial
+      // Verify initial colors
       Text upcomingText = tester.widget<Text>(find.text('Upcoming Events'));
       Text pastText = tester.widget<Text>(find.text('Past Events'));
 
       expect(upcomingText.style?.color, Colors.purple);
       expect(pastText.style?.color, Colors.grey);
 
-      // Tap en 'Past Events'
+      // Tap on 'Past Events'
       await tester.tap(find.text('Past Events'));
       await tester.pump();
 
-      // Verifica que los colores cambiaron
+      // Verify that the colors changed
       upcomingText = tester.widget<Text>(find.text('Upcoming Events'));
       pastText = tester.widget<Text>(find.text('Past Events'));
 
       expect(upcomingText.style?.color, Colors.grey);
       expect(pastText.style?.color, Colors.purple);
 
-      // Verifica que el índice del controlador cambió
+      // Verify that the controller's index changed
       expect(controller.currentIndex.value, 1);
     });
   });

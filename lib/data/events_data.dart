@@ -1,4 +1,4 @@
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/get.dart';
 
 class Event {
   final int id;
@@ -6,27 +6,29 @@ class Event {
   final String location;
   final String details;
   final int participants;
-  RxInt availableSpots; 
   final String date;
   final String path;
   final String type;
-  final RxBool isJoined; 
+
+  RxInt availableSpots;
+  RxBool isJoined;
+  RxDouble averageRating;
   final List<double> ratings = [];
- final RxDouble averageRating; 
+
   Event({
     required this.id,
     required this.title,
     required this.location,
     required this.details,
-    required int availableSpots, 
+    required int availableSpots, // se recibe como int
     required this.participants,
     required this.date,
     required this.path,
     required this.type,
-    required bool isJoined,
-  })  : availableSpots = RxInt(availableSpots),
-        isJoined = RxBool(isJoined),
-        averageRating = 0.0.obs;
+    required bool isJoined, // se recibe como bool
+  })  : availableSpots = availableSpots.obs, // se convierte a RxInt
+        isJoined = isJoined.obs, // se convierte a RxBool
+        averageRating = 0.0.obs; // se inicializa como RxDouble
 
   void updateAverageRating() {
     averageRating.value = ratings.isEmpty

@@ -17,17 +17,17 @@ void main() {
       ),
     );
 
-    // Verifica que el texto esté presente
+    // Check that the text is present
     expect(find.text('Home'), findsOneWidget);
 
-    // Verifica que el ícono esté presente
+    // Check that the icon is present
     expect(find.byIcon(Icons.home), findsOneWidget);
 
-    // Verifica que el texto tenga color púrpura
+    // Check that the text has purple color
     final Text text = tester.widget(find.text('Home'));
     expect(text.style?.color, Colors.purple);
 
-    // Verifica que el ícono tenga color púrpura
+    // Check that the icon has purple color
     final Icon icon = tester.widget(find.byIcon(Icons.home));
     expect(icon.color, Colors.purple);
   });
@@ -46,17 +46,17 @@ void main() {
       ),
     );
 
-    // Verifica que el texto esté presente
+    // Check that the text is present
     expect(find.text('Settings'), findsOneWidget);
 
-    // Verifica que el ícono esté presente
+    // Check that the icon is present
     expect(find.byIcon(Icons.settings), findsOneWidget);
 
-    // Verifica que el texto tenga color gris
+    // Check that the text has gray color
     final Text text = tester.widget(find.text('Settings'));
     expect(text.style?.color, Colors.grey);
 
-    // Verifica que el ícono tenga color gris
+    // Check that the icon has gray color
     final Icon icon = tester.widget(find.byIcon(Icons.settings));
     expect(icon.color, Colors.grey);
   });

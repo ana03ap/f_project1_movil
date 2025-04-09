@@ -9,7 +9,7 @@ import '../../domain/usecases/filter_events.dart';
 import '../../domain/repositories/event_repository.dart';
 
 class EventController extends GetxController {
-  // Repositorio actual (mock)
+ 
   final EventRepository _repository = EventRepositoryImpl();
 
   final RxList<EventModel> joinedEvents = <EventModel>[].obs;

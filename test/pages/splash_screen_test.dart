@@ -2,10 +2,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:f_project_1/presentation/pages/splash_screen.dart';
 import 'package:f_project_1/presentation/pages/home_screen.dart';
-
+import 'package:f_project_1/presentation/controllers/home_controller.dart';
 void main() {
   testWidgets('Splash navigates automatically to /home after 2 seconds',
       (WidgetTester tester) async {
+    Get.put(HomeController());
+
     await tester.pumpWidget(
       GetMaterialApp(
         initialRoute: '/splash',

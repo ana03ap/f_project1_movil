@@ -9,7 +9,8 @@ import '../widgets/pastevent_card.dart';
 import '../widgets/top_nav_bar.dart';
 
 class MyEvents extends StatelessWidget {
-  final TopNavController topNavController = Get.put(TopNavController());
+  final TopNavController topNavController =  Get.find<TopNavController>();
+
   final EventController eventController = Get.find<EventController>();
 
   MyEvents({Key? key}) : super(key: key);
@@ -65,7 +66,7 @@ class MyEvents extends StatelessWidget {
                       .where(
                           (event) => !eventController.isEventFuture(event.date))
                       .toList();
-        
+                  print("NO ME DEJAAAA");
                   return pastEvents.isEmpty
                       ? _buildEmptyState("No past events")
                       : ListView.builder(

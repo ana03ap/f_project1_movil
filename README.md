@@ -24,5 +24,8 @@
 ## Getting Started
 
 1. Clone the repository:
+   
    ```bash
    git clone https://github.com/yourusername/f_project1_movil.git
+   
+2. Done

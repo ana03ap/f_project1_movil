@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       builder: (theme, darkTheme) {
         return GetMaterialApp(
           title: 'PuntoG',
-          color: AppColors.primary, 
+          color: AppColors.primary,
           theme: theme.copyWith(
             textTheme: theme.textTheme.apply(
               fontFamily: 'Poppins',

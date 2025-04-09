@@ -10,6 +10,7 @@ class FeedbackScreen extends StatelessWidget {
   final TextEditingController feedbackController = TextEditingController();
   final RxInt selectedRating = 0.obs;
   final BottomNavController bottomNavController = Get.find();
+  
 
   FeedbackScreen({Key? key}) : super(key: key);
 

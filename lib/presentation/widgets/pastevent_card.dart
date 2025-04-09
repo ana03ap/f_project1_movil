@@ -54,7 +54,7 @@ class PastEventCard extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: Text(
-                                  event.title, // Accedemos desde el evento
+                                  event.title,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,

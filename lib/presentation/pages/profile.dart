@@ -27,7 +27,7 @@ class MyProfile extends StatelessWidget {
         foregroundColor: Theme.of(context).colorScheme.onBackground,
         elevation: 0,
       ),
-      body: SingleChildScrollView( // ✅ Añadido para evitar overflow
+      body: SingleChildScrollView( 
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -57,7 +57,7 @@ class MyProfile extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             ListTile(
-              key: const Key('changeNameTile'), // ✅ Añadido para el test
+              key: const Key('changeNameTile'), 
               tileColor: Theme.of(context).cardColor,
               leading: Icon(Icons.edit, color: Theme.of(context).iconTheme.color),
               title: Text(

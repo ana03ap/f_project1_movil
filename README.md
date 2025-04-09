@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="lib/assets/logo-puntog.png" width="200" alt="Punto G Logo">
+  <img src="lib/assets/readme/logo-puntog.pnglogo-puntog.png" width="200" alt="Punto G Logo">
 </p>
 
 <h1 align="center">Punto G 🌸</h1>
@@ -24,8 +24,22 @@
 ## Getting Started
 
 1. Clone the repository:
-   
    ```bash
    git clone https://github.com/yourusername/f_project1_movil.git
    
-2. Done
+2. Navigate into the project directory
+   ```bash
+   cd f_project1_movil
+
+3. Install dependencies
+  ```bash
+    flutter pub get
+4. Run the App
+  ```bash
+  flutter run
+
+5. You are all set!
+
+
+
+   

@@ -56,9 +56,9 @@ flutter:
 
 
   fonts:
-    - family: LeagueSpartan
+    - family: Poppins
       fonts:
-        - asset: lib/assets/fonts/LeagueSpartan-VariableFont_wght.ttf
+        - asset: lib/assets/fonts/Poppins-Regular.ttf
 
 
 

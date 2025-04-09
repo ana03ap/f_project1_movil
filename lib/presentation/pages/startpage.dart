@@ -71,7 +71,6 @@ class Startpage extends StatelessWidget {
               width: double.infinity,
               decoration: const BoxDecoration(
                 color: Color.fromARGB(255, 178, 144, 184), // morado claro
-                
               ),
               padding: const EdgeInsets.symmetric(vertical: 30),
               child: Column(

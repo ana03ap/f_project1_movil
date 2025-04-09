@@ -82,8 +82,9 @@ class EventController extends GetxController {
       final format = DateFormat("MMMM dd, yyyy, h:mm a", "en_US");
       final eventDate = format.parse(dateString, true).toLocal();
       return eventDate.isAfter(DateTime.now().toLocal());
-    } catch (_) {
-      return true;
+    } catch (e) {
+      print('⚠️ Error parsing date: $dateString');
+      return true; // Por defecto, lo considera futuro
     }
   }
 

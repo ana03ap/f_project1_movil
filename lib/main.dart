@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
+
 import 'core/constants/app_colors.dart';
 import 'core/constants/app_routes.dart';
 import 'presentation/controllers/home_controller.dart';
 import 'presentation/controllers/bottom_nav_controller.dart';
 import 'presentation/controllers/event_controller.dart';
+import 'presentation/controllers/top_nav_controller.dart';
 
 void main() {
   Get.put(HomeController());
   Get.put(BottomNavController());
   Get.put(EventController());
+  Get.put(TopNavController()); 
   runApp(const MyApp());
 }
 

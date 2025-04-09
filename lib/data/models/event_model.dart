@@ -18,10 +18,11 @@ class EventModel extends Event {
     required String path,
     required String type,
     bool isJoined = false,
-    this.ratings = const [],
+    List<double>? ratings, 
   })  : availableSpots = RxInt(availableSpots),
         isJoined = RxBool(isJoined),
         averageRating = 0.0.obs,
+        ratings = ratings ?? [], 
         super(
           id: id,
           title: title,

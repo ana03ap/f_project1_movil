@@ -8,12 +8,12 @@ import 'package:get/get.dart';
 
 void main() {
   testWidgets('StartPage filtering works correctly', (WidgetTester tester) async {
-    // Inject required controllers
+
     Get.put(EventController());
     Get.put(HomeController());
     Get.put(BottomNavController());
 
-    // Render the Startpage
+
     await tester.pumpWidget(
       GetMaterialApp(
         home: Startpage(),
@@ -22,14 +22,13 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    // Ensure that events are displayed initially
+
     expect(find.byType(EventCard), findsWidgets);
 
-    // Tap the "Unbound" category filter
     await tester.tap(find.text('Unbound'));
     await tester.pumpAndSettle();
 
-    // Expect exactly 2 EventCards after filtering
+
     expect(find.byType(EventCard), findsNWidgets(2));
   });
 }

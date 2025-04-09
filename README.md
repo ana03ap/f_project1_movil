@@ -1,7 +1,9 @@
-# Punto G 🌸
-*A modern platform for sexual education events and workshops.*
+<p align="center">
+  <img src="lib/assets/logo-puntog.png" width="400" alt="Punto G Logo">
+</p>
 
-![Punto G Logo](https://raw.githubusercontent.com/yourusername/punto-g/main/logo.png)  
+<h1 align="center">Punto G 🌸</h1>
+<p align="center"><em>A modern platform for sexual education events and workshops.</em></p>
 
 ## About
 

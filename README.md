@@ -30,15 +30,15 @@
 2. Navigate into the project directory
    ```bash
    cd f_project1_movil
-
-3. Install dependencies
-  ```bash
-    flutter pub get
-4. Run the App
-  ```bash
-  flutter run
-
-5. You are all set!
+3. Install dependencies:  
+   ```bash  
+   flutter pub get
+    
+4. Run the App:  
+   ```bash  
+   flutter run
+ 
+5. You are done! ✨
 
 
 

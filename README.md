@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="lib/assets/logo-puntog.png" width="400" alt="Punto G Logo">
+  <img src="lib/assets/logo-puntog.png" width="300" alt="Punto G Logo">
 </p>
 
 <h1 align="center">Punto G 🌸</h1>

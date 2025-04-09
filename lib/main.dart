@@ -26,15 +26,15 @@ class MyApp extends StatelessWidget {
       builder: (theme, darkTheme) {
         return GetMaterialApp(
           title: 'PuntoG',
-          color: AppColors.primary, 
+          color: AppColors.primary,
           theme: theme.copyWith(
             textTheme: theme.textTheme.apply(
-              fontFamily: 'LeagueSpartan',
+              fontFamily: 'Poppins',
             ),
           ),
           darkTheme: darkTheme.copyWith(
             textTheme: darkTheme.textTheme.apply(
-              fontFamily: 'LeagueSpartan',
+              fontFamily: 'Poppins',
             ),
           ),
           debugShowCheckedModeBanner: false,

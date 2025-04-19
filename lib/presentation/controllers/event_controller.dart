@@ -9,7 +9,6 @@ import '../../domain/usecases/filter_events.dart';
 import '../../domain/repositories/event_repository.dart';
 
 class EventController extends GetxController {
- 
   final EventRepository _repository = EventRepositoryImpl();
 
   final RxList<EventModel> joinedEvents = <EventModel>[].obs;
@@ -84,8 +83,12 @@ class EventController extends GetxController {
       return eventDate.isAfter(DateTime.now().toLocal());
     } catch (e) {
       print('⚠️ Error parsing date: $dateString');
-      return true; // Por defecto, lo considera futuro
+      return true;
     }
+  }
+//PARA LOS UPCOMING
+  List<EventModel> get upcomingEvents {
+    return filteredEvents.where((event) => isEventFuture(event.date)).toList();
   }
 
   // FEEDBACK

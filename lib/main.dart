@@ -9,11 +9,18 @@ import 'presentation/controllers/bottom_nav_controller.dart';
 import 'presentation/controllers/event_controller.dart';
 import 'presentation/controllers/top_nav_controller.dart';
 
-void main() {
+import 'data/datasources/hive/hive_event_source.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final hiveSource = HiveEventSource();
+  await hiveSource.init();
+
+  
   Get.put(HomeController());
   Get.put(BottomNavController());
   Get.put(EventController());
-  Get.put(TopNavController()); 
+  Get.put(TopNavController());
   runApp(const MyApp());
 }
 

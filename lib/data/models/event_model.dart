@@ -1,3 +1,4 @@
+import 'package:f_project_1/data/models/event_hive_model.dart';
 import 'package:get/get.dart';
 import '../../domain/entities/event.dart';
 
@@ -39,4 +40,40 @@ class EventModel extends Event {
         ? 0.0
         : ratings.reduce((a, b) => a + b) / ratings.length;
   }
+
+
+factory EventModel.fromHive(EventHiveModel hiveModel) {
+  return EventModel(
+    id: hiveModel.id,
+    title: hiveModel.title,
+    location: hiveModel.location,
+    details: hiveModel.details,
+    participants: hiveModel.participants,
+    availableSpots: hiveModel.availableSpots,
+    date: hiveModel.date,
+    path: hiveModel.path,
+    type: hiveModel.type,
+    isJoined: hiveModel.isJoined,
+    ratings: hiveModel.ratings,
+  );
 }
+
+EventHiveModel toHiveModel() {
+  return EventHiveModel(
+    id: id,
+    title: title,
+    location: location,
+    details: details,
+    participants: participants,
+    availableSpots: availableSpots.value,
+    date: date,
+    path: path,
+    type: type,
+    isJoined: isJoined.value,
+    ratings: ratings,
+  );
+}
+
+
+}
+

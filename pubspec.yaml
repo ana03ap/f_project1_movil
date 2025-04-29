@@ -28,7 +28,9 @@ dependencies:
   loggy: ^2.0.3
   intl: ^0.20.2
   hive: ^2.2.3
-  internet_connection_checker_plus: ^2.7.1
+  
+  shared_preferences: ^2.2.2
+  connectivity_plus: ^5.0.2
 
 
   # The following adds the Cupertino Icons font to your application.

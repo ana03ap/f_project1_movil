@@ -1,7 +1,10 @@
 import 'package:f_project_1/data/datasources/hive/hive_event_source.dart';
+import 'package:f_project_1/data/datasources/remote_data_source.dart';
+import 'package:f_project_1/data/datasources/event_version_manager.dart';
 import 'package:f_project_1/domain/repositories/event_repository_impl.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 import '../../data/models/event_model.dart';
 import '../../domain/usecases/join_event.dart';
@@ -11,6 +14,9 @@ import '../../domain/repositories/event_repository.dart';
 
 class EventController extends GetxController {
   final EventRepository _repository = EventRepositoryImpl();
+  final RemoteDataSource _remoteDataSource = RemoteDataSource();
+  final EventVersionManager _versionManager = EventVersionManager();
+  final hiveSource = HiveEventSource();
 
   final RxList<EventModel> joinedEvents = <EventModel>[].obs;
   final RxList<EventModel> filteredEvents = <EventModel>[].obs;
@@ -21,7 +27,6 @@ class EventController extends GetxController {
   final UnjoinEvent _unjoinEventUseCase = UnjoinEvent();
   final FilterEvents _filterEventsUseCase = FilterEvents();
 
-  final hiveSource = HiveEventSource();
   @override
   void onInit() {
     super.onInit();
@@ -29,26 +34,62 @@ class EventController extends GetxController {
     loadEventsFromLocalStorage();
   }
 
-//HIVE
-
-  Future<void> loadEventsFromLocalStorage() async {
-    final eventos = await hiveSource.loadEvents();
-
-    if (eventos.isEmpty) {
-      // Hive está vacío → usar mock
-      final mockEvents = _repository.getAllEvents().cast<EventModel>();
-
-      filteredEvents.value = mockEvents;
-      await hiveSource.saveEvents(mockEvents);
-    } else {
-      // Hive tiene datos
-      filteredEvents.value = eventos;
-    }
+  // CONECTIVIDAD
+  Future<bool> hasInternetConnection() async {
+    final connectivityResult = await Connectivity().checkConnectivity();
+    return connectivityResult != ConnectivityResult.none;
   }
 
-  Future<void> simulateFetchingNewEvents(List<EventModel> nuevosEventos) async {
-    filteredEvents.value = nuevosEventos;
-    await hiveSource.saveEvents(nuevosEventos);
+  // CARGA INTELIGENTE DE EVENTOS CON VERSION CHECK
+  Future<void> loadEventsFromLocalStorage() async {
+    final hasInternet = await hasInternetConnection();
+    final eventosLocales = await hiveSource.loadEvents();
+
+    if (hasInternet) {
+      try {
+        final remoteVersion = await _versionManager.fetchRemoteVersion();
+        final localVersion = await _versionManager.getLocalVersion();
+
+        if (remoteVersion > localVersion) {
+          final fetchedEvents = await _remoteDataSource.fetchEvents();
+          filteredEvents.value = fetchedEvents;
+          await hiveSource.saveEvents(fetchedEvents);
+          await _versionManager.setLocalVersion(remoteVersion);
+          print('✅ Nueva versión detectada: eventos actualizados');
+        } else {
+          if (eventosLocales.isNotEmpty) {
+            filteredEvents.value = eventosLocales;
+            print('✅ Versión actual, usando eventos locales');
+          } else {
+            final mockEvents = _repository.getAllEvents().cast<EventModel>();
+            filteredEvents.value = mockEvents;
+            await hiveSource.saveEvents(mockEvents);
+            print('✅ No datos locales, usando mocks');
+          }
+        }
+      } catch (e) {
+        print('⚠️ Error checking version or fetching events: $e');
+        if (eventosLocales.isNotEmpty) {
+          filteredEvents.value = eventosLocales;
+          print('✅ Usando eventos locales por error en API');
+        } else {
+          final mockEvents = _repository.getAllEvents().cast<EventModel>();
+          filteredEvents.value = mockEvents;
+          await hiveSource.saveEvents(mockEvents);
+          print('✅ Error total, usando mocks');
+        }
+      }
+    } else {
+      if (eventosLocales.isNotEmpty) {
+        filteredEvents.value = eventosLocales;
+        print('✅ Sin internet, usando eventos locales');
+      } else {
+        final mockEvents = _repository.getAllEvents().cast<EventModel>();
+        filteredEvents.value = mockEvents;
+        await hiveSource.saveEvents(mockEvents);
+        print('✅ Sin internet ni datos locales, usando mocks');
+      }
+    }
   }
 
   // MANEJO DE EVENTOS
@@ -64,41 +105,20 @@ class EventController extends GetxController {
     }
   }
 
-  // void joinEvent(EventModel event) {
-  //   _joinEventUseCase(event);
-  //   _repository.joinEvent(event.id);
-
-  //   if (!joinedEvents.any((e) => e.id == event.id)) {
-  //     joinedEvents.add(event);
-  //   }
-
-  //   updateFilteredEvents();
-  // }
-
   Future<void> joinEvent(EventModel event) async {
-    _joinEventUseCase(event); // actualiza isJoined y availableSpots
-    _repository.joinEvent(event.id); // (mock o log)
+    _joinEventUseCase(event);
+    _repository.joinEvent(event.id);
 
-    // Guardar todos los eventos en Hive
     await hiveSource.saveEvents(filteredEvents);
     joinedEvents.value = filteredEvents.where((e) => e.isJoined.value).toList();
 
     updateFilteredEvents();
   }
 
-  // void unjoinEvent(EventModel event) {
-  //   _unjoinEventUseCase(event);
-  //   _repository.unjoinEvent(event.id);
-
-  //   joinedEvents.removeWhere((e) => e.id == event.id);
-  //   updateFilteredEvents();
-  // }
-
   Future<void> unjoinEvent(EventModel event) async {
-    _unjoinEventUseCase(event); // revierte isJoined y availableSpots
-    _repository.unjoinEvent(event.id); // (mock o log)
+    _unjoinEventUseCase(event);
+    _repository.unjoinEvent(event.id);
 
-    // Guardar todos los eventos en Hive
     await hiveSource.saveEvents(filteredEvents);
     joinedEvents.value = filteredEvents.where((e) => e.isJoined.value).toList();
 
@@ -116,22 +136,37 @@ class EventController extends GetxController {
     updateFilteredEvents();
   }
 
-  // void updateFilteredEvents() {
-  //   final allEvents = _repository.getAllEvents().cast<EventModel>();
-  //   final filtered = _filterEventsUseCase(selectedFilter.value, allEvents);
-  //   filteredEvents.assignAll(filtered);
-  // }
   Future<void> updateFilteredEvents() async {
     List<EventModel> base;
 
     if (hiveSource.hasCachedEvents()) {
-      base = await hiveSource.loadEvents(); // Esperamos Hive
+      base = await hiveSource.loadEvents();
     } else {
       base = _repository.getAllEvents().cast<EventModel>();
     }
 
     final filtered = _filterEventsUseCase(selectedFilter.value, base);
     filteredEvents.assignAll(filtered);
+  }
+
+  // SIMULACIÓN DE FETCH NUEVOS EVENTOS
+  Future<void> simulateFetchingNewEvents() async {
+    final hasInternet = await hasInternetConnection();
+
+    if (hasInternet) {
+      try {
+        final nuevosEventos = await _remoteDataSource.fetchEvents();
+        filteredEvents.value = nuevosEventos;
+        await hiveSource.saveEvents(nuevosEventos);
+        final remoteVersion = await _versionManager.fetchRemoteVersion();
+        await _versionManager.setLocalVersion(remoteVersion);
+        print('✅ Nuevos eventos descargados y versión actualizada');
+      } catch (e) {
+        print('⚠️ Error fetching new events: $e');
+      }
+    } else {
+      print('⚠️ No internet, no se pueden descargar nuevos eventos');
+    }
   }
 
   // FECHAS
@@ -146,12 +181,12 @@ class EventController extends GetxController {
     }
   }
 
-//PARA LOS UPCOMING
+  // UPCOMING EVENTS
   List<EventModel> get upcomingEvents {
     return filteredEvents.where((event) => isEventFuture(event.date)).toList();
   }
 
-  //NUEVOS GETTERS
+  // NUEVOS GETTERS
 
   List<EventModel> get myUpcomingEvents {
     return filteredEvents

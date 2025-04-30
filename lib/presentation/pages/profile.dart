@@ -27,7 +27,7 @@ class MyProfile extends StatelessWidget {
         foregroundColor: Theme.of(context).colorScheme.onBackground,
         elevation: 0,
       ),
-      body: SingleChildScrollView( 
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -39,30 +39,37 @@ class MyProfile extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Obx(() => Text(
-              homeController.name.value,
-              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            )),
+                  homeController.name.value,
+                  style: const TextStyle(
+                      fontSize: 22, fontWeight: FontWeight.bold),
+                )),
             const SizedBox(height: 8),
             Obx(() => Text(
-              'You have subscribed to ${eventController.joinedEvents.length} events!',
-              style: const TextStyle(fontSize: 16),
-            )),
+                  'You have subscribed to ${eventController.joinedEvents.length} events!',
+                  style: const TextStyle(fontSize: 16),
+                )),
             const SizedBox(height: 24),
             SwitchListTile(
               title: const Text('Dark Mode'),
-              value: isDark,
+              value:isDark,
               onChanged: (val) {
-                AdaptiveTheme.of(context).toggleThemeMode();
+                if (val) {
+                  AdaptiveTheme.of(context).setDark();
+                } else {
+                  AdaptiveTheme.of(context).setLight();
+                }
               },
             ),
             const SizedBox(height: 16),
             ListTile(
-              key: const Key('changeNameTile'), 
+              key: const Key('changeNameTile'),
               tileColor: Theme.of(context).cardColor,
-              leading: Icon(Icons.edit, color: Theme.of(context).iconTheme.color),
+              leading:
+                  Icon(Icons.edit, color: Theme.of(context).iconTheme.color),
               title: Text(
                 'Change name',
-                style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),
+                style: TextStyle(
+                    color: Theme.of(context).textTheme.bodyLarge?.color),
               ),
               onTap: () => navigateTohomeScreen(context),
             ),

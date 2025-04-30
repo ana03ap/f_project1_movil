@@ -1,9 +1,8 @@
 import '../entities/event.dart';
 
 abstract class EventRepository {
-  List<Event> getAllEvents();
-  List<Event> getEventsByType(String type);
-  void joinEvent(int id);
-  void unjoinEvent(int id);
-  void addRating(int id, double rating);
+  Future<List<Event>> getAllEvents();
+  Future<void> joinEvent(int eventId);
+  Future<void> unjoinEvent(int eventId);
+  Future<void> addRating(int eventId, double rating);
 }

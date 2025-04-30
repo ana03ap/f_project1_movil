@@ -1,25 +1,20 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-class UserPrefs {
-  static const String _keyUsername = "username";
+class UserPreferences {
+  static const String _keyName = 'user_name';
 
-  static Future<void> saveUsername(String name) async {
+  Future<void> saveUserName(String name) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_keyUsername, name);
+    await prefs.setString(_keyName, name);
   }
 
-  static Future<String?> getUsername() async {
+  Future<String?> getUserName() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_keyUsername);
+    return prefs.getString(_keyName);
   }
 
-  static Future<bool> hasUsername() async {
+  Future<void> clearUserName() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.containsKey(_keyUsername);
-  }
-
-  static Future<void> clearUsername() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_keyUsername);
+    await prefs.remove(_keyName);
   }
 }

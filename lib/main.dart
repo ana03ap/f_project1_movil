@@ -1,3 +1,4 @@
+import 'package:f_project_1/presentation/controllers/connectivity_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
@@ -24,7 +25,6 @@ void main() async {
   final hiveSource = HiveEventSource();
   await hiveSource.init();
 
-
   final networkInfo = NetworkInfo();
   final eventRepo = EventRepositoryImpl(
     hiveSource: hiveSource,
@@ -36,9 +36,9 @@ void main() async {
   Get.put(BottomNavController());
   Get.put(EventController(repository: eventRepo));
   Get.put(TopNavController());
-
-  runApp(const MyApp(
-      initialRoute: AppRoutes.splash));
+  Get.put(NetworkInfo());
+  Get.put(ConnectivityController());
+  runApp(const MyApp(initialRoute: AppRoutes.splash));
 }
 
 class MyApp extends StatelessWidget {

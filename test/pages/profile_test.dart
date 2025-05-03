@@ -29,6 +29,7 @@ class TestEventController extends EventController {
   TestEventController() : super(repository: FakeEventRepository());
 
   @override
+  // ignore: overridden_fields
   final RxList<EventModel> joinedEvents = <EventModel>[].obs;
 
   void addTestEvents(List<EventModel> events) {

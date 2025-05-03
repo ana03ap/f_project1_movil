@@ -30,7 +30,7 @@ dependencies:
   hive: ^2.2.3
   
   shared_preferences: ^2.2.2
-  connectivity_plus: ^5.0.2
+  internet_connection_checker_plus: ^2.3.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -38,6 +38,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_native_splash: ^2.4.4
   hive_flutter: ^1.1.0
+
 
 
 dev_dependencies:

@@ -5,7 +5,7 @@ import 'package:f_project_1/presentation/controllers/home_controller.dart';
 import 'package:f_project_1/presentation/controllers/bottom_nav_controller.dart';
 import 'package:f_project_1/presentation/pages/startpage.dart';
 import 'package:f_project_1/presentation/widgets/event_card.dart';
-import 'package:flutter/material.dart';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 

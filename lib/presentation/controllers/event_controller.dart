@@ -5,6 +5,8 @@ import 'package:f_project_1/data/datasources/remote/remote_data_source.dart';
 import 'package:f_project_1/data/datasources/local/event_version_manager.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:loggy/loggy.dart';
+
 
 
 import '../../data/models/event_model.dart';
@@ -12,14 +14,13 @@ import '../../domain/usecases/join_event.dart';
 import '../../domain/usecases/unjoin_event.dart';
 import '../../domain/usecases/filter_events.dart';
 import '../../domain/repositories/event_repository.dart';
-import 'dart:io';
+import 'connectivity_controller.dart';
+
+
 
 
 class EventController extends GetxController {
   final EventRepository _repository;
-
-  EventController({required EventRepository repository})
-      : _repository = repository;
 
   final RemoteDataSource _remoteDataSource = RemoteDataSource();
   final EventVersionManager _versionManager = EventVersionManager();
@@ -34,6 +35,9 @@ class EventController extends GetxController {
   final UnjoinEvent _unjoinEventUseCase = UnjoinEvent();
   final FilterEvents _filterEventsUseCase = FilterEvents();
 
+
+ EventController({required EventRepository repository}) : _repository = repository;
+
   @override
   void onInit() {
     super.onInit();
@@ -41,105 +45,73 @@ class EventController extends GetxController {
     loadEventsFromLocalStorage();
   }
 
-  // CONECTIVIDAD
-Future<bool> hasInternetConnection() async {
-  try {
-    final result = await InternetAddress.lookup('example.com');
-    return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
-  } catch (_) {
-    return false;
-  }
-}
+
 
 
 // CARGA INTELIGENTE DE EVENTOS CON VERSION CHECK
-Future<void> loadEventsFromLocalStorage() async {
-  final hasInternet = await hasInternetConnection();
-  final eventosLocales = await hiveSource.loadEvents();
+  Future<void> loadEventsFromLocalStorage() async {
+    final connected = Get.find<ConnectivityController>().connection;
+    final eventosLocales = await hiveSource.loadEvents();
 
-  if (hasInternet) {
-    try {
-      final remoteVersion = await _versionManager.fetchRemoteVersion();
-      final localVersion = await _versionManager.getLocalVersion();
+    if (connected) {
+      try {
+        final remoteVersion = await _versionManager.fetchRemoteVersion();
+        final localVersion = await _versionManager.getLocalVersion();
 
-      if (remoteVersion > localVersion || eventosLocales.isEmpty) {
-        final fetchedEvents = await _remoteDataSource.fetchEvents();
-
-        if (fetchedEvents.isEmpty) {
-          Get.snackbar(
-            'Eventos no encontrados',
-            'La API respondió pero no envió ningún evento.',
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: const Color(0xFFd32f2f),
-            colorText: const Color(0xFFFFFFFF),
-          );
+        if (remoteVersion > localVersion) {
+          print(remoteVersion);
+          print(localVersion);
+          final fetchedEvents = await _remoteDataSource.fetchEvents();
+          filteredEvents.value = fetchedEvents;
+          updateJoinedEvents();
+          await hiveSource.saveEvents(fetchedEvents);
+          await _versionManager.setLocalVersion(remoteVersion);
+          logInfo('✅ Nueva versión detectada: eventos actualizados');
         } else {
-          Get.snackbar(
-            'Eventos cargados',
-            'Se cargaron ${fetchedEvents.length} eventos desde la API.',
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: const Color(0xFF388e3c),
-            colorText: const Color(0xFFFFFFFF),
-          );
+          if (eventosLocales.isNotEmpty) {
+            filteredEvents.value = eventosLocales;
+            updateJoinedEvents();
+            logInfo('✅ Versión actual, usando eventos locales');
+          } else {
+            final mockEvents = await _repository.getAllEvents();
+            filteredEvents.value = mockEvents.cast<EventModel>();
+            updateJoinedEvents();
+            await hiveSource.saveEvents(mockEvents.cast<EventModel>());
+            logInfo('✅ No datos locales, usando mocks');
+          }
         }
-
-        filteredEvents.value = fetchedEvents;
-        updateJoinedEvents();
-        await hiveSource.saveEvents(fetchedEvents);
-        await _versionManager.setLocalVersion(remoteVersion);
-      } else {
-        filteredEvents.value = eventosLocales;
-        updateJoinedEvents();
-        print('✅ Versión actual, usando eventos locales');
+      } catch (e) {
+        logError('❌ Error al cargar eventos desde la API: $e');
+        if (eventosLocales.isNotEmpty) {
+          filteredEvents.value = eventosLocales;
+          updateJoinedEvents();
+          logInfo('✅ Usando eventos locales por error en API');
+        } else {
+          final mockEvents = await _repository.getAllEvents();
+          filteredEvents.value = mockEvents.cast<EventModel>();
+          updateJoinedEvents();
+          await hiveSource.saveEvents(mockEvents.cast<EventModel>());
+          logInfo('✅ Error total, usando mocks');
+        }
       }
-    } catch (e) {
-      Get.snackbar(
-        'Error de conexión',
-        'No se pudo conectar con la API:\n$e',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: const Color(0xFFd32f2f),
-        colorText: const Color(0xFFFFFFFF),
-        duration: const Duration(seconds: 6),
-      );
-
+    } else {
       if (eventosLocales.isNotEmpty) {
         filteredEvents.value = eventosLocales;
         updateJoinedEvents();
-        print('✅ Usando eventos locales por error');
+        logInfo('✅ Sin internet, usando eventos locales');
       } else {
         final mockEvents = await _repository.getAllEvents();
         filteredEvents.value = mockEvents.cast<EventModel>();
         updateJoinedEvents();
         await hiveSource.saveEvents(mockEvents.cast<EventModel>());
-        print('✅ Fallback total: usando eventos mock');
+        logInfo('✅ Sin internet ni datos locales, usando mocks');
       }
     }
-  } else {
-    if (eventosLocales.isNotEmpty) {
-      filteredEvents.value = eventosLocales;
-      updateJoinedEvents();
-      Get.snackbar(
-        'Modo sin conexión',
-        'Mostrando eventos almacenados localmente.',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: const Color(0xFFfbc02d),
-        colorText: const Color(0xFF000000),
-      );
-    } else {
-      final mockEvents = await _repository.getAllEvents();
-      filteredEvents.value = mockEvents.cast<EventModel>();
-      updateJoinedEvents();
-      await hiveSource.saveEvents(mockEvents.cast<EventModel>());
-      Get.snackbar(
-        'Sin conexión ni datos',
-        'Se mostrarán eventos de prueba.',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: const Color(0xFFd32f2f),
-        colorText: const Color(0xFFFFFFFF),
-      );
-    }
+
+    // Actualiza eventos unidos desde local
+    joinedEvents.value = filteredEvents.where((e) => e.isJoined.value).toList();
   }
-}
+
 
 
 
@@ -208,9 +180,9 @@ Future<void> loadEventsFromLocalStorage() async {
 
   // SIMULACIÓN DE FETCH NUEVOS EVENTOS
   Future<void> simulateFetchingNewEvents() async {
-    final hasInternet = await hasInternetConnection();
+    final connected = Get.find<ConnectivityController>().connection;
 
-    if (hasInternet) {
+    if (connected) {
       try {
         final nuevosEventos = await _remoteDataSource.fetchEvents();
         filteredEvents.value = nuevosEventos;
@@ -218,12 +190,12 @@ Future<void> loadEventsFromLocalStorage() async {
         await hiveSource.saveEvents(nuevosEventos);
         final remoteVersion = await _versionManager.fetchRemoteVersion();
         await _versionManager.setLocalVersion(remoteVersion);
-        print('✅ Nuevos eventos descargados y versión actualizada');
+        logInfo('✅ Nuevos eventos descargados y versión actualizada');
       } catch (e) {
-        print('⚠️ Error fetching new events: $e');
+        logError('⚠️ Error fetching new events: $e');
       }
     } else {
-      print('⚠️ No internet, no se pueden descargar nuevos eventos');
+      logInfo('⚠️ No internet, no se pueden descargar nuevos eventos');
     }
   }
 
@@ -234,7 +206,7 @@ Future<void> loadEventsFromLocalStorage() async {
       final eventDate = format.parse(dateString, true).toLocal();
       return eventDate.isAfter(DateTime.now().toLocal());
     } catch (e) {
-      print('⚠️ Error parsing date: $dateString');
+      logError('⚠️ Error parsing date: $dateString');
       return true;
     }
   }

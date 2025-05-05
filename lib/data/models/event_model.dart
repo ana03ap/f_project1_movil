@@ -84,7 +84,7 @@ class EventModel extends Event {
     participants: json['participants'],
     availableSpots: json['availableSpots'],
     date: json['date'],
-    path: json['path'],// El backend no envía `path`, lo dejamos vacío
+    path: json['path'],
     type: json['type'],
     isJoined: false, // Siempre inicia como no unido
     ratings: [], // No nos mandan ratings individuales, solo feedback general

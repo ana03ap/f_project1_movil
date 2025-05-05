@@ -1,5 +1,5 @@
 import 'package:f_project_1/data/models/event_model.dart';
-import 'package:f_project_1/domain/repositories/event_repository.dart';
+import 'package:f_project_1/domain/repositories/i_event_repository.dart';
 import 'package:f_project_1/presentation/controllers/event_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';

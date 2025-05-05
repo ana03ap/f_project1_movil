@@ -7,7 +7,7 @@ import 'package:f_project_1/presentation/controllers/home_controller.dart';
 import 'package:f_project_1/presentation/controllers/event_controller.dart';
 import 'package:f_project_1/presentation/controllers/bottom_nav_controller.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:f_project_1/domain/repositories/event_repository.dart';
+import 'package:f_project_1/domain/repositories/i_event_repository.dart';
 
 // Mock repository que no hace nada
 class FakeEventRepository implements EventRepository {

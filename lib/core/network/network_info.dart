@@ -13,7 +13,6 @@ class NetworkInfo {
 
   void openStream() {
     _connectionChecker.onStatusChange.listen((status) {
-      // Puedes registrar el estado aquí si lo deseas
     });
   }
 }

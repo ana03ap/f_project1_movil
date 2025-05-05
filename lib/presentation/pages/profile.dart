@@ -44,10 +44,10 @@ class MyProfile extends StatelessWidget {
                       fontSize: 22, fontWeight: FontWeight.bold),
                 )),
             const SizedBox(height: 8),
-            Obx(() => Text(
-                  'You have subscribed to ${eventController.joinedEvents.length} events!',
-                  style: const TextStyle(fontSize: 16),
-                )),
+            // Obx(() => Text(
+            //       'You have subscribed to ${eventController.joinedEvents.length} events!',
+            //       style: const TextStyle(fontSize: 16),
+            //     )),
             const SizedBox(height: 24),
             SwitchListTile(
               title: const Text('Dark Mode'),

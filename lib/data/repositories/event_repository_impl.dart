@@ -1,82 +1,100 @@
+import 'package:f_project_1/core/network/network_info.dart';
+import 'package:f_project_1/data/models/event_model.dart';
+import 'package:f_project_1/domain/datasources/i_event_local_data_source.dart';
+import 'package:f_project_1/domain/datasources/i_event_remote_data_source.dart';
+import 'package:f_project_1/domain/entities/event.dart';
+import 'package:f_project_1/domain/repositories/i_event_repository.dart';
 import 'package:loggy/loggy.dart';
-import '../../core/network/network_info.dart';
-import '../datasources/local/hive_event_source.dart';
-import '../datasources/remote/remote_data_source.dart';
-import '../../data/models/event_model.dart';
-import '../../domain/entities/event.dart';
-import '../../domain/repositories/event_repository.dart';
 
-class EventRepositoryImpl extends EventRepository {
-  final HiveEventSource hiveSource;
-  final RemoteDataSource remoteSource;
+class EventRepositoryImpl implements IEventRepository {
+  final IEventLocalDataSource localDataSource;
+  final IEventRemoteDataSource remoteDataSource;
   final NetworkInfo networkInfo;
 
   EventRepositoryImpl({
-    required this.hiveSource,
-    required this.remoteSource,
+    required this.localDataSource,
+    required this.remoteDataSource,
     required this.networkInfo,
   });
 
-  @override
-  Future<List<Event>> getAllEvents() async {
-    if (await networkInfo.isConnected()) {
-      logInfo('📡 Conectado: intentando obtener eventos desde API...');
-      try {
-        final apiEvents = await remoteSource.fetchEvents();
-        logInfo('✅ Eventos descargados: ${apiEvents.length}');
-        await hiveSource.saveEvents(apiEvents);
-        return apiEvents;
-      } catch (e) {
-        logError('❌ Error al descargar desde API: $e');
-        final fallback = await hiveSource.loadEvents();
-        logInfo('⚠️ Usando eventos locales (fallback): ${fallback.length}');
-        return fallback;
+@override
+Future<List<Event>> getAllEvents() async {
+  List<Event> events = [];
+
+  if (await networkInfo.isConnected()) {
+    logInfo('📡 Conectado a internet');
+    try {
+      final remoteVersion = await remoteDataSource.fetchEventVersion();
+      final localVersion = await localDataSource.getLocalVersion();
+
+      if (remoteVersion > localVersion) {
+        final apiEvents = await remoteDataSource.fetchEvents();
+        await localDataSource.saveEvents(apiEvents.cast<EventModel>());
+        await localDataSource.setLocalVersion(remoteVersion);
+        logInfo('✅ Nueva versión descargada: ${apiEvents.length}');
+        events = apiEvents;
+      } else {
+        logInfo('🟢 Mismo número de versión, se usa Hive');
+        events = await localDataSource.getSavedEvents();
       }
-    } else {
-      logInfo('📴 Sin internet: usando eventos de Hive');
-      return await hiveSource.loadEvents();
+    } catch (e) {
+      logError('Error al descargar desde API: $e');
+      events = await localDataSource.getSavedEvents();
     }
+  } else {
+    logInfo('Sin internet: usando Hive');
+    events = await localDataSource.getSavedEvents();
   }
 
-  @override
-  Future<void> joinEvent(int eventId) async {
-    final events = await hiveSource.loadEvents();
-    final index = events.indexWhere((e) => e.id == eventId);
+  return events;
+}
 
-    if (index != -1) {
-      final event = events[index];
-      event.isJoined.value = true;
-      event.availableSpots.value -= 1;
-      await hiveSource.saveEvents(events.cast<EventModel>());
-      logInfo('🟢 Usuario unido a evento: $eventId');
-    }
+
+@override
+Future<void> joinEvent(int eventId) async {
+  final events = await localDataSource.getSavedEvents();
+  final index = events.indexWhere((e) => e.id == eventId);
+
+  if (index != -1) {
+    events[index].isJoined.value = true;
+    events[index].availableSpots.value--;
+    await localDataSource.saveEvents(events);
+    logInfo('🟢 Persona unida al evento: $eventId');
   }
+}
+
 
   @override
   Future<void> unjoinEvent(int eventId) async {
-    final events = await hiveSource.loadEvents();
+    final events = await localDataSource.getSavedEvents();
     final index = events.indexWhere((e) => e.id == eventId);
 
     if (index != -1) {
       final event = events[index];
       event.isJoined.value = false;
       event.availableSpots.value += 1;
-      await hiveSource.saveEvents(events.cast<EventModel>());
-      logInfo('🔴 Usuario se desunió del evento: $eventId');
+      await localDataSource.saveEvents(events);
+      logInfo('Usuario se desunió del evento: $eventId');
     }
   }
 
   @override
   Future<void> addRating(int eventId, double rating) async {
-    final events = await hiveSource.loadEvents();
+    final events = await localDataSource.getSavedEvents();
     final index = events.indexWhere((e) => e.id == eventId);
 
     if (index != -1) {
       final event = events[index];
       event.ratings.add(rating);
       event.updateAverageRating();
-      await hiveSource.saveEvents(events.cast<EventModel>());
-      logInfo('⭐ Feedback registrado en evento $eventId: $rating');
+      await localDataSource.saveEvents(events);
+      logInfo('Feedback registrado en evento $eventId: $rating');
     }
   }
+@override
+Future<void> saveEvents(List<Event> events) async {
+  await localDataSource.saveEvents(events.cast<EventModel>());
+}
+
+
 }

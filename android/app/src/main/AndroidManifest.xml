@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+ <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="f_web_service_random_user_template"
+        android:label="puntog"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

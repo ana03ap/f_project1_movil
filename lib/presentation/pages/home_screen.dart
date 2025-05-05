@@ -7,11 +7,30 @@ import '../../core/constants/app_styles.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
   final HomeController homeController = Get.find<HomeController>();
-  final TextEditingController nameController = TextEditingController();
+  final TextEditingController nameController = TextEditingController(
+    text: Get.find<HomeController>().name.value,
+  );
+
+  // void navigateToStartPage() {
+  //   if (nameController.text.isNotEmpty) {
+  //     homeController.setName(nameController.text);
+  //     Get.toNamed('/startpage');
+  //   } else {
+  //     Get.snackbar(
+  //       'Error',
+  //       'Please enter your name.',
+  //       backgroundColor: AppColors.error,
+  //       colorText: AppColors.white,
+  //       snackPosition: SnackPosition.BOTTOM,
+  //     );
+  //   }
+  // }
 
   void navigateToStartPage() {
-    if (nameController.text.isNotEmpty) {
-      homeController.setName(nameController.text);
+    final enteredName = nameController.text.trim();
+    if (enteredName.isNotEmpty) {
+      homeController
+          .setName(enteredName); // Guarda en controlador y SharedPrefs
       Get.toNamed('/startpage');
     } else {
       Get.snackbar(
@@ -40,19 +59,20 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 20),
             TextField(
               controller: nameController,
-              style: const TextStyle(color: AppColors.textPrimary), 
+              style: const TextStyle(color: AppColors.textPrimary),
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Input Name',
               ),
-              onChanged: (value) => homeController.setName(value),
+              
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: navigateToStartPage,
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                 elevation: 4,
                 shadowColor: AppColors.black,
               ),

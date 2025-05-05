@@ -8,7 +8,6 @@ import '../widgets/container_icon_with_text.dart';
 import '../widgets/event_card.dart';
 import '../widgets/bottom_nav_bar.dart';
 
-
 class Startpage extends StatelessWidget {
   final BottomNavController bottomNavController = Get.find();
   final EventController eventController = Get.find<EventController>();
@@ -160,13 +159,15 @@ class Startpage extends StatelessWidget {
                   // LISTA DE EVENTOS
                   Expanded(
                     child: Obx(() {
-                      if (eventController.filteredEvents.isEmpty) {
+                      final events = eventController.upcomingEvents;
+
+                      if (events.isEmpty) {
                         return const Center(child: Text("No events found"));
                       }
                       return ListView.builder(
-                        itemCount: eventController.filteredEvents.length,
+                        itemCount: events.length,
                         itemBuilder: (context, index) {
-                          final event = eventController.filteredEvents[index];
+                          final event = events[index];
                           return EventCard(
                             title: event.title,
                             date: event.date,

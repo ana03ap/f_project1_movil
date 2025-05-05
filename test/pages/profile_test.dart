@@ -7,21 +7,39 @@ import 'package:f_project_1/presentation/controllers/home_controller.dart';
 import 'package:f_project_1/presentation/controllers/event_controller.dart';
 import 'package:f_project_1/presentation/controllers/bottom_nav_controller.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:f_project_1/domain/repositories/i_event_repository.dart';
 
-// Test controller for Home
-class TestHomeController extends HomeController {
+// Mock repository que no hace nada
+class FakeEventRepository implements EventRepository {
   @override
-  final RxString name = 'Test User'.obs;
+  Future<List<EventModel>> getAllEvents() async => [];
+
+  @override
+  Future<void> joinEvent(int eventId) async {}
+
+  @override
+  Future<void> unjoinEvent(int eventId) async {}
+
+  @override
+  Future<void> addRating(int eventId, double rating) async {}
 }
 
-// Test controller for Events
+// Controlador de prueba que no depende de Hive/API
 class TestEventController extends EventController {
+  TestEventController() : super(repository: FakeEventRepository());
+
   @override
+  // ignore: overridden_fields
   final RxList<EventModel> joinedEvents = <EventModel>[].obs;
 
   void addTestEvents(List<EventModel> events) {
     joinedEvents.addAll(events);
   }
+}
+
+class TestHomeController extends HomeController {
+  @override
+  final RxString name = 'Test User'.obs;
 }
 
 void main() {
@@ -78,6 +96,7 @@ void main() {
         date: 'April 20, 2025, 9:00 AM',
         path: 'test',
         type: 'test',
+        isJoined: true,
       ),
       EventModel(
         id: 2,
@@ -89,6 +108,7 @@ void main() {
         date: 'April 21, 2025, 10:00 AM',
         path: 'test',
         type: 'test',
+        isJoined: true,
       ),
     ]);
 

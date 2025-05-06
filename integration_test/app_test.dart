@@ -28,25 +28,39 @@ class FakeRemoteDataSource
   final List<EventModel> _remoteEvents = [
     EventModel(
       id: 1,
-      title: 'Charla Sexualidad',
-      location: 'Auditorio A',
-      details: 'Una charla educativa sobre sexualidad responsable.',
-      participants: 20,
-      date: '2025-12-10', // FUTURO
-      availableSpots: 20,
-      path: 'lib/assets/unbound01.jpeg',
-      type: 'Charla',
+      title: "The Things We Wish We’d Learned Sooner",
+      location: "Reflection Room",
+      details:
+          "Why is it so hard to talk about intimacy, desire, or even basic information about our bodies? This session opens up a safe space to explore what we’re rarely taught — about respect, boundaries, pleasure, and honest communication.",
+      participants: 40,
+      availableSpots: 18,
+      date: "2025-12-10",
+      path: "lib/assets/unbound01.jpeg",
+      type: "Unbound",
+    ),
+    EventModel(
+      id: 2,
+      title: "Consent Isn’t Just a Word: Rethinking Connection",
+      location: "Youth Circle Room",
+      details:
+          "More than a rule — consent is about understanding, respect, and presence. This workshop invites us to reflect on the messages we’ve received (or not} and how to build healthier dynamics through active listening and mutual care.",
+      participants: 50,
+      availableSpots: 27,
+      date: "2025-12-10",
+      path: "lib/assets/unbound02.png",
+      type: "Unbound",
     ),
     EventModel(
       id: 99,
-      title: 'Taller Pasado',
-      location: 'Salón Z',
-      details: 'Simulación de evento pasado.',
+      title: 'Reclaiming Touch: Consent, Culture, and Connection',
+      location: 'Wellness Studio A',
+      details:
+          "Explore how physical connection intersects with culture, trauma, and trust. This session invites participants to reflect on their boundaries, learn the language of consent, and reimagine intimacy through mutual respect and understanding.",
       participants: 10,
-      date: 'May 01, 2023, 5:00 PM', // PASADO
+      date: 'May 01, 2023, 5:00 PM',
       availableSpots: 10,
       path: 'lib/assets/unbound01.jpeg',
-      type: 'Taller',
+      type: 'Unbound',
     ),
   ];
 
@@ -174,6 +188,8 @@ void main() {
     // EVENTOS
     final eventCard = find.byKey(const Key('eventCard_1'));
     expect(eventCard, findsOneWidget);
+    final eventCard2 = find.byKey(const Key('eventCard_2'));
+    expect(eventCard2, findsOneWidget);
     await tester.tap(eventCard);
     await tester.pumpAndSettle();
 

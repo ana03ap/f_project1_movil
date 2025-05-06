@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:f_project_1/presentation/controllers/bottom_nav_controller.dart';
 import 'package:f_project_1/presentation/widgets/bottom_nav_bar.dart';
 
-
-class FakeBottomNavController extends GetxController implements BottomNavController {
+class FakeBottomNavController extends GetxController
+    implements BottomNavController {
   int tappedIndex = -1;
 
   @override
@@ -31,7 +31,8 @@ void main() {
     Get.reset();
   });
 
-  testWidgets('BottomNavBar shows items and calls onTap when tapped', (WidgetTester tester) async {
+  testWidgets('BottomNavBar shows items and calls onTap when tapped',
+      (WidgetTester tester) async {
     await tester.pumpWidget(
       GetMaterialApp(
         home: Scaffold(
@@ -43,8 +44,14 @@ void main() {
     expect(find.text('Events'), findsOneWidget);
     expect(find.text('My Events'), findsOneWidget);
     expect(find.text('Profile'), findsOneWidget);
+    await tester.tap(find.byIcon(Icons.event));
+    await tester.pumpAndSettle();
+    expect(fakeController.tappedIndex, 0);
 
-    // Simulamos tap en el ítem "My Events" (índice 1)
+    await tester.tap(find.byIcon(Icons.person));
+    await tester.pumpAndSettle();
+    expect(fakeController.tappedIndex, 2);
+
     await tester.tap(find.byIcon(Icons.list));
     await tester.pumpAndSettle();
 

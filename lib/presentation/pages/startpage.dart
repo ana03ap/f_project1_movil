@@ -169,6 +169,8 @@ class Startpage extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final event = events[index];
                           return EventCard(
+                            key: Key(
+                                'eventCard_${event.id}'), 
                             title: event.title,
                             date: event.date,
                             location: event.location,

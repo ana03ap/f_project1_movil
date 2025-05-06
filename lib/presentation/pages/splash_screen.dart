@@ -15,7 +15,6 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
 @override
 void initState() {
-  print("EN SPLASHSCREEN");
   super.initState();
   Future.delayed(const Duration(seconds: 2), () async {
     final prefs = await SharedPreferences.getInstance();

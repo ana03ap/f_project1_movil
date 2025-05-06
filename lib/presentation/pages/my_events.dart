@@ -47,6 +47,8 @@ class MyEvents extends StatelessWidget {
                           itemBuilder: (context, index) {
                             final event = upcomingEvents[index];
                             return EventCard(
+                              key: Key(
+                                  'pastEventCard_${event.id}'), 
                               title: event.title,
                               location: event.location,
                               path: event.path,

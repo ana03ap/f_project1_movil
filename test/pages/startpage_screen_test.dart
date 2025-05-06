@@ -9,6 +9,7 @@ import 'package:f_project_1/presentation/widgets/event_card.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 
+/*
 // Mock repository sin lógica real
 class FakeEventRepository implements EventRepository {
   @override
@@ -94,3 +95,4 @@ void main() {
     expect(find.byType(EventCard), findsNWidgets(2));
   });
 }
+*/

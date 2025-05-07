@@ -40,6 +40,8 @@
 
 
 ### Check out our app demo! 💮 https://www.youtube.com/shorts/lmBJjRMjMDU
+### Learn how our app works! 🎥 https://www.youtube.com/shorts/dniOyBbtZEk
+
 
 
 

@@ -1,3 +1,4 @@
+// Importaciones necesarias para controladores, UI, test, dependencias y almacenamiento local.
 import 'package:f_project_1/presentation/controllers/connectivity_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -23,15 +24,16 @@ import 'package:f_project_1/data/models/event_model.dart';
 import 'package:f_project_1/domain/datasources/i_event_remote_data_source.dart';
 import 'package:f_project_1/domain/datasources/i_version_remote_data_source.dart';
 
+// Implementación de un fake remoto para pruebas de integración sin usar la red real.
 class FakeRemoteDataSource
     implements IEventRemoteDataSource, IVersionRemoteDataSource {
+  // Lista de eventos simulados
   final List<EventModel> _remoteEvents = [
     EventModel(
       id: 1,
       title: "The Things We Wish We’d Learned Sooner",
       location: "Reflection Room",
-      details:
-          "Why is it so hard to talk about intimacy, desire, or even basic information about our bodies? This session opens up a safe space to explore what we’re rarely taught — about respect, boundaries, pleasure, and honest communication.",
+      details: "Why is it so hard to talk about intimacy...",
       participants: 40,
       availableSpots: 18,
       date: "2025-12-10",
@@ -42,8 +44,7 @@ class FakeRemoteDataSource
       id: 2,
       title: "Consent Isn’t Just a Word: Rethinking Connection",
       location: "Youth Circle Room",
-      details:
-          "More than a rule — consent is about understanding, respect, and presence. This workshop invites us to reflect on the messages we’ve received (or not} and how to build healthier dynamics through active listening and mutual care.",
+      details: "More than a rule — consent is about understanding...",
       participants: 50,
       availableSpots: 27,
       date: "2025-12-10",
@@ -54,8 +55,7 @@ class FakeRemoteDataSource
       id: 99,
       title: 'Reclaiming Touch: Consent, Culture, and Connection',
       location: 'Wellness Studio A',
-      details:
-          "Explore how physical connection intersects with culture, trauma, and trust. This session invites participants to reflect on their boundaries, learn the language of consent, and reimagine intimacy through mutual respect and understanding.",
+      details: "Explore how physical connection intersects with culture...",
       participants: 10,
       date: 'May 01, 2023, 5:00 PM',
       availableSpots: 10,
@@ -64,10 +64,13 @@ class FakeRemoteDataSource
     ),
   ];
 
+  // Almacena retroalimentación de los usuarios por id de evento
   final Map<int, Map<String, dynamic>> _feedbacks = {};
-  final Set<int> _subscribedEvents = {99}; // ya unido al evento 99
+  // Eventos a los que ya está unido el usuario (por defecto, al 99)
+  final Set<int> _subscribedEvents = {99};
   final int _remoteVersion = 1;
 
+  // Devuelve la lista de eventos con información de si el usuario ya está unido
   @override
   Future<List<EventModel>> fetchEvents() async {
     return _remoteEvents.map((e) {
@@ -87,26 +90,31 @@ class FakeRemoteDataSource
     }).toList();
   }
 
+  // Simula la suscripción a un evento
   @override
   Future<void> subscribeToEvent(int id) async {
     _subscribedEvents.add(id);
   }
 
+  // Simula el envío de retroalimentación
   @override
   Future<void> sendFeedback(int id, int rating, String comment) async {
     _feedbacks[id] = {'rating': rating, 'comment': comment};
   }
 
+  // Devuelve versión remota de los eventos (para comparar con local)
   @override
   Future<int> fetchEventVersion() async => _remoteVersion;
 
   @override
   Future<int> fetchRemoteVersion() async => _remoteVersion;
 
+  // Métodos utilitarios para pruebas
   bool hasFeedbackFor(int id) => _feedbacks.containsKey(id);
   bool isSubscribed(int id) => _subscribedEvents.contains(id);
 }
 
+// Implementación fake de conexión de red, siempre conectada
 class FakeNetworkInfo implements NetworkInfo {
   @override
   Future<bool> isConnected() async => true;
@@ -118,28 +126,35 @@ class FakeNetworkInfo implements NetworkInfo {
   void openStream() {}
 }
 
+// Variable global del fake remoto para pruebas
 late FakeRemoteDataSource remoteDataSource;
 
+// Configura toda la app para pruebas de integración
 Future<Widget> createTestApp() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized(); // Inicializa binding de widgets
 
-  await Hive.initFlutter();
-  Hive.registerAdapter(EventHiveModelAdapter());
+  await Hive.initFlutter(); // Inicializa Hive para Flutter
+  Hive.registerAdapter(EventHiveModelAdapter()); // Registra adaptador
 
+  // Abre caja local si no está abierta
   if (!Hive.isBoxOpen('eventsBox')) {
     await Hive.openBox<EventHiveModel>('eventsBox');
   }
 
+  // Inicializa preferencias simuladas
   SharedPreferences.setMockInitialValues({});
   await SharedPreferences.getInstance();
 
+  // Crea el data source local y remoto simulado
   final localDataSource = EventLocalDataSource();
   remoteDataSource = FakeRemoteDataSource();
 
+  // Limpia dependencias anteriores y registra nuevas en GetX
   Get.reset();
   Get.put<NetworkInfo>(FakeNetworkInfo());
   Get.put(ConnectivityController());
 
+  // Crea e inyecta repositorio y casos de uso
   final repo = EventRepositoryImpl(
     localDataSource: localDataSource,
     remoteDataSource: remoteDataSource,
@@ -155,6 +170,7 @@ Future<Widget> createTestApp() async {
   final unjoinEventUseCase = UnjoinEvent(repo);
   final filterEventsUseCase = FilterEvents();
 
+  // Registra controladores
   Get.put(HomeController());
   Get.put(BottomNavController());
   Get.put(TopNavController());
@@ -166,75 +182,76 @@ Future<Widget> createTestApp() async {
     checkVersionUseCase: checkVersionUseCase,
   ));
 
+  // Devuelve el widget de la app para el test
   return const MyApp(initialRoute: '/home');
 }
 
+// Función principal del test de integración
 void main() {
-  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  IntegrationTestWidgetsFlutterBinding.ensureInitialized(); // Necesario para tests
 
   testWidgets('Test de integración', (tester) async {
-    final app = await createTestApp();
-    await tester.pumpWidget(app);
-    await tester.pumpAndSettle();
+    final app = await createTestApp(); // Crea app de prueba
+    await tester.pumpWidget(app); // Renderiza widget
+    await tester.pumpAndSettle(); // Espera a que se estabilice
 
     // HOME
-    final nameInput = find.byKey(const Key('name_input'));
+    final nameInput = find.byKey(const Key('name_input')); // Busca input
     await tester.pumpAndSettle();
-    expect(nameInput, findsOneWidget);
-    await tester.enterText(nameInput, 'Juan');
-    await tester.tap(find.byKey(const Key('start_button')));
+    expect(nameInput, findsOneWidget); // Verifica que exista
+    await tester.enterText(nameInput, 'Juan'); // Ingresa texto
+    await tester.tap(find.byKey(const Key('start_button'))); // Toca botón
     await tester.pumpAndSettle();
 
     // EVENTOS
-    final eventCard = find.byKey(const Key('eventCard_1'));
+    final eventCard = find.byKey(const Key('eventCard_1')); // Busca tarjeta evento 1
     expect(eventCard, findsOneWidget);
-    final eventCard2 = find.byKey(const Key('eventCard_2'));
+    final eventCard2 = find.byKey(const Key('eventCard_2')); // Tarjeta evento 2
     expect(eventCard2, findsOneWidget);
-    await tester.tap(eventCard);
+    await tester.tap(eventCard); // Toca tarjeta evento 1
     await tester.pumpAndSettle();
 
     // JOIN EVENTO FUTURO
-    await tester.ensureVisible(find.byKey(const Key('joinButton')));
+    await tester.ensureVisible(find.byKey(const Key('joinButton'))); // Asegura visibilidad botón unirse
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const Key('joinButton')));
+    await tester.tap(find.byKey(const Key('joinButton'))); // Toca botón unirse
     await tester.pumpAndSettle();
 
-    // VALIDACIÓN ESTADO LOCAL (no remoto)
+    // VALIDACIÓN ESTADO LOCAL
     final selected = Get.find<EventController>().selectedEvent.value!;
-    expect(selected.isJoined.value, isTrue);
+    expect(selected.isJoined.value, isTrue); // Verifica que se unió
 
-    // MIS EVENTOS (upcoming por defecto)
-    await tester.tap(find.byKey(const Key('myEventsTab')));
+    // MIS EVENTOS
+    await tester.tap(find.byKey(const Key('myEventsTab'))); // Cambia a pestaña "mis eventos"
     await tester.pumpAndSettle();
-    expect(find.byKey(const Key('eventCard_1')), findsOneWidget);
+    expect(find.byKey(const Key('eventCard_1')), findsOneWidget); // Verifica evento presente
 
-    // Cambiar el índice del TopNavController a "1" (Past Events)
+    // Cambia a eventos pasados
     final topNavController = Get.find<TopNavController>();
     topNavController.onTap(1);
     await tester.pumpAndSettle();
 
-    // FEEDBACK al evento 99
+    // FEEDBACK evento 99
     final pastCard = find.byKey(const Key('pastEventCard_99'));
     expect(pastCard, findsOneWidget);
     await tester.tap(pastCard);
     await tester.pumpAndSettle();
 
-    // Seleccionar rating
-    final fourthStar = find.byType(IconButton).at(3); // cuarta estrella
+    // Selecciona 4 estrella de puntuación
+    final fourthStar = find.byType(IconButton).at(3);
     await tester.tap(fourthStar);
     await tester.pumpAndSettle();
 
-    // Escribir comentario
-    await tester.enterText(
-        find.byKey(const Key('feedbackField')), 'Buen evento');
+    // Escribe comentario y envía
+    await tester.enterText(find.byKey(const Key('feedbackField')), 'Buen evento');
     await tester.tap(find.byKey(const Key('submitFeedbackButton')));
-    await tester.pump(); // inicia la animación del snackbar
+    await tester.pump(); // Inicia animación del snackbar
 
-    // Verificar que el snackbar se muestra
+    // Verifica snackbar mostrado
     expect(find.text('Thanks!'), findsOneWidget);
     expect(find.text('Your rating has been recorded.'), findsOneWidget);
 
-    // Esperar a que desaparezca
+    // Espera a que desaparezca
     await tester.pumpAndSettle(const Duration(seconds: 3));
 
     // PERFIL → LOGOUT
@@ -242,8 +259,8 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('logoutButton')));
     await tester.pumpAndSettle();
-    expect(find.byKey(const Key('name_input')), findsOneWidget);
+    expect(find.byKey(const Key('name_input')), findsOneWidget); // Vuelve a home
 
-    await Hive.close();
+    await Hive.close(); // Cierra Hive
   });
 }

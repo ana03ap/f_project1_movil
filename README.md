@@ -41,6 +41,7 @@
 
 ### Check out our app demo! 💮 https://www.youtube.com/shorts/lmBJjRMjMDU
 ### Learn how our app works! 🎥 https://www.youtube.com/shorts/dniOyBbtZEk
+### Test (widgets and integration test) https://youtu.be/LZjIn6D4eE8?si=MUXkVi-YnfLNFc17
 
 
 

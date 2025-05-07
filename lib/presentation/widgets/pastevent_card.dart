@@ -1,11 +1,9 @@
-
 import 'package:f_project_1/data/models/event_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
- 
 
 class PastEventCard extends StatelessWidget {
-  final EventModel event; 
+  final EventModel event;
   final VoidCallback onTap;
 
   const PastEventCard({
@@ -89,15 +87,16 @@ class PastEventCard extends StatelessWidget {
                                 const SizedBox(width: 4),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 4),
-                                  child: Obx(() => Text( // Widget reactivo
-                                    event.averageRating.value.toStringAsFixed(1),
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: isDark
-                                          ? Colors.white70
-                                          : Colors.black87,
-                                    ),
-                                  )),
+                                  child: Obx(() => Text(
+                                        event.averageRating.value
+                                            .toStringAsFixed(1),
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: isDark
+                                              ? Colors.white70
+                                              : Colors.black87,
+                                        ),
+                                      )),
                                 ),
                               ],
                             ),
@@ -112,7 +111,7 @@ class PastEventCard extends StatelessWidget {
                     child: Stack(
                       children: [
                         Image.asset(
-                          event.path, 
+                          event.path,
                           width: 120,
                           height: 70,
                           fit: BoxFit.cover,
@@ -127,7 +126,7 @@ class PastEventCard extends StatelessWidget {
                           height: 70,
                           alignment: Alignment.center,
                           child: Text(
-                            event.date, 
+                            event.date,
                             style: const TextStyle(
                               fontSize: 10,
                               color: Colors.white,

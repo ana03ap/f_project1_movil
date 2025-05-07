@@ -32,7 +32,7 @@ class EventLocalDataSource implements IEventLocalDataSource {
     for (int i = 0; i < events.length; i++) {
       await box.put(i, events[i].toHiveModel());
     }
-    logInfo("✅ ${events.length} events saved to Hive");
+    logInfo("${events.length} events saved to Hive");
   }
 
   @override

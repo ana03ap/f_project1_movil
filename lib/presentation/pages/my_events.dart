@@ -47,6 +47,7 @@ class MyEvents extends StatelessWidget {
                           itemBuilder: (context, index) {
                             final event = upcomingEvents[index];
                             return EventCard(
+                              key: Key('eventCard_${event.id}'),
                               title: event.title,
                               location: event.location,
                               path: event.path,
@@ -65,6 +66,7 @@ class MyEvents extends StatelessWidget {
                           itemBuilder: (context, index) {
                             final event = pastEvents[index];
                             return PastEventCard(
+                              key: Key('pastEventCard_${event.id}'),
                               event: event,
                               onTap: () => _navigateToFeedback(event),
                             );

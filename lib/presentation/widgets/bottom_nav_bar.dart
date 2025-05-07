@@ -9,23 +9,22 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     final currentIndex = bottomNavController.getCurrentIndex();
-    
+
     return BottomNavigationBar(
       currentIndex: currentIndex,
       onTap: (index) => bottomNavController.onTap(index),
       items: const [
         BottomNavigationBarItem(
-          icon: Icon(Icons.event),
+          icon: Icon(Icons.event, key: Key('eventsTab')),
           label: 'Events',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.list),
+          icon: Icon(Icons.list, key: Key('myEventsTab')), 
           label: 'My Events',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.person),
+          icon: Icon(Icons.person, key: Key('profileTab')), 
           label: 'Profile',
         ),
       ],

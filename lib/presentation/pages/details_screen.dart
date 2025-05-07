@@ -153,6 +153,7 @@ class EventDetailsScreen extends StatelessWidget {
                                 : purple),
                       ),
                       child: IconButton(
+                         key: const Key('joinButton'), 
                         icon: Icon(
                           eventDetails.isJoined.value
                               ? Icons.remove

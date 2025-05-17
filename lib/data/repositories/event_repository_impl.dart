@@ -51,7 +51,7 @@ Future<List<Event>> getAllEvents() async {
 
 
 @override
-Future<void> joinEvent(int eventId) async {
+Future<void> joinEvent(String eventId) async {
   final events = await localDataSource.getSavedEvents();
   final index = events.indexWhere((e) => e.id == eventId);
 
@@ -65,7 +65,7 @@ Future<void> joinEvent(int eventId) async {
 
 
   @override
-  Future<void> unjoinEvent(int eventId) async {
+  Future<void> unjoinEvent(String eventId) async {
     final events = await localDataSource.getSavedEvents();
     final index = events.indexWhere((e) => e.id == eventId);
 
@@ -79,7 +79,7 @@ Future<void> joinEvent(int eventId) async {
   }
 
   @override
-  Future<void> addRating(int eventId, double rating) async {
+  Future<void> addRating(String eventId, double rating) async {
     final events = await localDataSource.getSavedEvents();
     final index = events.indexWhere((e) => e.id == eventId);
 

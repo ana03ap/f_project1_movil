@@ -17,7 +17,7 @@ class JoinEvent {
   JoinEvent(this.repository);
 
   /// Llama al repositorio para marcar el evento como unido
-  Future<void> call(int eventId) {
+  Future<void> call(String eventId) {
     return repository.joinEvent(eventId);
   }
 }

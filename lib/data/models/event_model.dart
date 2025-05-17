@@ -9,7 +9,7 @@ class EventModel extends Event {
   final List<double> ratings;
 
   EventModel({
-    required int id,
+    required String id, // id ahora es String
     required String title,
     required String location,
     required String details,
@@ -74,22 +74,24 @@ class EventModel extends Event {
   }
 
 
-
   factory EventModel.fromJson(Map<String, dynamic> json) {
-  return EventModel(
-    id: json['id'],
-    title: json['title'],
-    location: json['location'],
-    details: json['details'],
-    participants: json['participants'],
-    availableSpots: json['availableSpots'],
-    date: json['date'],
-    path: json['path'],
-    type: json['type'],
-    isJoined: false, // Siempre inicia como no unido
-    ratings: [], // No nos mandan ratings individuales, solo feedback general
-  );
-}
+    return EventModel(
+      id: json['_id'] ?? '', 
+      title: json['title'] ?? '',
+      location: json['location'] ?? '',
+      details: json['details'] ?? '',
+      participants: json['participants'] ?? 0,
+      availableSpots: json['availableSpots'] ?? 0,
+      date: json['date'] ?? '',
+      path: json['path'] ?? '',
+      type: json['type'] ?? '',
+      isJoined: json['isJoined'] ?? false,
+      ratings: (json['ratings'] != null)
+          ? List<double>.from(
+              (json['ratings'] as List).map((e) => (e as num).toDouble()))
+          : [],
+    );
+  }
 
 }
 

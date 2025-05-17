@@ -18,7 +18,7 @@ class UnjoinEvent {
   UnjoinEvent(this.repository);
 
   /// Llama al repositorio para marcar el evento como no unido
-  Future<void> call(int eventId) {
+  Future<void> call(String eventId) {
     return repository.unjoinEvent(eventId);
   }
 }

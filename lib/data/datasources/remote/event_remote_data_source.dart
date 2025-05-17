@@ -20,7 +20,7 @@ class EventRemoteDataSource implements IEventRemoteDataSource {
   }
 
   @override
-  Future<void> subscribeToEvent(int id) async {
+  Future<void> subscribeToEvent(String id) async {
     final response = await http.post(Uri.parse('$baseUrl/subscribe/$id'));
 
     if (response.statusCode != 200) {
@@ -29,7 +29,7 @@ class EventRemoteDataSource implements IEventRemoteDataSource {
   }
 
   @override
-  Future<void> sendFeedback(int id, int rating, String comment) async {
+  Future<void> sendFeedback(String id, int rating, String comment) async {
     final response = await http.post(
       Uri.parse('$baseUrl/feedback/$id'),
       headers: {'Content-Type': 'application/json'},

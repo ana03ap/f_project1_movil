@@ -29,7 +29,9 @@ class Startpage extends StatelessWidget {
     final category = homeController.categories.firstWhere(
       (cat) => cat.id == eventController.selectedFilter.value,
       orElse: () => CategoryModel(
-          id: eventController.selectedFilter.value, label: "Unknown"),
+          id: eventController.selectedFilter.value,
+          label: "Unknown",
+          type: "Unknown"),
     );
 
     return "${category.label} Events";
@@ -110,7 +112,7 @@ class Startpage extends StatelessWidget {
                                     category.id;
                             return GestureDetector(
                               onTap: () =>
-                                  eventController.filterEvents(category.id),
+                                  eventController.filterEvents(category.type),
                               child: ContainerIconWithText(
                                 label: category.label,
                                 isSelected: isSelected,

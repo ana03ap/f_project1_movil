@@ -1,3 +1,7 @@
+import 'package:f_project_1/data/datasources/remote/category_remote_data_source.dart';
+import 'package:f_project_1/data/repositories/category_repository_impl.dart';
+import 'package:f_project_1/domain/usecases/get_categories_usecase.dart';
+import 'package:f_project_1/domain/usecases/get_categories_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
@@ -38,6 +42,9 @@ void main() async {
   final remoteDataSource = EventRemoteDataSource();
   final versionRemoteDataSource = VersionRemoteDataSource();
   final networkInfo = NetworkInfo();
+  final categoryRemoteDataSource = CategoryRemoteDataSource();
+
+ 
 
   // Repositorio
   final eventRepo = EventRepositoryImpl(
@@ -45,8 +52,11 @@ void main() async {
     remoteDataSource: remoteDataSource,
     networkInfo: networkInfo,
   );
+  final categoryRepository = CategoryRepository(remoteDataSource: categoryRemoteDataSource);
+
 
   // Casos de uso
+  
  final joinEvent = JoinEvent(eventRepo);
   final unjoinEvent = UnjoinEvent(eventRepo);
   final filterEvents = FilterEvents();
@@ -54,9 +64,12 @@ void main() async {
     local: localDataSource,
     remote: versionRemoteDataSource,
   );
+  final getCategoriesUseCase = GetCategoriesUseCase(repository: categoryRepository);
+
+
 
   // Inyección de dependencias
-  Get.put(HomeController());
+  Get.put(HomeController(getCategoriesUseCase: getCategoriesUseCase));
   Get.put(BottomNavController());
   Get.put(TopNavController());
   Get.put(NetworkInfo());            

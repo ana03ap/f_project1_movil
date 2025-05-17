@@ -1,3 +1,4 @@
+import 'package:f_project_1/data/models/category_model.dart';
 import 'package:f_project_1/data/models/event_model.dart';
 import 'package:f_project_1/presentation/controllers/bottom_nav_controller.dart';
 import 'package:f_project_1/presentation/controllers/event_controller.dart';
@@ -13,29 +14,6 @@ class Startpage extends StatelessWidget {
   final EventController eventController = Get.find<EventController>();
   final HomeController homeController = Get.find<HomeController>();
 
-  final List<Map<String, dynamic>> categories = [
-    {"label": "All", "type": "", "icon": Icons.dashboard_customize},
-    {
-      "label": "Sexual Health",
-      "type": "sexHealth",
-      "icon": Icons.health_and_safety_outlined
-    },
-    {
-      "label": "Identity",
-      "type": "Identity",
-      "icon": Icons.transgender_outlined
-    },
-    {"label": "Cybertouch", "type": "Cybertouch", "icon": Icons.phone_iphone},
-    {"label": "Unbound", "type": "Unbound", "icon": Icons.block_rounded},
-    {"label": "Culture", "type": "culture", "icon": Icons.menu_book},
-    {
-      "label": "Sexual Ed.",
-      "type": "education",
-      "icon": Icons.local_fire_department_rounded
-    },
-    {"label": "Body Literacy", "type": "bodyliteracy", "icon": Icons.wc},
-  ];
-
   Startpage({Key? key}) : super(key: key);
 
   void navigateToEventDetails(EventModel event) {
@@ -48,13 +26,15 @@ class Startpage extends StatelessWidget {
       return "All Events";
     }
 
-    final category = categories.firstWhere(
-      (cat) => cat['type'] == eventController.selectedFilter.value,
-      orElse: () =>
-          {"label": eventController.selectedFilter.value, "icon": Icons.event},
+    final category = homeController.categories.firstWhere(
+      (cat) => cat.id == eventController.selectedFilter.value,
+      orElse: () => CategoryModel(
+          id: eventController.selectedFilter.value,
+          label: "Unknown",
+          type: "Unknown"),
     );
 
-    return "${category['label']} Events";
+    return "${category.label} Events";
   }
 
   @override
@@ -115,30 +95,34 @@ class Startpage extends StatelessWidget {
                   const SizedBox(height: 10),
 
                   // LISTA DE CATEGORÍAS
-                  SizedBox(
-                    height: 120,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: categories.length,
-                      itemBuilder: (context, index) {
-                        final category = categories[index];
-                        return Obx(() {
-                          final isSelected =
-                              eventController.selectedFilter.value ==
-                                  category['type'];
-                          return GestureDetector(
-                            onTap: () =>
-                                eventController.filterEvents(category['type']),
-                            child: ContainerIconWithText(
-                              icon: category['icon'],
-                              label: category['label'],
-                              isSelected: isSelected,
-                            ),
-                          );
-                        });
-                      },
-                    ),
-                  ),
+                  Obx(() {
+                    if (homeController.isLoading.value) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    return SizedBox(
+                      height: 80,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: homeController.categories.length,
+                        itemBuilder: (context, index) {
+                          final category = homeController.categories[index];
+                          return Obx(() {
+                            final isSelected =
+                                eventController.selectedFilter.value ==
+                                    category.id;
+                            return GestureDetector(
+                              onTap: () =>
+                                  eventController.filterEvents(category.type),
+                              child: ContainerIconWithText(
+                                label: category.label,
+                                isSelected: isSelected,
+                              ),
+                            );
+                          });
+                        },
+                      ),
+                    );
+                  }),
 
                   const SizedBox(height: 10),
 
@@ -169,8 +153,7 @@ class Startpage extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final event = events[index];
                           return EventCard(
-                            key: Key(
-                                'eventCard_${event.id}'), 
+                            key: Key('eventCard_${event.id}'),
                             title: event.title,
                             date: event.date,
                             location: event.location,

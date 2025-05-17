@@ -42,7 +42,6 @@ class EventRemoteDataSource implements IEventRemoteDataSource {
 
   @override
   Future<int> fetchEventVersion() async {
-    // Reemplaza esta URL por tu endpoint real que devuelva la versión
     final url = Uri.parse('https://api-puntog.onrender.com/events/version');
     final response = await http.get(url);
 

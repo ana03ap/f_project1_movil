@@ -14,7 +14,6 @@ void main() {
       const MaterialApp(
         home: Scaffold(
           body: ContainerIconWithText(
-            icon: Icons.home, // Ícono a mostrar
             label: 'Home',    // Texto debajo del ícono
             isSelected: true, // Se indica que está seleccionado (color púrpura esperado)
           ),
@@ -24,9 +23,6 @@ void main() {
 
     // Verifica que el texto 'Home' se muestre en pantalla
     expect(find.text('Home'), findsOneWidget);
-
-    // Verifica que el ícono también esté presente
-    expect(find.byIcon(Icons.home), findsOneWidget);
 
     // Verifica que el texto sea de color púrpura cuando está seleccionado
     final Text text = tester.widget(find.text('Home'));
@@ -45,7 +41,6 @@ void main() {
       const MaterialApp(
         home: Scaffold(
           body: ContainerIconWithText(
-            icon: Icons.settings, // Ícono a mostrar
             label: 'Settings',    // Texto debajo del ícono
             isSelected: false,    // No está seleccionado (color gris esperado)
           ),
@@ -55,9 +50,6 @@ void main() {
 
     // Verifica que el texto 'Settings' esté presente
     expect(find.text('Settings'), findsOneWidget);
-
-    // Verifica que el ícono esté presente
-    expect(find.byIcon(Icons.settings), findsOneWidget);
 
     // Verifica que el texto sea de color gris
     final Text text = tester.widget(find.text('Settings'));

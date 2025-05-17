@@ -156,7 +156,7 @@ Future<Widget> createTestApp() async {
   final unjoinEventUseCase = UnjoinEvent(repo);
   final filterEventsUseCase = FilterEvents();
 
-  Get.put(HomeController());
+  //Get.put(HomeController());
   Get.put(BottomNavController());
   Get.put(TopNavController());
   Get.put(EventController(

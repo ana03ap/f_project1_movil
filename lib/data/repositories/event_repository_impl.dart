@@ -50,7 +50,7 @@ class EventRepositoryImpl implements IEventRepository {
   }
 
   @override
-  Future<void> joinEvent(int eventId) async {
+  Future<void> joinEvent(String eventId) async {
     final events = await localDataSource.getSavedEvents();
     final index = events.indexWhere((e) => e.id == eventId);
 
@@ -63,7 +63,7 @@ class EventRepositoryImpl implements IEventRepository {
   }
 
   @override
-  Future<void> unjoinEvent(int eventId) async {
+  Future<void> unjoinEvent(String eventId) async {
     final events = await localDataSource.getSavedEvents();
     final index = events.indexWhere((e) => e.id == eventId);
 
@@ -77,7 +77,7 @@ class EventRepositoryImpl implements IEventRepository {
   }
 
   @override
-  Future<void> addRating(int eventId, double rating) async {
+  Future<void> addRating(String eventId, double rating) async {
     final events = await localDataSource.getSavedEvents();
     final index = events.indexWhere((e) => e.id == eventId);
 

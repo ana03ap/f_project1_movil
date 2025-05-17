@@ -17,7 +17,7 @@ class EventHiveModelAdapter extends TypeAdapter<EventHiveModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return EventHiveModel(
-      id: fields[0] as int,
+      id: fields[0] as String,
       title: fields[1] as String,
       location: fields[2] as String,
       details: fields[3] as String,

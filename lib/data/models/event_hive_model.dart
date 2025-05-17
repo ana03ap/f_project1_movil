@@ -5,7 +5,7 @@ part 'event_hive_model.g.dart';
 @HiveType(typeId: 1)
 class EventHiveModel {
   @HiveField(0)
-  final int id;
+  final String id; // ← cambiado de int a String
 
   @HiveField(1)
   final String title;

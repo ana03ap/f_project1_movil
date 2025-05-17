@@ -27,11 +27,9 @@ class Startpage extends StatelessWidget {
     }
 
     final category = homeController.categories.firstWhere(
-      (cat) => cat.id == eventController.selectedFilter.value,
+      (cat) => cat.type == eventController.selectedFilter.value,
       orElse: () => CategoryModel(
-          id: eventController.selectedFilter.value,
-          label: "Unknown",
-          type: "Unknown"),
+          id: '', label: "Unknown", type: eventController.selectedFilter.value),
     );
 
     return "${category.label} Events";

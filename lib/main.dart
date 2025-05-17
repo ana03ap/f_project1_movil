@@ -1,7 +1,6 @@
 import 'package:f_project_1/data/datasources/remote/category_remote_data_source.dart';
 import 'package:f_project_1/data/repositories/category_repository_impl.dart';
 import 'package:f_project_1/domain/usecases/get_categories_usecase.dart';
-import 'package:f_project_1/domain/usecases/get_categories_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';

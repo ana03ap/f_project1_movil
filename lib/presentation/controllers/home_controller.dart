@@ -40,7 +40,6 @@ class HomeController extends GetxController {
     name.value = '';
   }
 
-  // Método para obtener las categorías desde la API
   Future<void> fetchCategories() async {
     try {
       isLoading(true);

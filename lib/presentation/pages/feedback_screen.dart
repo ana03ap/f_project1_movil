@@ -10,7 +10,6 @@ class FeedbackScreen extends StatelessWidget {
   final TextEditingController feedbackController = TextEditingController();
   final RxInt selectedRating = 0.obs;
   final BottomNavController bottomNavController = Get.find();
-  
 
   FeedbackScreen({Key? key}) : super(key: key);
 
@@ -36,6 +35,7 @@ class FeedbackScreen extends StatelessWidget {
             Text('Leave a feedback!', style: theme.textTheme.headlineSmall),
             const SizedBox(height: 20),
             TextField(
+              key: const Key('feedbackField'), // Key para pruebas
               controller: feedbackController,
               maxLines: 5,
               decoration: InputDecoration(
@@ -85,6 +85,7 @@ class FeedbackScreen extends StatelessWidget {
                 )),
             const SizedBox(height: 20),
             ElevatedButton(
+              key: const Key('submitFeedbackButton'), // Key para pruebas
               onPressed: () {
                 if (selectedRating.value > 0) {
                   final event = Get.find<EventController>().selectedEvent.value;

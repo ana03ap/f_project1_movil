@@ -14,7 +14,7 @@ class FakeEventRepository implements EventRepository {
   @override
   Future<List<EventModel>> getAllEvents() async => [
         EventModel(
-          id: 1,
+          id: "1",
           title: 'Event A',
           location: 'Room 1',
           details: 'Details A',
@@ -25,7 +25,7 @@ class FakeEventRepository implements EventRepository {
           type: 'Unbound',
         ),
         EventModel(
-          id: 2,
+          id: "2",
           title: 'Event B',
           location: 'Room 2',
           details: 'Details B',
@@ -36,7 +36,7 @@ class FakeEventRepository implements EventRepository {
           type: 'education',
         ),
         EventModel(
-          id: 3,
+          id: "3",
           title: 'Event C',
           location: 'Room 3',
           details: 'Details C',
@@ -49,13 +49,13 @@ class FakeEventRepository implements EventRepository {
       ];
 
   @override
-  Future<void> addRating(int eventId, double rating) async {}
+  Future<void> addRating(String eventId, double rating) async {}
 
   @override
-  Future<void> joinEvent(int eventId) async {}
+  Future<void> joinEvent(String eventId) async {}
 
   @override
-  Future<void> unjoinEvent(int eventId) async {}
+  Future<void> unjoinEvent(String eventId) async {}
 }
 
 void main() {

@@ -44,14 +44,10 @@ class MyProfile extends StatelessWidget {
                       fontSize: 22, fontWeight: FontWeight.bold),
                 )),
             const SizedBox(height: 8),
-            // Obx(() => Text(
-            //       'You have subscribed to ${eventController.joinedEvents.length} events!',
-            //       style: const TextStyle(fontSize: 16),
-            //     )),
             const SizedBox(height: 24),
             SwitchListTile(
               title: const Text('Dark Mode'),
-              value:isDark,
+              value: isDark,
               onChanged: (val) {
                 if (val) {
                   AdaptiveTheme.of(context).setDark();
@@ -62,7 +58,7 @@ class MyProfile extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             ListTile(
-              key: const Key('changeNameTile'),
+              key: const Key('logoutButton'),
               tileColor: Theme.of(context).cardColor,
               leading:
                   Icon(Icons.edit, color: Theme.of(context).iconTheme.color),

@@ -83,39 +83,45 @@ class EventController extends GetxController {
 
 Future<void> joinEvent(EventModel event) async {
   if (!event.isJoined.value && event.availableSpots.value > 0) {
+    try {
+      // 1) Llamo al use case y recibo el EventModel actualizado
+      final updated = await _joinEventUseCase(event.id);
 
-    event.isJoined.value = true;
-    event.availableSpots.value--;
+      // 2) Actualizo sólo ese objeto en mi lista Rx
+      event.availableSpots.value = updated.availableSpots.value;
+      event.isJoined.value       = true;
 
-    final allEvents = await _repository.getAllEvents();
+      //3) Persisto en Hive la lista modificada
+      await _repository.saveEvents(filteredEvents);
 
-    final index = allEvents.indexWhere((e) => e.id == event.id);
-    if (index != -1) {
-      allEvents[index] = event;
+      // 4) Actualizo la lista de joinedEvents para la UI
+      updateJoinedEvents();
+
+      Get.snackbar('¡Listo!', 'Te has inscrito correctamente.');
+    } catch (e) {
+      logError('Error en joinEvent: $e');
+      Get.snackbar('Error', 'No se pudo suscribir al evento.');
     }
-
-
-    await _repository.saveEvents(allEvents);
-
-    updateJoinedEvents();
   }
 }
 
+
 Future<void> unjoinEvent(EventModel event) async {
   if (event.isJoined.value) {
-    event.isJoined.value = false;
-    event.availableSpots.value++;
+    try {
+      // 1) Llamo al use case que suma spots en el backend
+      final updated = await _unjoinEventUseCase(event.id);
 
-    final allEvents = await _repository.getAllEvents();
+      event.availableSpots.value = updated.availableSpots.value;
+      event.isJoined.value       = false;
+      await _repository.saveEvents(filteredEvents);
+      updateJoinedEvents();
 
-    final index = allEvents.indexWhere((e) => e.id == event.id);
-    if (index != -1) {
-      allEvents[index] = event;
+      Get.snackbar('Listo', 'Te has dado de baja del evento.');
+    } catch (e) {
+      logError('Error en unjoinEvent: $e');
+      Get.snackbar('Error', 'No se pudo cancelar la suscripción.');
     }
-
-    await _repository.saveEvents(allEvents);
-
-    updateJoinedEvents();
   }
 }
 
@@ -163,16 +169,51 @@ Future<void> unjoinEvent(EventModel event) async {
       .where((e) => e.isJoined.value && !isEventFuture(e.date))
       .toList();
 
-  void addFeedback(EventModel event, double rating) {
-    event.ratings.add(rating);
+  // void addFeedback(EventModel event, double rating) {
+  //   event.ratings.add(rating);
+  //   event.updateAverageRating();
+  //   _repository.addRating(event.id, rating);
+
+  //   Get.snackbar(
+  //     'Thanks!',
+  //     'Your rating has been recorded.',
+  //     snackPosition: SnackPosition.BOTTOM,
+  //   );
+  // }
+
+
+
+  Future<void> addFeedback(EventModel event, double rating) async {
+  try {
+    // 1) Envía al backend + guarda en Hive
+    await _repository.addRating(event.id, rating);
+
+    // 2) Recupera de Hive (vía getAllEvents) y castéalo a EventModel
+    final allEvents = await _repository.getAllEvents();
+    final updatedEvent = allEvents
+        .cast<EventModel>()                       // ← aquí el cast
+        .firstWhere((e) => e.id == event.id);
+
+    // 3) Sustituye la lista de ratings en memoria
+    event.ratings
+      ..clear()
+      ..addAll(updatedEvent.ratings);
     event.updateAverageRating();
-    _repository.addRating(event.id, rating);
 
     Get.snackbar(
-      'Thanks!',
-      'Your rating has been recorded.',
+      '¡Gracias!',
+      'Tu valoración ha sido registrada.',
+      snackPosition: SnackPosition.BOTTOM,
+    );
+  } catch (e) {
+    logError('Error en addFeedback: $e');
+    Get.snackbar(
+      'Error',
+      'No se pudo enviar tu valoración.',
       snackPosition: SnackPosition.BOTTOM,
     );
   }
+}
+  
 }
 

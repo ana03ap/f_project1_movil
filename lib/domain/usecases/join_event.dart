@@ -9,6 +9,8 @@
 //   }
 // }
 
+import 'package:f_project_1/data/models/event_model.dart';
+
 import '../repositories/i_event_repository.dart';
 
 /// Caso de uso: unirse a un evento
@@ -17,7 +19,7 @@ class JoinEvent {
   JoinEvent(this.repository);
 
   /// Llama al repositorio para marcar el evento como unido
-  Future<void> call(String eventId) {
+  Future<EventModel> call(String eventId) {
     return repository.joinEvent(eventId);
   }
 }

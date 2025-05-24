@@ -12,6 +12,7 @@ class VersionRemoteDataSource implements IVersionRemoteDataSource {
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
+      print(data['version']);
       return data['version'];
       
     } else {

@@ -18,14 +18,42 @@ class EventRemoteDataSource implements IEventRemoteDataSource {
     }
   }
 
-  @override
-  Future<void> subscribeToEvent(String id) async {
-    final response = await http.post(Uri.parse('$baseUrl/subscribe/$id'));
+// @override
+// Future<EventModel> subscribeToEvent(String id) async {
+//   final response = await http.post(Uri.parse('$baseUrl/subscribe/$id'));
 
-    if (response.statusCode != 200) {
-      throw Exception('Failed to subscribe to event');
+//   if (response.statusCode == 200) {
+//     final json = jsonDecode(response.body);
+//     return EventModel.fromJson(json['event']);
+//   } else {
+//     throw Exception('Failed to subscribe to event');
+//   }
+// }
+
+  @override
+  Future<EventModel> subscribeToEvent(String id) async {
+    final res = await http.post(Uri.parse('$baseUrl/subscribe/$id'),
+      headers: {'Content-Type': 'application/json'});
+    if (res.statusCode == 200) {
+      final body = json.decode(res.body) as Map<String,dynamic>;
+      return EventModel.fromJson(body['event']);
     }
+    throw Exception('Error al suscribir: ${res.statusCode}');
   }
+
+  @override
+  Future<EventModel> unsubscribeFromEvent(String id) async {
+    final res = await http.post(Uri.parse('$baseUrl/unsubscribe/$id'),
+      headers: {'Content-Type': 'application/json'});
+    if (res.statusCode == 200) {
+      final body = json.decode(res.body) as Map<String,dynamic>;
+      return EventModel.fromJson(body['event']);
+    }
+    throw Exception('Error al desuscribir: ${res.statusCode}');
+  }
+  
+
+
 
   @override
   Future<void> sendFeedback(String id, int rating, String comment) async {
@@ -39,6 +67,29 @@ class EventRemoteDataSource implements IEventRemoteDataSource {
       throw Exception('Failed to submit feedback');
     }
   }
+
+
+  @override
+  Future<List<double>> addRating(String eventId, double rating) async {
+    final res = await http.post(
+      
+      Uri.parse('$baseUrl/addrating/$eventId'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({'rating': rating}),
+    );
+
+    if (res.statusCode == 200) {
+      final body = json.decode(res.body) as Map<String, dynamic>;
+      final List ratingsJson = body['ratings'] as List;
+      // convierto la lista dinámica a List<double>
+      return ratingsJson.map((e) => (e as num).toDouble()).toList();
+    }
+
+    throw Exception('Error al enviar rating: ${res.statusCode}');
+  }
+  
+
+
 
   @override
   Future<int> fetchEventVersion() async {

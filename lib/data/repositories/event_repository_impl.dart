@@ -24,15 +24,26 @@ class EventRepositoryImpl implements IEventRepository {
     if (await networkInfo.isConnected()) {
       logInfo('📡 Conectado a internet');
       try {
+        // 1) Comparo versiones
         final remoteVersion = await remoteDataSource.fetchEventVersion();
         final localVersion = await localDataSource.getLocalVersion();
 
         if (remoteVersion > localVersion) {
-          final apiEvents = await remoteDataSource.fetchEvents();
+          logInfo('Nueva versión detectada, descargando eventos...');
+          final apiEvents = await remoteDataSource.fetchEvents(); //traer la api
+
+// 3) Merge: conservo isJoined local
+          final savedEvents = await localDataSource.getSavedEvents();
+          final joinMap = {for (var e in savedEvents) e.id: e.isJoined.value};
+          for (var ev in apiEvents) {
+            ev.isJoined.value = joinMap[ev.id] ?? false;
+          }
+
           await localDataSource.saveEvents(apiEvents.cast<EventModel>());
           await localDataSource.setLocalVersion(remoteVersion);
           logInfo('Nueva versión descargada: ${apiEvents.length}');
           events = apiEvents;
+
         } else {
           logInfo('Mismo número de versión, se usa Hive');
           events = await localDataSource.getSavedEvents();
@@ -50,45 +61,73 @@ class EventRepositoryImpl implements IEventRepository {
   }
 
   @override
-  Future<void> joinEvent(String eventId) async {
+  Future<EventModel> joinEvent(String eventId) async {
+    // 1. Llamada al backend que decrementa availableSpots y devuelve el evento actualizado
+    final updatedEvent = await remoteDataSource.subscribeToEvent(eventId);
+    // 2. Obtienes todos los eventos en Hive
     final events = await localDataSource.getSavedEvents();
+    // 3. Encuentras el índice y marcas como unido
     final index = events.indexWhere((e) => e.id == eventId);
-
     if (index != -1) {
       events[index].isJoined.value = true;
-      events[index].availableSpots.value--;
+      // 4. ¡Importante! Usas el valor que vino del backend
+      events[index].availableSpots.value = updatedEvent.availableSpots.value;
+      // 5. Guardas de nuevo en Hive
       await localDataSource.saveEvents(events);
       logInfo('Persona unida al evento: $eventId');
     }
+    return events[index];
   }
 
   @override
-  Future<void> unjoinEvent(String eventId) async {
+  Future<EventModel> unjoinEvent(String eventId) async {
+    final updatedEvent = await remoteDataSource.unsubscribeFromEvent(eventId);
+
     final events = await localDataSource.getSavedEvents();
     final index = events.indexWhere((e) => e.id == eventId);
 
     if (index != -1) {
       final event = events[index];
       event.isJoined.value = false;
-      event.availableSpots.value += 1;
+      // event.availableSpots.value += 1;
+      event.availableSpots.value = updatedEvent.availableSpots.value;
       await localDataSource.saveEvents(events);
       logInfo('Usuario se desunió del evento: $eventId');
     }
+    return events[index];
   }
 
   @override
   Future<void> addRating(String eventId, double rating) async {
-    final events = await localDataSource.getSavedEvents();
-    final index = events.indexWhere((e) => e.id == eventId);
+    try {
+      // 1) Llamo al remoto y recibo la lista de ratings actualizada
+      final updatedRatings = await remoteDataSource.addRating(eventId, rating);
 
-    if (index != -1) {
-      final event = events[index];
-      event.ratings.add(rating);
-      event.updateAverageRating();
-      await localDataSource.saveEvents(events);
-      logInfo('Feedback registrado en evento $eventId: $rating');
+      // 2) Cargo todos los eventos guardados
+      final events = await localDataSource.getSavedEvents();
+      final idx = events.indexWhere((e) => e.id == eventId);
+
+      if (idx != -1) {
+        // 3) Reemplazo la lista de ratings local por la que vino del servidor
+        events[idx].ratings
+          ..clear()
+          ..addAll(updatedRatings);
+
+        // 4) Recalculo el promedio
+        events[idx].updateAverageRating();
+
+        // 5) Persisto en Hive
+        await localDataSource.saveEvents(events);
+
+        logInfo('Feedback registrado en evento $eventId: $rating');
+      }
+    } catch (e) {
+      logError('Error al enviar rating al backend: $e');
+      rethrow; // opcional, para que el controlador sepa que falló
     }
   }
+
+
 
   @override
   Future<void> saveEvents(List<Event> events) async {

@@ -9,7 +9,7 @@ class EventModel extends Event {
   final List<double> ratings;
 
   EventModel({
-    required String id, // id ahora es String
+    required String id,
     required String title,
     required String location,
     required String details,
@@ -73,26 +73,23 @@ class EventModel extends Event {
     );
   }
 
-
   factory EventModel.fromJson(Map<String, dynamic> json) {
     return EventModel(
-      id: json['_id'] ?? '', 
+      id: json['_id'] ?? '',
       title: json['title'] ?? '',
       location: json['location'] ?? '',
       details: json['details'] ?? '',
       participants: json['participants'] ?? 0,
-      availableSpots: json['availableSpots'] ?? 0,
+      availableSpots: json['availableSpots'] ?? 0, // <- int plano, se convierte en constructor
       date: json['date'] ?? '',
       path: json['path'] ?? '',
       type: json['type'] ?? '',
-      isJoined: json['isJoined'] ?? false,
+      isJoined: false, // <- no viene del backend
       ratings: (json['ratings'] != null)
-          ? List<double>.from(
-              (json['ratings'] as List).map((e) => (e as num).toDouble()))
+          ? List<double>.from((json['ratings'] as List).map((e) => (e as num).toDouble()))
           : [],
     );
   }
-
 }
 
 

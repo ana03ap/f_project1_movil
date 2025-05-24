@@ -1,4 +1,5 @@
 import 'package:f_project_1/data/usescases_impl/check_event_version_usecase_impl.dart';
+import 'package:f_project_1/domain/usecases/add_comment.dart';
 import 'package:f_project_1/presentation/controllers/connectivity_controller.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -18,6 +19,7 @@ class EventController extends GetxController {
   final UnjoinEvent _unjoinEventUseCase;
   final FilterEvents _filterEventsUseCase;
   final ICheckEventVersionUseCase _checkVersionUseCase;
+  final AddComment _addCommentUseCase;
 
   final RxList<EventModel> filteredEvents = <EventModel>[].obs;
   final RxList<EventModel> joinedEvents = <EventModel>[].obs;
@@ -30,11 +32,14 @@ class EventController extends GetxController {
     required UnjoinEvent unjoinEventUseCase,
     required FilterEvents filterEventsUseCase,
     required ICheckEventVersionUseCase checkVersionUseCase,
+    required AddComment addCommentUseCase,
   })  : _repository = repository,
         _joinEventUseCase = joinEventUseCase,
         _unjoinEventUseCase = unjoinEventUseCase,
         _filterEventsUseCase = filterEventsUseCase,
-        _checkVersionUseCase = checkVersionUseCase;
+        _checkVersionUseCase = checkVersionUseCase,
+         _addCommentUseCase   = addCommentUseCase;
+        
 
   @override
   void onInit() {
@@ -80,52 +85,48 @@ class EventController extends GetxController {
     event.isJoined.value ? unjoinEvent(event) : joinEvent(event);
   }
 
+  Future<void> joinEvent(EventModel event) async {
+    if (!event.isJoined.value && event.availableSpots.value > 0) {
+      try {
+        // 1) Llamo al use case y recibo el EventModel actualizado
+        final updated = await _joinEventUseCase(event.id);
 
-Future<void> joinEvent(EventModel event) async {
-  if (!event.isJoined.value && event.availableSpots.value > 0) {
-    try {
-      // 1) Llamo al use case y recibo el EventModel actualizado
-      final updated = await _joinEventUseCase(event.id);
+        // 2) Actualizo sólo ese objeto en mi lista Rx
+        event.availableSpots.value = updated.availableSpots.value;
+        event.isJoined.value = true;
 
-      // 2) Actualizo sólo ese objeto en mi lista Rx
-      event.availableSpots.value = updated.availableSpots.value;
-      event.isJoined.value       = true;
+        //3) Persisto en Hive la lista modificada
+        await _repository.saveEvents(filteredEvents);
 
-      //3) Persisto en Hive la lista modificada
-      await _repository.saveEvents(filteredEvents);
+        // 4) Actualizo la lista de joinedEvents para la UI
+        updateJoinedEvents();
 
-      // 4) Actualizo la lista de joinedEvents para la UI
-      updateJoinedEvents();
-
-      Get.snackbar('¡Listo!', 'Te has inscrito correctamente.');
-    } catch (e) {
-      logError('Error en joinEvent: $e');
-      Get.snackbar('Error', 'No se pudo suscribir al evento.');
+        Get.snackbar('¡Listo!', 'Te has inscrito correctamente.');
+      } catch (e) {
+        logError('Error en joinEvent: $e');
+        Get.snackbar('Error', 'No se pudo suscribir al evento.');
+      }
     }
   }
-}
 
+  Future<void> unjoinEvent(EventModel event) async {
+    if (event.isJoined.value) {
+      try {
+        // 1) Llamo al use case que suma spots en el backend
+        final updated = await _unjoinEventUseCase(event.id);
 
-Future<void> unjoinEvent(EventModel event) async {
-  if (event.isJoined.value) {
-    try {
-      // 1) Llamo al use case que suma spots en el backend
-      final updated = await _unjoinEventUseCase(event.id);
+        event.availableSpots.value = updated.availableSpots.value;
+        event.isJoined.value = false;
+        await _repository.saveEvents(filteredEvents);
+        updateJoinedEvents();
 
-      event.availableSpots.value = updated.availableSpots.value;
-      event.isJoined.value       = false;
-      await _repository.saveEvents(filteredEvents);
-      updateJoinedEvents();
-
-      Get.snackbar('Listo', 'Te has dado de baja del evento.');
-    } catch (e) {
-      logError('Error en unjoinEvent: $e');
-      Get.snackbar('Error', 'No se pudo cancelar la suscripción.');
+        Get.snackbar('Listo', 'Te has dado de baja del evento.');
+      } catch (e) {
+        logError('Error en unjoinEvent: $e');
+        Get.snackbar('Error', 'No se pudo cancelar la suscripción.');
+      }
     }
   }
-}
-
-
 
   void updateJoinedEvents() {
     joinedEvents.value = filteredEvents.where((e) => e.isJoined.value).toList();
@@ -169,51 +170,56 @@ Future<void> unjoinEvent(EventModel event) async {
       .where((e) => e.isJoined.value && !isEventFuture(e.date))
       .toList();
 
-  // void addFeedback(EventModel event, double rating) {
-  //   event.ratings.add(rating);
-  //   event.updateAverageRating();
-  //   _repository.addRating(event.id, rating);
-
-  //   Get.snackbar(
-  //     'Thanks!',
-  //     'Your rating has been recorded.',
-  //     snackPosition: SnackPosition.BOTTOM,
-  //   );
-  // }
-
-
-
   Future<void> addFeedback(EventModel event, double rating) async {
-  try {
-    // 1) Envía al backend + guarda en Hive
-    await _repository.addRating(event.id, rating);
+    try {
+      // 1) Envía al backend + guarda en Hive
+      await _repository.addRating(event.id, rating);
 
-    // 2) Recupera de Hive (vía getAllEvents) y castéalo a EventModel
-    final allEvents = await _repository.getAllEvents();
-    final updatedEvent = allEvents
-        .cast<EventModel>()                       // ← aquí el cast
-        .firstWhere((e) => e.id == event.id);
+      // 2) Recupera de Hive (vía getAllEvents) y castéalo a EventModel
+      final allEvents = await _repository.getAllEvents();
+      final updatedEvent = allEvents
+          .cast<EventModel>() // ← aquí el cast
+          .firstWhere((e) => e.id == event.id);
 
-    // 3) Sustituye la lista de ratings en memoria
-    event.ratings
-      ..clear()
-      ..addAll(updatedEvent.ratings);
-    event.updateAverageRating();
+      // 3) Sustituye la lista de ratings en memoria
+      event.ratings
+        ..clear()
+        ..addAll(updatedEvent.ratings);
+      event.updateAverageRating();
 
-    Get.snackbar(
-      '¡Gracias!',
-      'Tu valoración ha sido registrada.',
-      snackPosition: SnackPosition.BOTTOM,
-    );
-  } catch (e) {
-    logError('Error en addFeedback: $e');
-    Get.snackbar(
-      'Error',
-      'No se pudo enviar tu valoración.',
-      snackPosition: SnackPosition.BOTTOM,
-    );
+      Get.snackbar(
+        '¡Gracias!',
+        'Tu valoración ha sido registrada.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } catch (e) {
+      logError('Error en addFeedback: $e');
+      Get.snackbar(
+        'Error',
+        'No se pudo enviar tu valoración.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+  Future<void> addComment(EventModel event, String comment) async {
+    try {
+      await _addCommentUseCase(event.id, comment);
+
+      // Actualiza en memoria la lista de comentarios
+      final updated = (await _repository.getAllEvents())
+          .cast<EventModel>()
+          .firstWhere((e) => e.id == event.id);
+
+      event.comments
+        ..clear()
+        ..addAll(updated.comments);
+
+      Get.snackbar('¡Gracias!', 'Comentario agregado.',
+          snackPosition: SnackPosition.BOTTOM);
+    } catch (e) {
+      Get.snackbar('Error', 'No se pudo enviar el comentario.',
+          snackPosition: SnackPosition.BOTTOM);
+    }
   }
 }
-  
-}
-

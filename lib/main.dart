@@ -1,5 +1,6 @@
 import 'package:f_project_1/data/datasources/remote/category_remote_data_source.dart';
 import 'package:f_project_1/data/repositories/category_repository_impl.dart';
+import 'package:f_project_1/domain/usecases/add_comment.dart';
 import 'package:f_project_1/domain/usecases/get_categories_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -32,7 +33,6 @@ void main() async {
   // Inicializar el logger
   Loggy.initLoggy(logPrinter: const PrettyPrinter(showColors: true));
 
- 
   // Inicializar Hive
   final localDataSource = EventLocalDataSource();
   await localDataSource.init();
@@ -43,42 +43,41 @@ void main() async {
   final networkInfo = NetworkInfo();
   final categoryRemoteDataSource = CategoryRemoteDataSource();
 
- 
-
   // Repositorio
   final eventRepo = EventRepositoryImpl(
     localDataSource: localDataSource,
     remoteDataSource: remoteDataSource,
     networkInfo: networkInfo,
   );
-  final categoryRepository = CategoryRepository(remoteDataSource: categoryRemoteDataSource);
-
+  final categoryRepository =
+      CategoryRepository(remoteDataSource: categoryRemoteDataSource);
 
   // Casos de uso
-  
- final joinEvent = JoinEvent(eventRepo);
+
+  final addComment = AddComment(eventRepo);
+  final joinEvent = JoinEvent(eventRepo);
   final unjoinEvent = UnjoinEvent(eventRepo);
   final filterEvents = FilterEvents();
   final checkVersion = CheckEventVersionUseCaseImpl(
     local: localDataSource,
     remote: versionRemoteDataSource,
   );
-  final getCategoriesUseCase = GetCategoriesUseCase(repository: categoryRepository);
-
-
+  final getCategoriesUseCase =
+      GetCategoriesUseCase(repository: categoryRepository);
 
   // Inyección de dependencias
   Get.put(HomeController(getCategoriesUseCase: getCategoriesUseCase));
   Get.put(BottomNavController());
   Get.put(TopNavController());
-  Get.put(NetworkInfo());            
-  Get.put(ConnectivityController()); 
+  Get.put(NetworkInfo());
+  Get.put(ConnectivityController());
   Get.put(EventController(
-    repository:           eventRepo,
-    joinEventUseCase:     joinEvent,
-    unjoinEventUseCase:   unjoinEvent,
-    filterEventsUseCase:  filterEvents,
-    checkVersionUseCase:  checkVersion,
+    repository: eventRepo,
+    joinEventUseCase: joinEvent,
+    unjoinEventUseCase: unjoinEvent,
+    filterEventsUseCase: filterEvents,
+    checkVersionUseCase: checkVersion,
+     addCommentUseCase:    addComment,
   ));
 
   runApp(const MyApp(initialRoute: AppRoutes.splash));
@@ -92,7 +91,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return AdaptiveTheme(
       light: ThemeData.light(useMaterial3: true),
-      dark:  ThemeData.dark(useMaterial3: true),
+      dark: ThemeData.dark(useMaterial3: true),
       initial: AdaptiveThemeMode.light,
       builder: (theme, darkTheme) {
         return GetMaterialApp(

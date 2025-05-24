@@ -28,13 +28,14 @@ class EventHiveModelAdapter extends TypeAdapter<EventHiveModel> {
       type: fields[8] as String,
       isJoined: fields[9] as bool,
       ratings: (fields[10] as List).cast<double>(),
+      comments: (fields[11] as List).cast<String>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, EventHiveModel obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -56,7 +57,9 @@ class EventHiveModelAdapter extends TypeAdapter<EventHiveModel> {
       ..writeByte(9)
       ..write(obj.isJoined)
       ..writeByte(10)
-      ..write(obj.ratings);
+      ..write(obj.ratings)
+      ..writeByte(11)
+      ..write(obj.comments);
   }
 
   @override

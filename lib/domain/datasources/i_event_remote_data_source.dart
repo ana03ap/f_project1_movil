@@ -6,5 +6,7 @@ abstract class IEventRemoteDataSource {
   Future<EventModel> unsubscribeFromEvent(String id);
   Future<void> sendFeedback(String id, int rating, String comment);
   Future<List<double>> addRating(String eventId, double rating);
+  Future<List<String>> addComment(String eventId, String comment);
+
   Future<int> fetchEventVersion();
 }

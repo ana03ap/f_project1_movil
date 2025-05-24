@@ -37,6 +37,9 @@ class EventHiveModel {
   @HiveField(10)
   final List<double> ratings;
 
+   @HiveField(11)
+   List<String> comments;
+
   EventHiveModel({
     required this.id,
     required this.title,
@@ -49,5 +52,6 @@ class EventHiveModel {
     required this.type,
     required this.isJoined,
     this.ratings = const [],
+    this.comments = const [],
   });
 }

@@ -17,48 +17,97 @@ class EventRepositoryImpl implements IEventRepository {
     required this.networkInfo,
   });
 
-  @override
-  Future<List<Event>> getAllEvents() async {
-    List<Event> events = [];
+//   @override
+//   Future<List<Event>> getAllEvents() async {
+//     List<Event> events = [];
 
-    if (await networkInfo.isConnected()) {
-      logInfo('📡 Conectado a internet');
-      try {
-        // 1) Comparo versiones
-        final remoteVersion = await remoteDataSource.fetchEventVersion();
-        final localVersion = await localDataSource.getLocalVersion();
+//     if (await networkInfo.isConnected()) {
+//       logInfo('📡 Conectado a internet');
+//       try {
+//         // 1) Comparo versiones
+//         final remoteVersion = await remoteDataSource.fetchEventVersion();
+//         final localVersion = await localDataSource.getLocalVersion();
 
-        if (remoteVersion > localVersion) {
-          logInfo('Nueva versión detectada, descargando eventos...');
-          final apiEvents = await remoteDataSource.fetchEvents(); //traer la api
+//         if (remoteVersion > localVersion) {
+//           logInfo('Nueva versión detectada, descargando eventos...');
+//           final apiEvents = await remoteDataSource.fetchEvents(); //traer la api
 
-// 3) Merge: conservo isJoined local
-          final savedEvents = await localDataSource.getSavedEvents();
-          final joinMap = {for (var e in savedEvents) e.id: e.isJoined.value};
-          for (var ev in apiEvents) {
-            ev.isJoined.value = joinMap[ev.id] ?? false;
+// // 3) Merge: conservo isJoined local
+//           final savedEvents = await localDataSource.getSavedEvents();
+//           final joinMap = {for (var e in savedEvents) e.id: e.isJoined.value};
+//           for (var ev in apiEvents) {
+//             ev.isJoined.value = joinMap[ev.id] ?? false;
+//           }
+
+//           await localDataSource.saveEvents(apiEvents.cast<EventModel>());
+//           await localDataSource.setLocalVersion(remoteVersion);
+//           logInfo('Nueva versión descargada: ${apiEvents.length}');
+//           events = apiEvents;
+
+//         } else {
+//           logInfo('Mismo número de versión, se usa Hive');
+//           events = await localDataSource.getSavedEvents();
+//         }
+//       } catch (e) {
+//         logError('Error al descargar desde API: $e');
+//         events = await localDataSource.getSavedEvents();
+//       }
+//     } else {
+//       logInfo('Sin internet: usando Hive');
+//       events = await localDataSource.getSavedEvents();
+//     }
+
+//     return events;
+//   }
+
+@override
+Future<List<Event>> getAllEvents() async {
+  List<Event> events = [];
+
+  if (await networkInfo.isConnected()) {
+    logInfo('📡 Conectado a internet');
+    try {
+      // 1) Comparar versiones
+      final remoteVersion = await remoteDataSource.fetchEventVersion();
+      final localVersion  = await localDataSource.getLocalVersion();
+
+      if (remoteVersion > localVersion) {
+        logInfo('Nueva versión detectada, descargando eventos...');
+        // 2) Traer de la API (lista de EventModel)
+        final apiEvents = await remoteDataSource.fetchEvents();
+
+        // 3) Fusionar el estado local de isJoined sin pisar el valor remoto
+        final savedEvents = await localDataSource.getSavedEvents();
+        final joinMap = { for (var e in savedEvents) e.id : e.isJoined.value };
+        for (var ev in apiEvents) {
+          if (joinMap.containsKey(ev.id)) {
+            ev.isJoined.value = joinMap[ev.id]!;
           }
-
-          await localDataSource.saveEvents(apiEvents.cast<EventModel>());
-          await localDataSource.setLocalVersion(remoteVersion);
-          logInfo('Nueva versión descargada: ${apiEvents.length}');
-          events = apiEvents;
-
-        } else {
-          logInfo('Mismo número de versión, se usa Hive');
-          events = await localDataSource.getSavedEvents();
+          // si no hay entrada en joinMap, se respeta el isJoined que vino del JSON
         }
-      } catch (e) {
-        logError('Error al descargar desde API: $e');
+
+        // 4) Persistir la lista completa en Hive y actualizar versión
+        await localDataSource.saveEvents(apiEvents);
+        await localDataSource.setLocalVersion(remoteVersion);
+        logInfo('Nueva versión descargada: ${apiEvents.length} eventos');
+
+        // 5) Asignar a la lista de retorno, casteando a Event para cumplir la firma
+        events = apiEvents.cast<Event>();
+      } else {
+        logInfo('Misma versión, usando datos de Hive');
         events = await localDataSource.getSavedEvents();
       }
-    } else {
-      logInfo('Sin internet: usando Hive');
+    } catch (e) {
+      logError('Error al descargar desde API: $e');
       events = await localDataSource.getSavedEvents();
     }
-
-    return events;
+  } else {
+    logInfo('🚫 Sin internet, usando datos de Hive');
+    events = await localDataSource.getSavedEvents();
   }
+
+  return events;
+}
 
   @override
   Future<EventModel> joinEvent(String eventId) async {
@@ -133,4 +182,27 @@ class EventRepositoryImpl implements IEventRepository {
   Future<void> saveEvents(List<Event> events) async {
     await localDataSource.saveEvents(events.cast<EventModel>());
   }
+
+
+  @override
+Future<void> addComment(String eventId, String comment) async {
+  // 1) Llama al remote y recibe la lista actualizada
+  final updatedComments = await remoteDataSource.addComment(eventId, comment);
+
+  // 2) Carga todos los eventos de Hive
+  final events = await localDataSource.getSavedEvents();
+  final idx = events.indexWhere((e) => e.id == eventId);
+
+  if (idx != -1) {
+    // 3) Reemplaza la lista de comments
+    events[idx].comments
+      ..clear()
+      ..addAll(updatedComments);
+
+    // 4) Guarda en Hive
+    await localDataSource.saveEvents(events);
+    logInfo('Comentario registrado en evento $eventId');
+  }
+}
+
 }

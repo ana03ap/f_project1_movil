@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:get/get.dart';
 import 'package:loggy/loggy.dart';
 import 'package:shared_preferences/shared_preferences.dart';

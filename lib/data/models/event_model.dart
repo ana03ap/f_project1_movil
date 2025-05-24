@@ -7,6 +7,7 @@ class EventModel extends Event {
   RxBool isJoined;
   RxDouble averageRating;
   final List<double> ratings;
+  final List<String> comments;
 
   EventModel({
     required String id,
@@ -20,7 +21,9 @@ class EventModel extends Event {
     required String type,
     bool isJoined = false,
     List<double>? ratings,
-  })  : availableSpots = RxInt(availableSpots),
+    List<String>? comments,
+  })  : comments = comments ?? [],
+        availableSpots = RxInt(availableSpots),
         isJoined = RxBool(isJoined),
         averageRating = 0.0.obs,
         ratings = ratings ?? [],
@@ -33,7 +36,9 @@ class EventModel extends Event {
           date: date,
           path: path,
           type: type,
-        );
+        ) {
+    updateAverageRating();
+  }
 
   void updateAverageRating() {
     averageRating.value = ratings.isEmpty
@@ -54,6 +59,7 @@ class EventModel extends Event {
       type: hiveModel.type,
       isJoined: hiveModel.isJoined,
       ratings: hiveModel.ratings,
+      comments: hiveModel.comments,
     );
   }
 
@@ -70,6 +76,7 @@ class EventModel extends Event {
       type: type,
       isJoined: isJoined.value,
       ratings: ratings,
+      comments: comments,
     );
   }
 
@@ -80,16 +87,18 @@ class EventModel extends Event {
       location: json['location'] ?? '',
       details: json['details'] ?? '',
       participants: json['participants'] ?? 0,
-      availableSpots: json['availableSpots'] ?? 0, // <- int plano, se convierte en constructor
+      availableSpots: json['availableSpots'] ??
+          0, // <- int plano, se convierte en constructor
       date: json['date'] ?? '',
       path: json['path'] ?? '',
       type: json['type'] ?? '',
-      isJoined: false, // <- no viene del backend
+      isJoined: (json['isJoined'] as bool?) ?? false,
       ratings: (json['ratings'] != null)
-          ? List<double>.from((json['ratings'] as List).map((e) => (e as num).toDouble()))
+          ? List<double>.from(
+              (json['ratings'] as List).map((e) => (e as num).toDouble()))
           : [],
+
+      comments: (json['comments'] ?? []).cast<String>(),
     );
   }
 }
-
-
